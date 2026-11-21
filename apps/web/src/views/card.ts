@@ -1,5 +1,6 @@
 import { shareCardFrom, type Pet } from "@pawid/core";
 import { longDate, petCardHtml } from "@pawid/ui";
+import { loadSticker } from "../sticker";
 import { googleCalendarUrl, nextRabiesExpiry, openIcs, rabiesReminderIcs } from "../calendar";
 import { button, el, link, svg, today } from "../dom";
 
@@ -24,9 +25,17 @@ export function cardView(pet: Pet, owner: string): Node[] {
         el("p", { class: "pw-hint flush" }, "Changed the dates after a vet visit? Add it again: the calendar updates the same event."),
       )
     : null;
+  const stickerSrc = loadSticker(pet.id);
+  const stickerFig = stickerSrc
+    ? el("figure", { class: "pw-card pw-card-pad sticker-fig" },
+        el("figcaption", {}, el("b", {}, "Rabies vaccine sticker"), el("span", {}, "Your photo from the passport")),
+        el("img", { src: stickerSrc, alt: `Photo of ${pet.name}'s rabies vaccine sticker in the passport` }),
+      )
+    : null;
   return [
     el("div", { class: "bar no-print" }, el("a", { href: "#/", class: "back" }, svg("back"), "Your pets")),
     holder,
+    ...(stickerFig ? [stickerFig] : []),
     ...(reminder ? [reminder] : []),
     el(
       "div",

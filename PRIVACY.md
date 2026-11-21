@@ -25,6 +25,12 @@ made a backup (see below).
 
 On an iPhone, the app on the Home Screen and Safari keep separate storage.
 
+## Photo of the vaccine sticker
+
+If you add a photo of the rabies vaccine sticker, it is made smaller and kept on your phone only.
+It shows on your own pet card. It is not in the codes you share and not in backups.
+Deleting the pet deletes the photo.
+
 ## The signing key
 
 The app makes a signing key on your phone the first time you make a code. It stays on the phone

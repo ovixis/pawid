@@ -2,6 +2,7 @@ import { petSchema, type Pet, type Treatment, type Vaccination } from "@pawid/co
 import { CAT_BREEDS, DOG_BREEDS } from "../breeds";
 import { COUNTRY_GROUPS } from "../countries";
 import { RABIES_VACCINES } from "../vaccines";
+import { PASSPORT_DRAWING, loadSticker, saveSticker, shrinkPhoto } from "../sticker";
 import { button, el, svg, today } from "../dom";
 import { loadPets } from "../storage";
 
@@ -59,6 +60,48 @@ export function formView(pet: Pet | undefined, onSave: (p: Pet) => void, onDelet
   const vaccineList = el("datalist", { id: "vaccine-list" });
   const fillVaccines = (sp: string) =>
     vaccineList.replaceChildren(...RABIES_VACCINES.filter((v) => v.for.includes(sp as "dog" | "cat")).map((v) => el("option", { value: v.name, label: v.maker })));
+  // Where the vaccine name is: a drawing of the passport page, and a photo of the owner's own sticker.
+  const drawing = el("div", { class: "pp-drawing" });
+  drawing.innerHTML = PASSPORT_DRAWING; // fixed markup from sticker.ts, never user data
+  const where = el("details", { class: "pp-where" },
+    el("summary", {}, svg("info"), "Where is the vaccine name?"),
+    el("p", { class: "pw-hint" }, "On the rabies vaccination page of the passport, the vet sticks the label of the vaccine in the first column. The name is printed on it, in big letters, with the batch number."),
+    drawing,
+    el("p", { class: "pw-hint flush" }, "A drawing. Each maker's sticker looks different."),
+  );
+  let sticker: string | null | undefined; // undefined: unchanged, null: removed
+  const current = pet ? loadSticker(pet.id) : null;
+  const stickerImg = el("img", { class: "sticker-thumb", alt: "Photo of the vaccine sticker", hidden: !current });
+  if (current) stickerImg.src = current;
+  const stickerMsg = el("p", { class: "pw-hint flush", attrs: { role: "status" } });
+  const removeSticker = button("Remove photo", { kind: "ghost", sm: true, icon: "delete", onClick: () => { sticker = null; stickerImg.hidden = true; stickerImg.removeAttribute("src"); removeSticker.hidden = true; stickerMsg.textContent = "The photo will be removed when you save."; } });
+  removeSticker.hidden = !current;
+  const photo = el("input", { type: "file", accept: "image/*", class: "pw-sr", id: "f-sticker" });
+  photo.setAttribute("capture", "environment");
+  photo.addEventListener("change", async () => {
+    const f = photo.files?.[0];
+    if (!f) return;
+    try {
+      sticker = await shrinkPhoto(f);
+      stickerImg.src = sticker;
+      stickerImg.hidden = false;
+      removeSticker.hidden = false;
+      stickerMsg.textContent = "Photo ready. It is kept when you save.";
+    } catch {
+      stickerMsg.textContent = "This photo could not be read. Try another one.";
+    }
+  });
+  const stickerBox = el("div", { class: "sticker-box" },
+    stickerImg,
+    el("div", { class: "bar" },
+      el("label", { class: "pw-btn pw-btn-secondary pw-btn-sm", htmlFor: "f-sticker" }, svg("camera"), "Photo of the sticker"),
+      removeSticker,
+    ),
+    photo,
+    stickerMsg,
+    el("p", { class: "pw-hint flush" }, "Stays on this phone and shows on your pet card. It is not in the codes you share or in backups."),
+  );
+
   const fillBoth = (sp: string) => { fillBreeds(sp); fillVaccines(sp); };
   fillBoth(pet?.species ?? "dog");
   species.addEventListener("change", (e) => fillBoth((e.target as HTMLInputElement).value));
@@ -110,6 +153,8 @@ export function formView(pet: Pet | undefined, onSave: (p: Pet) => void, onDelet
         field("Valid until", date("rabiesUntil", rabies?.validUntil), "As written by the vet in the passport."),
         field("Vaccine", vaccineInput, "The name on the sticker in the passport, e.g. Nobivac Rabies."),
       ),
+      where,
+      stickerBox,
       el("label", { class: "check" }, booster, el("span", {}, el("b", {}, "Booster given in time"), el("span", {}, "The new vaccine was given before the previous one expired."))),
     ),
     card(
@@ -195,6 +240,9 @@ export function formView(pet: Pet | undefined, onSave: (p: Pet) => void, onDelet
       const issue = parsed.error.issues[0];
       const name = String(issue?.path[0] ?? "name");
       return fail(name === "microchip" ? "microchip" : name, issue?.message.startsWith("expected") ? "Check this field." : issue?.message ?? "Check the form.");
+    }
+    if (sticker !== undefined && !saveSticker(parsed.data.id, sticker)) {
+      err.textContent = "The phone's storage is full: the sticker photo was not kept. The rest is saved.";
     }
     onSave(parsed.data);
   });

@@ -3,6 +3,7 @@ import { BY_HOSPET } from "@pawid/ui";
 import { el, topBar, siteFooter } from "./dom";
 import { loadOwnerName, loadPets, saveOwnerName, savePets } from "./storage";
 import { injectStyles } from "./style";
+import { saveSticker } from "./sticker";
 import { cardView } from "./views/card";
 import { backupCard, restoreView } from "./views/backup";
 import { formView } from "./views/form";
@@ -47,6 +48,7 @@ function restore(next: Pet[], owner?: string): void {
 function remove(p: Pet): void {
   if (!confirm(`Delete ${p.name} from this device? This can't be undone.`)) return;
   pets = pets.filter((x) => x.id !== p.id);
+  saveSticker(p.id, null);
   savePets(pets);
   location.hash = "#/";
 }
