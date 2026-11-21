@@ -1,4 +1,4 @@
-import { ICON_BODIES, type IconName } from "@pawid/ui";
+import { ICON_BODIES, hospetMark, pawidMark, type IconName } from "@pawid/ui";
 
 type Props<K extends keyof HTMLElementTagNameMap> = Partial<Omit<HTMLElementTagNameMap[K], "style">> & {
   class?: string;
@@ -47,3 +47,23 @@ export function link(label: string, href: string, kind: "primary" | "secondary" 
 }
 
 export const today = () => new Date().toISOString().slice(0, 10);
+
+/** The PawID or HosPet mark (fixed markup from @pawid/ui/brand, never user data). Decorative: the name is next to it. */
+export function brandMark(which: "pawid" | "hospet", cls = "pw-mark"): HTMLSpanElement {
+  const s = document.createElement("span");
+  s.className = "mark-wrap";
+  s.innerHTML = which === "pawid" ? pawidMark(undefined, cls) : hospetMark(undefined, cls);
+  return s;
+}
+
+/** Header: the PawID logo on the left, "by HosPet.eu" with the HosPet mark on the right. */
+export function topBar(home: string, byHref: string): HTMLElement {
+  return el(
+    "header",
+    { class: "top" },
+    el("div", { class: "top-in" },
+      el("a", { href: home, class: "logo", attrs: { "aria-label": "PawID home" } }, brandMark("pawid", "pw-mark logo-mark"), el("span", {}, "Paw", el("span", { class: "logo-id" }, "ID"))),
+      el("a", { href: byHref, class: "by", rel: "noopener" }, "by", brandMark("hospet", "pw-mark by-mark"), el("b", {}, "HosPet.eu")),
+    ),
+  );
+}

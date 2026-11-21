@@ -128,6 +128,10 @@ fieldset.pw-card > legend + * { clear: both; }
 .pw-error { margin: 0; color: var(--pw-danger); font-size: var(--pw-text-xs); font-weight: 600; }
 .pw-link { color: var(--pw-navy-700); font-weight: 600; text-underline-offset: 2px; }
 .pw-mono { font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.pw-mark { width: 1.5rem; height: 1.5rem; flex: none; display: inline-block; vertical-align: middle; }
+.pw-by { display: inline-flex; align-items: center; gap: .375rem; flex-wrap: wrap; }
+.pw-by .pw-mark { width: 1.125rem; height: 1.125rem; }
+.pw-by a { display: inline-flex; align-items: center; gap: .375rem; color: inherit; }
 .pw-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
 /* The pet card: the same layout as the HosPet.eu pet card, shown by the app and the verify page. */
@@ -135,7 +139,7 @@ fieldset.pw-card > legend + * { clear: both; }
 .pw-pc-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding: 1rem 1.5rem; background: var(--pw-navy-800); color: #fff; }
 .pw-pc-head p { margin: 0; }
 .pw-pc-brand { display: flex; align-items: center; gap: .5rem; font-weight: 800; }
-.pw-pc-brand .pw-icon { color: var(--pw-gold-400); }
+.pw-pc-brand .pw-mark { width: 1.75rem; height: 1.75rem; }
 .pw-pc-meta { font-size: var(--pw-text-xs); color: rgb(255 255 255 / .8); }
 .pw-pc-hero { display: flex; align-items: center; gap: 1rem; padding: 1.5rem 1.5rem 1rem; }
 .pw-pc-hero img { width: 4rem; height: 4rem; flex: none; }

@@ -5,8 +5,12 @@ const APP = /* css */ `
 .top { position: sticky; top: 0; z-index: 10; background: color-mix(in oklab, var(--pw-canvas) 92%, transparent); border-bottom: 1px solid var(--pw-line); }
 .top-in { max-width: 48rem; margin: 0 auto; padding: .625rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .logo { display: flex; align-items: center; gap: .5rem; font-weight: 800; font-size: var(--pw-text-lg); letter-spacing: -.02em; color: var(--pw-ink); text-decoration: none; }
-.logo-mark { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: .6rem; background: var(--pw-navy-800); color: var(--pw-gold-400); }
-.by { font-size: var(--pw-text-xs); color: var(--pw-ink-subtle); text-decoration: none; }
+.mark-wrap { display: contents; }
+.logo-mark { width: 2.25rem; height: 2.25rem; }
+.logo-id { color: var(--pw-navy-700); }
+.by { display: inline-flex; align-items: center; gap: .375rem; font-size: var(--pw-text-xs); color: var(--pw-ink-subtle); text-decoration: none; }
+.by b { color: var(--pw-ink); font-weight: 700; }
+.by-mark { width: 1.5rem; height: 1.5rem; }
 .by:hover { color: var(--pw-ink); }
 main { max-width: 48rem; margin: 0 auto; padding: 1.25rem 1rem 4rem; display: grid; gap: 1rem; }
 main > * { min-width: 0; }

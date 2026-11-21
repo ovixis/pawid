@@ -1,4 +1,8 @@
+<img src="apps/web/public/brand/pawid-mark.svg" alt="" width="72" height="72">
+
 # PawID
+
+By <img src="apps/web/public/brand/hospet-mark.svg" alt="" width="18" height="18"> [HosPet.eu](https://hospet.eu)
 
 Open source digital companion for the EU pet passport. Built for people who travel with dogs in Europe.
 
@@ -88,3 +92,12 @@ npm run typecheck
 ## License
 
 Apache-2.0 for code. Rules data: CC BY 4.0 (see `rules/README.md`).
+
+## Logos
+
+The PawID mark is a paw inside a scan frame, with a check on the pad. The files are made from
+`packages/ui/src/brand.ts` with `npm run brand -w @pawid/ui` (SVG in `apps/web/public/brand`,
+favicon and app icons in `apps/web/public/icons`).
+
+The HosPet.eu name and logo belong to HosPet.eu. They are not covered by the Apache-2.0 licence
+of this code. If you run your own copy of PawID, remove the HosPet mark and the "by HosPet.eu" line.

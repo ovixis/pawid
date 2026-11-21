@@ -1,6 +1,6 @@
 import type { Pet } from "@pawid/core";
 import { BY_HOSPET } from "@pawid/ui";
-import { el, svg } from "./dom";
+import { el, topBar } from "./dom";
 import { loadOwnerName, loadPets, savePets } from "./storage";
 import { injectStyles } from "./style";
 import { cardView } from "./views/card";
@@ -16,14 +16,7 @@ injectStyles();
 let pets: Pet[] = loadPets();
 const root = document.getElementById("app") as HTMLElement;
 
-const header = el(
-  "header",
-  { class: "top" },
-  el("div", { class: "top-in" },
-    el("a", { href: "#/", class: "logo" }, el("span", { class: "logo-mark" }, svg("pawFill")), "PawID"),
-    el("a", { href: BY_HOSPET.href, class: "by", rel: "noopener" }, "by HosPet.eu"),
-  ),
-);
+const header = topBar("#/", BY_HOSPET.href);
 const main = el("main", { id: "main", tabIndex: -1 });
 const footer = el("footer", { class: "foot" }, el("a", { href: "/venues" }, "For hotels, restaurants and places to visit"), ". Open source. Not an official document. ", el("a", { href: "https://github.com/ovixis/pawid", rel: "noopener" }, "Source code"), ". ", el("a", { href: BY_HOSPET.href, rel: "noopener" }, BY_HOSPET.text), ".");
 root.replaceChildren(header, main, footer);

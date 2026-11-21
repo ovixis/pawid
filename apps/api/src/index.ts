@@ -1,6 +1,6 @@
 import { Hono, type Context } from "hono";
 import { verifyShareToken, type VerifyResult } from "@pawid/core";
-import { BY_HOSPET, COMPONENTS, PAGE, TOKENS, esc, icon, longDate, petCardHtml } from "@pawid/ui";
+import { BY_HOSPET, COMPONENTS, PAGE, TOKENS, esc, hospetMark, icon, longDate, pawidMark, petCardHtml } from "@pawid/ui";
 import { coveredCountries, rulesFor } from "@pawid/rules";
 import { handleRpc } from "./mcp";
 import { openapi } from "./openapi";
@@ -138,7 +138,7 @@ main { max-width: 48rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
 .fail .pw-ring { margin: 0 auto 1rem; }
 .fail h1 { margin: 0 0 .5rem; font-size: var(--pw-text-2xl); font-weight: 800; letter-spacing: -.02em; }
 .fail p { margin: 0; color: var(--pw-ink-muted); }
-.by { margin-top: 1.5rem; text-align: center; font-size: var(--pw-text-xs); color: var(--pw-ink-subtle); }
+.by { margin-top: 1.5rem; justify-content: center; width: 100%; font-size: var(--pw-text-xs); color: var(--pw-ink-subtle); }
 .by a { color: inherit; }
 @media print { .top, .by { display: none; } main { padding: 0; } }`;
 
@@ -158,7 +158,7 @@ ${petCardHtml(res.payload, { todayIso, headingLevel: 1, hideEmpty: true })}`
 <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
 <title>${res.ok ? `${esc(res.payload.name)}, PawID pet card` : "PawID: cannot verify"}</title>
 <style>${STYLE}</style></head><body><main>${body}
-<p class="by"><a href="${BY_HOSPET.href}" rel="noopener">${BY_HOSPET.text}</a>, open source</p></main></body></html>`;
+<p class="by pw-by">${pawidMark()}<span>PawID by</span><a href="${BY_HOSPET.href}" rel="noopener">${hospetMark()}HosPet.eu</a><span>Open source. Not an official document.</span></p></main></body></html>`;
 }
 
 /** Page the hotel sees after scanning the QR. No account, no app. */

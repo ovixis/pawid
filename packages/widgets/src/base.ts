@@ -1,4 +1,4 @@
-import { COMPONENTS, TOKENS, BY_HOSPET } from "@pawid/ui";
+import { COMPONENTS, TOKENS, BY_HOSPET, hospetMark, pawidMark } from "@pawid/ui";
 
 export const DEFAULT_API = "https://pawid-api.hospet.workers.dev";
 export const DEFAULT_APP = "https://pawid.pages.dev";
@@ -33,6 +33,7 @@ ${COMPONENTS}
 .row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
 .by { font-size: .8125rem; color: var(--pw-ink-subtle); }
 .by a { color: inherit; }
+.mk { display: contents; }
 .flush { padding: 0; }
 `;
 
@@ -67,8 +68,21 @@ export function h<K extends keyof HTMLElementTagNameMap>(
   return node;
 }
 
+/** Fixed brand markup from @pawid/ui (never user data). */
+function markup(html: string): HTMLElement {
+  const s = h("span", { class: "mk" });
+  s.innerHTML = html;
+  return s;
+}
+
+/** "PawID by HosPet.eu. Not an official document." with both marks. */
 export function byLine(): HTMLElement {
-  return h("p", { class: "by" }, h("a", { href: BY_HOSPET.href, target: "_blank", rel: "noopener" }, BY_HOSPET.text), ". Not an official document.");
+  return h("p", { class: "by pw-by" },
+    markup(pawidMark()),
+    h("span", {}, "PawID by"),
+    h("a", { href: BY_HOSPET.href, target: "_blank", rel: "noopener" }, markup(hospetMark()), "HosPet.eu"),
+    h("span", {}, "Not an official document."),
+  );
 }
 
 export abstract class PawidElement extends HTMLElement {

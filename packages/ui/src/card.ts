@@ -1,5 +1,6 @@
 import { countryName, esc, longDate, svgOf } from "./html";
-import { I_cat, I_dog, I_pawFill } from "./icons";
+import { I_cat, I_dog } from "./icons";
+import { pawidMark } from "./brand";
 
 /** The fields a pet card can show. Same names as ShareCard in @pawid/core. */
 export interface CardData {
@@ -115,7 +116,7 @@ export function petCardHtml(c: CardData, o: CardOptions): string {
   ].join("");
 
   return `<article class="pw-card pw-pc">
-<header class="pw-pc-head"><p class="pw-pc-brand">${svgOf(I_pawFill)} PawID pet card</p>${o.meta ? `<p class="pw-pc-meta">${esc(o.meta)}</p>` : ""}</header>
+<header class="pw-pc-head"><p class="pw-pc-brand">${pawidMark()} PawID pet card</p>${o.meta ? `<p class="pw-pc-meta">${esc(o.meta)}</p>` : ""}</header>
 <div class="pw-pc-hero">${pic}<div><h${h}>${esc(c.name)}</h${h}><p>${esc(sub)}</p></div></div>
 <div class="pw-pc-grid">${parts}</div>
 <footer class="pw-pc-foot">${esc(o.footer ?? DEFAULT_FOOTER)}</footer>

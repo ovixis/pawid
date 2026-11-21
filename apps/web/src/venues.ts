@@ -2,7 +2,7 @@
 // The page renders the components from source; venues load the same code from /embed/v1.js.
 import "@pawid/widgets";
 import { BY_HOSPET } from "@pawid/ui";
-import { el, svg } from "./dom";
+import { el, svg, topBar } from "./dom";
 import { injectStyles } from "./style";
 
 injectStyles();
@@ -95,14 +95,7 @@ const policyJson = JSON.stringify(POLICY, null, 2).replace(/</g, "\\u003c");
 
 const scriptTag = `<script type="module" src="${EMBED}"></script>`;
 
-const header = el(
-  "header",
-  { class: "top" },
-  el("div", { class: "top-in" },
-    el("a", { href: "/", class: "logo" }, el("span", { class: "logo-mark" }, svg("pawFill")), "PawID"),
-    el("a", { href: BY_HOSPET.href, class: "by", rel: "noopener" }, "by HosPet.eu"),
-  ),
-);
+const header = topBar("/", BY_HOSPET.href);
 
 const main = el(
   "main",
