@@ -98,4 +98,11 @@ describe("pet schema", () => {
   it("rejects a lower case country code", () => {
     expect(() => petSchema.parse({ id: "x", name: "Bea", homeCountry: "it" })).toThrow();
   });
+  it("carries the rabies vaccine name from the passport sticker", async () => {
+    const keys = await generateOwnerKeys();
+    const pet = { id: "r", species: "dog", name: "Rex", vaccinations: [{ kind: "rabies", product: "Nobivac Rabies", administeredOn: "2026-01-01", validUntil: "2027-01-01" }], treatments: [] } as unknown as Parameters<typeof shareCardFrom>[0];
+    const t = await createShareToken(shareCardFrom(pet, { identity: true, passport: false, rabies: true, vet: false, notes: false }), keys, { nowSec: 1000, ttlSec: 60 });
+    const r = await verifyShareToken(t, 1001);
+    expect(r.ok && r.payload.rabiesVaccine).toBe("Nobivac Rabies");
+  });
 });

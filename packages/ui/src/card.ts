@@ -16,6 +16,7 @@ export interface CardData {
   homeCountry?: string;
   rabiesGivenOn?: string;
   rabiesValidUntil?: string;
+  rabiesVaccine?: string;
   boosterInTime?: boolean;
   vetName?: string;
   vetPhone?: string;
@@ -99,6 +100,7 @@ export function petCardHtml(c: CardData, o: CardOptions): string {
   const rabies = [
     row("Given on", longDate(c.rabiesGivenOn)),
     row("Valid until", until, true),
+    row("Vaccine", c.rabiesVaccine),
     row("Booster in time", c.boosterInTime === undefined ? undefined : c.boosterInTime ? "Yes" : "No"),
   ];
   const vet = [
@@ -109,7 +111,7 @@ export function petCardHtml(c: CardData, o: CardOptions): string {
   const has = (...v: unknown[]) => !o.hideEmpty || v.some((x) => x !== undefined && x !== "");
   const parts = [
     has(c.microchip, c.chipDate, c.passportNumber, c.homeCountry, c.birthDate) ? section("Identification", ident) : "",
-    has(c.rabiesGivenOn, c.rabiesValidUntil) ? section("Rabies vaccine", rabies) : "",
+    has(c.rabiesGivenOn, c.rabiesValidUntil, c.rabiesVaccine) ? section("Rabies vaccine", rabies) : "",
     has(c.vetName, c.vetPhone) ? section("Vet", vet) : "",
     c.owner ? section("Owner", [row("First name", c.owner)]) : "",
     c.notes ? `<section class="pw-pc-wide"><h3>Notes from the owner</h3><p class="pw-pc-notes">${esc(c.notes)}</p></section>` : "",

@@ -29,6 +29,8 @@ export const shareCardSchema = z.object({
   homeCountry: countryCode.optional(),
   rabiesGivenOn: isoDate.optional(),
   rabiesValidUntil: isoDate.optional(),
+  /** Vaccine name as on the passport sticker, e.g. "Nobivac Rabies". */
+  rabiesVaccine: z.string().max(80).optional(),
   boosterInTime: z.boolean().optional(),
   vetName: z.string().max(120).optional(),
   vetPhone: z.string().max(40).optional(),
@@ -59,7 +61,7 @@ export type VerifyResult =
 const SHORT: Record<keyof ShareCard, string> = {
   species: "s", name: "n", breed: "b", sex: "x", weightKg: "w", birthDate: "bd",
   microchip: "c", chipDate: "cd", passportNumber: "p", homeCountry: "hc",
-  rabiesGivenOn: "rg", rabiesValidUntil: "ru", boosterInTime: "bo",
+  rabiesGivenOn: "rg", rabiesValidUntil: "ru", rabiesVaccine: "rv", boosterInTime: "bo",
   vetName: "vn", vetPhone: "vp", owner: "o", notes: "nt",
 };
 const LONG = Object.fromEntries(Object.entries(SHORT).map(([k, s]) => [s, k])) as Record<string, keyof ShareCard>;
@@ -171,7 +173,7 @@ export function shareCardFrom(
   const card: ShareCard = { name: pet.name, species: pet.species };
   if (pick.identity !== false) Object.assign(card, { breed: pet.breed, sex: pet.sex, weightKg: pet.weightKg, birthDate: pet.birthDate, microchip: pet.microchip });
   if (pick.passport) Object.assign(card, { chipDate: pet.chipDate, passportNumber: pet.passportNumber, homeCountry: pet.homeCountry });
-  if (pick.rabies !== false && rabies) Object.assign(card, { rabiesGivenOn: rabies.administeredOn, rabiesValidUntil: rabies.validUntil, boosterInTime: pet.boosterInTime });
+  if (pick.rabies !== false && rabies) Object.assign(card, { rabiesGivenOn: rabies.administeredOn, rabiesValidUntil: rabies.validUntil, rabiesVaccine: rabies.product?.slice(0, 80) || undefined, boosterInTime: pet.boosterInTime });
   if (pick.vet) Object.assign(card, { vetName: pet.vet?.name, vetPhone: pet.vet?.phone });
   if (pick.notes && pet.notes) card.notes = pet.notes.slice(0, 280);
   if (owner) card.owner = owner.slice(0, 60);

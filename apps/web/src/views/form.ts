@@ -1,6 +1,7 @@
 import { petSchema, type Pet, type Treatment, type Vaccination } from "@pawid/core";
 import { CAT_BREEDS, DOG_BREEDS } from "../breeds";
 import { COUNTRY_GROUPS } from "../countries";
+import { RABIES_VACCINES } from "../vaccines";
 import { button, el, svg, today } from "../dom";
 import { loadPets } from "../storage";
 
@@ -53,8 +54,14 @@ export function formView(pet: Pet | undefined, onSave: (p: Pet) => void, onDelet
     const all = [...new Set([...own, ...(sp === "cat" ? CAT_BREEDS : DOG_BREEDS)])];
     breedList.replaceChildren(...all.map((b) => el("option", { value: b })));
   };
-  fillBreeds(pet?.species ?? "dog");
-  species.addEventListener("change", (e) => fillBreeds((e.target as HTMLInputElement).value));
+  const vaccineInput = input("rabiesVaccine", rabies?.product ?? "", { maxLength: 80, autocomplete: "off" });
+  vaccineInput.setAttribute("list", "vaccine-list");
+  const vaccineList = el("datalist", { id: "vaccine-list" });
+  const fillVaccines = (sp: string) =>
+    vaccineList.replaceChildren(...RABIES_VACCINES.filter((v) => v.for.includes(sp as "dog" | "cat")).map((v) => el("option", { value: v.name, label: v.maker })));
+  const fillBoth = (sp: string) => { fillBreeds(sp); fillVaccines(sp); };
+  fillBoth(pet?.species ?? "dog");
+  species.addEventListener("change", (e) => fillBoth((e.target as HTMLInputElement).value));
 
   const vets = new Map<string, string>();
   for (const x of others) if (x.vet?.name && !vets.has(x.vet.name)) vets.set(x.vet.name, x.vet.phone ?? "");
@@ -101,6 +108,7 @@ export function formView(pet: Pet | undefined, onSave: (p: Pet) => void, onDelet
       el("div", { class: "fields fields-2" },
         field("Given on", date("rabiesGiven", rabies?.administeredOn)),
         field("Valid until", date("rabiesUntil", rabies?.validUntil), "As written by the vet in the passport."),
+        field("Vaccine", vaccineInput, "The name on the sticker in the passport, e.g. Nobivac Rabies."),
       ),
       el("label", { class: "check" }, booster, el("span", {}, el("b", {}, "Booster given in time"), el("span", {}, "The new vaccine was given before the previous one expired."))),
     ),
@@ -126,6 +134,7 @@ export function formView(pet: Pet | undefined, onSave: (p: Pet) => void, onDelet
     card("Notes", field("For the people who look after your pet", el("textarea", { name: "notes", value: pet?.notes ?? "", maxLength: 1000 }), "Food, character, anything a host should know. Up to 280 characters can go on the code you show.")),
     err,
     breedList,
+    vaccineList,
     vetList,
   );
 
@@ -155,7 +164,7 @@ export function formView(pet: Pet | undefined, onSave: (p: Pet) => void, onDelet
     const chip = v("microchip").replace(/[\s-]/g, "");
 
     const vaccinations: Vaccination[] = (pet?.vaccinations ?? []).filter((x) => x.kind !== "rabies" || x !== rabies);
-    if (given && until) vaccinations.push({ kind: "rabies", administeredOn: given, validUntil: until });
+    if (given && until) vaccinations.push({ kind: "rabies", administeredOn: given, validUntil: until, ...(v("rabiesVaccine") ? { product: v("rabiesVaccine").slice(0, 80) } : {}) });
     const treatments: Treatment[] = (pet?.treatments ?? []).filter((t) => t !== tapeworm);
     if (v("tapeworm")) treatments.push({ kind: "echinococcus", administeredOn: v("tapeworm") });
 
