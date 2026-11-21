@@ -6,8 +6,10 @@ import { CODE_WINDOW_CSS, codeWindow } from "./codewin";
 import { GITHUB_CSS, SHOWCASE_CSS, githubInvite, phoneRow, placeCards } from "./showcase";
 import { el, svg, topBar, siteFooter } from "./dom";
 import { injectStyles } from "./style";
+import { moveToNewAddress } from "./move";
 
 injectStyles();
+moveToNewAddress();
 
 const EMBED = `${location.origin}/embed/v1.js`;
 const API = "https://pawid-api.hospet.workers.dev";

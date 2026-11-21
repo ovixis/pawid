@@ -51,6 +51,7 @@ export function rabiesReminderIcs(pet: Pet, validUntil: string, longDate: string
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",
     // Same pet and date = same UID, so adding it twice updates the event instead of making a copy.
+    // The domain part is only an identifier: it stays pawid.pages.dev so events added before the move still match.
     `UID:pawid-${pet.id.replace(/[^A-Za-z0-9-]/g, "")}-rabies-${ymd(validUntil)}@pawid.pages.dev`,
     `DTSTAMP:${stamp}`,
     `DTSTART;VALUE=DATE:${ymd(validUntil)}`,

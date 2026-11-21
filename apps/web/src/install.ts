@@ -3,8 +3,10 @@ import { BY_HOSPET, type IconName } from "@pawid/ui";
 import { el, svg, topBar, siteFooter } from "./dom";
 import { GITHUB_CSS, SHOWCASE_CSS, githubInvite, phoneRow } from "./showcase";
 import { injectStyles } from "./style";
+import { moveToNewAddress } from "./move";
 
 injectStyles();
+moveToNewAddress();
 
 const css = document.createElement("style");
 css.textContent = `${SHOWCASE_CSS}${GITHUB_CSS}

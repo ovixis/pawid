@@ -66,7 +66,7 @@ export function backupCard(pets: Pet[], owner: string): HTMLElement {
 }
 
 /** #/restore?b=<code>: shows what is in the backup and restores it. Without a code: paste a link or pick a file. */
-export function restoreView(code: string | null, current: Pet[], onRestore: (pets: Pet[], owner?: string) => void): Node[] {
+export function restoreView(code: string | null, current: Pet[], onRestore: (pets: Pet[], owner?: string) => void, moved = false): Node[] {
   const out = el("div", { class: "stack", attrs: { "aria-live": "polite" } });
   const err = el("p", { class: "pw-error", attrs: { role: "alert" } });
 
@@ -109,7 +109,8 @@ export function restoreView(code: string | null, current: Pet[], onRestore: (pet
   }
   return [
     el("div", { class: "bar no-print" }, el("a", { href: "#/", class: "back" }, svg("back"), "Your pets")),
-    el("h1", { class: "page-title" }, "Restore your pets"),
+    el("h1", { class: "page-title" }, moved ? "PawID has a new address" : "Restore your pets"),
+    moved ? el("p", { class: "pw-notice" }, "PawID moved from pawid.pages.dev to pawid.hospet.eu. Your pets came along: tap Restore to keep them here. If you installed the app, install it again from this address.") : "",
     err,
     out,
     code ? "" : manual,

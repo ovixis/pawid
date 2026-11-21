@@ -3,7 +3,7 @@ import type { Pet } from "@pawid/core";
 import { backupFromText, decodeBackup, encodeBackup, makeBackup, mergePets, readBackup } from "../src/backup";
 import { googleCalendarUrl, nextRabiesExpiry, rabiesReminderIcs } from "../src/calendar";
 
-vi.stubGlobal("location", { origin: "https://pawid.pages.dev" });
+vi.stubGlobal("location", { origin: "https://pawid.hospet.eu" });
 
 const luna: Pet = {
   id: "luna", species: "dog", name: "Luna, the <b>best</b>; dog", breed: "Border Collie", microchip: "380260000123456",
@@ -38,7 +38,7 @@ describe("calendar reminder", () => {
 describe("backup", () => {
   it("round trips through a restore link", async () => {
     const code = await encodeBackup(makeBackup([luna], "Marta"));
-    const back = await backupFromText(`https://pawid.pages.dev/#/restore?b=${code}`);
+    const back = await backupFromText(`https://pawid.hospet.eu/#/restore?b=${code}`);
     expect(back?.pets[0]?.name).toBe(luna.name);
     expect(back?.owner).toBe("Marta");
     expect(code.length).toBeLessThan(1200);

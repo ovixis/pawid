@@ -3,6 +3,7 @@ import { BY_HOSPET } from "@pawid/ui";
 import { el, topBar, siteFooter } from "./dom";
 import { loadOwnerName, loadPets, saveOwnerName, savePets } from "./storage";
 import { injectStyles } from "./style";
+import { HOME, moveToNewAddress } from "./move";
 import { saveSticker } from "./sticker";
 import { cardView } from "./views/card";
 import { backupCard, restoreView } from "./views/backup";
@@ -14,6 +15,7 @@ import { shareView } from "./views/share";
 const VERIFY_BASE: string = import.meta.env.VITE_VERIFY_BASE ?? "http://localhost:8787";
 
 injectStyles();
+const moving = moveToNewAddress();
 
 let pets: Pet[] = loadPets();
 const root = document.getElementById("app") as HTMLElement;
@@ -78,7 +80,7 @@ function route(): void {
   else if (pet && parts[2] === "share") { view = shareView(pet, loadOwnerName(), VERIFY_BASE, ctx.venue || ctx.days ? ctx : savedVenue()); title = `Show ${pet.name}, PawID`; }
   else if (pet) { view = cardView(pet, loadOwnerName()); title = `${pet.name}, PawID`; }
   else if (parts[0] === "share") { view = homeView(pets, ctx.venue, query); title = "Choose a pet, PawID"; }
-  else if (parts[0] === "restore") { view = restoreView(q.get("b"), pets, restore); title = "Restore a backup, PawID"; }
+  else if (parts[0] === "restore") { view = restoreView(q.get("b"), pets, restore, q.get("moved") === "1"); title = "Restore a backup, PawID"; }
   else {
     view = homeView(pets);
     view.push(pets.length ? backupCard(pets, loadOwnerName()) : el("p", { class: "restore-cta" }, "New phone? ", el("a", { href: "#/restore", class: "pw-link" }, "Restore a backup")));
@@ -89,9 +91,13 @@ function route(): void {
   window.scrollTo(0, 0);
 }
 
-window.addEventListener("hashchange", route);
-route();
+if (moving) {
+  main.replaceChildren(el("p", { class: "pw-notice" }, "PawID has moved to ", el("a", { href: HOME, class: "pw-link" }, "pawid.hospet.eu"), ". Taking you there with your pets…"));
+} else {
+  window.addEventListener("hashchange", route);
+  route();
+}
 
-if ("serviceWorker" in navigator && import.meta.env.PROD) {
+if (!moving && "serviceWorker" in navigator && import.meta.env.PROD) {
   navigator.serviceWorker.register("/sw.js").catch(() => {});
 }
