@@ -1,80 +1,99 @@
-<img src="apps/web/public/brand/pawid-mark.svg" alt="" width="72" height="72">
+<p align="center">
+  <img src="apps/web/public/brand/pawid-mark.svg" alt="PawID logo" width="128" height="128">
+</p>
 
-# PawID
+<h1 align="center">PawID</h1>
 
-By <img src="apps/web/public/brand/hospet-mark.svg" alt="" width="18" height="18"> [HosPet.eu](https://hospet.eu)
+<p align="center">
+  <b>Your pet's EU passport details on your phone, ready to show at the door.</b><br>
+  Open source, free, no account. By <img src="apps/web/public/brand/hospet-mark.svg" alt="" width="16" height="16"> <a href="https://hospet.eu">HosPet.eu</a>
+</p>
 
-Open source digital companion for the EU pet passport. Built for people who travel with dogs in Europe.
+<p align="center">
+  <a href="https://pawid.hospet.eu"><img src="docs/readme/btn-owners.svg" alt="Pet owners: open the app" height="60"></a>
+  <a href="https://pawid.hospet.eu/venues"><img src="docs/readme/btn-venues.svg" alt="Hotels, restaurants, museums: add PawID to your site" height="60"></a>
+  <a href="https://pawid.hospet.eu/vet"><img src="docs/readme/btn-vets.svg" alt="Vets: confirm a pet" height="60"></a>
+  <a href="#for-developers-and-ai-assistants"><img src="docs/readme/btn-developers.svg" alt="Developers and AI: API and MCP server" height="60"></a>
+  <a href="#what-we-need"><img src="docs/readme/btn-contribute.svg" alt="Contribute: help on GitHub" height="60"></a>
+</p>
 
-> PawID is NOT an official document. It does not replace the paper EU pet passport.
-> The passport is issued by an official or authorised vet. PawID helps you keep track
-> of it, remember expiry dates and show the essentials to pet friendly places.
+> **PawID is not an official document.** It does not replace the paper EU pet passport, which is
+> issued by an authorised vet. Always carry the passport when you travel.
 
-## What it does (goal)
+<p align="center">
+  <img src="apps/web/public/shots/home.webp" alt="PawID on a phone: the pet list with the rabies vaccine status" width="220">
+  <img src="apps/web/public/shots/card.webp" alt="The pet card, copied from the passport" width="220">
+  <img src="apps/web/public/shots/share.webp" alt="A QR code to show a hotel, valid for 15 minutes" width="220">
+</p>
 
-- Store your dog's passport data (microchip, vaccines, expiry dates), on your device first
-- Vet confirmation: the owner gives the vet a 6 digit code (in person or by phone), both phones show the same number to check (like GitHub's number matching), and a registered vet confirms the microchip and rabies vaccine with a passkey (fingerprint or face) on their own phone; venues then see "confirmed by a vet" with the vet's name and register number. Vets need no app or software: pawid.hospet.eu/vet
-- Put the rabies vaccine expiry in your phone's calendar, with alarms 30, 7 and 1 day before (made on the device, no email)
-- Back up your pets by email to yourself: one link puts everything back on any phone
-- Tell you what you need for each European country (rules are open data, with official sources)
-- "Can I travel?": checks your pet against a country's rules on your travel date (microchip, rabies vaccine and the 21 day wait, tapeworm treatment window, breed rules)
-- Show a QR code to hotels and venues: they see only the essentials, signed, no account needed
-- Work offline
+## The problem
 
-## Status
+People who travel in Europe with a dog or a cat carry a paper passport that hotels, restaurants and
+museums can't easily read or check. The rules for entering each country are spread over dozens of
+ministry websites in different languages. And if the rabies vaccine expires by one day, the 21 day
+wait starts again.
 
-Early scaffold. Nothing here is production ready.
+## What PawID does
 
-| Part | Status |
-| --- | --- |
-| `packages/core` schema, expiry logic, signed share token | started |
-| `rules/` EU base rules + Italy, France, Spain, Germany, Ireland (checked 2026-11-21; open points marked `needs_review`) | in use |
-| `apps/api` Cloudflare Worker + D1 | started |
-| `apps/web` PWA (dog profile, rabies status, QR) | started |
-| Vet signing module | not started |
-| Passport photo extraction | not started |
+**For pet owners** ([open the app](https://pawid.hospet.eu))
+- Copy the passport once: microchip, rabies vaccine (with the brand from the sticker), vet. Breed and vaccine suggestions as you type.
+- Show a QR code or send a link to a hotel. You choose what it shows; it expires after 15 minutes or 7 days; it is signed, so changes show.
+- Ask your vet to confirm the microchip and rabies vaccine: the venue then sees "confirmed by a vet" with the vet's name and register number.
+- "Can I travel?": checks your pet against a country's rules on your travel date (21 day wait, tapeworm window with the dates, breed rules).
+- Rabies expiry in your phone's calendar, with alarms 30, 7 and 1 day before. Backup by email to yourself.
+- Your pets' details stay on your phone. No account, no cookies.
 
-## Structure
+**For hotels, restaurants, bars, museums and places to visit** ([components and demos](https://pawid.hospet.eu/venues))
+- Four free components, one line of code: a scanner for staff, your pet rules, a "Show your pet's PawID" button for booking emails, and the travel rules for your country.
 
-```
-packages/core   shared logic, no UI, runs in Node and Workers
-packages/ui     design tokens, components and the pet card (HosPet.eu design system)
-packages/rules  rules/*.yaml as typed data, with a check that every source is official
-packages/widgets Web Components for venues, built to /embed/v1.js
-rules/          country requirements as YAML, each with source URL and last check date
-apps/api        Cloudflare Worker (Hono) + D1
-apps/web        PWA (next)
-docs/           spec and decisions
-```
+**For vets** ([vet page](https://pawid.hospet.eu/vet))
+- Register once with your phone. The owner gives you a 6 digit code, both phones show the same number to check, and you confirm with your fingerprint. No app, no software, free.
 
-## Principles
+**For everyone**
+- Pet travel rules as open data: the EU base rules plus Italy, France, Spain, Germany and Ireland, each rule with its official source and the date it was checked. Unclear points are marked "being checked", never guessed.
 
-1. Do not invent the format: follow the official model passport and the EU Digital Identity Wallet formats.
-2. The vet is the issuer. PawID never creates health data by itself.
-3. Data stays on the device by default. Cloud sync is optional.
-4. Every rule has an official source and a date. Unverified rules are marked `needs_review`.
+<p align="center">
+  <img src="docs/readme/venue-card.webp" alt="What a hotel sees: the pet card with microchip and rabies vaccine confirmed by a vet (example data)" width="560"><br>
+  <sub>What a hotel sees after scanning the code (example data).</sub>
+</p>
 
-## For venues
+## What we need
 
-Four components for hotels, restaurants, bars, museums and places to visit. One script tag, no account:
+PawID is young. These are the places where help makes the biggest difference.
 
-```html
-<script type="module" src="https://pawid.hospet.eu/embed/v1.js"></script>
-<pawid-scanner></pawid-scanner>            <!-- staff check a guest's PawID with the camera -->
-<pawid-policy with-button>…</pawid-policy> <!-- the venue's own pet rules -->
-<pawid-button venue="Hotel X"></pawid-button>
-<pawid-travel-check country="IT"></pawid-travel-check>
-```
+<p align="center">
+  <a href="https://pawid.hospet.eu/vet"><img src="docs/readme/need-vets.svg" alt="Vets for the pilot: register in 2 minutes" height="60"></a>
+  <a href="https://github.com/ovixis/pawid/issues/new?template=country.yml"><img src="docs/readme/need-rules.svg" alt="Country rules: add a country" height="60"></a>
+  <a href="https://github.com/ovixis/pawid/issues/new?template=translation.yml"><img src="docs/readme/need-translations.svg" alt="Translations: bring PawID to your language" height="60"></a>
+  <a href="https://pawid.hospet.eu/venues"><img src="docs/readme/need-venues.svg" alt="Venues: try the components" height="60"></a>
+  <a href="https://github.com/ovixis/pawid/issues?q=is%3Aopen+label%3A%22good+first+issue%22"><img src="docs/readme/need-code.svg" alt="Code: good first issues" height="60"></a>
+  <a href="https://github.com/ovixis/pawid/issues/new/choose"><img src="docs/readme/need-bugs.svg" alt="Bugs and ideas: open an issue" height="60"></a>
+</p>
 
-Live demos and the code to copy: https://pawid.hospet.eu/venues
+| We need | Why it matters | How |
+| --- | --- | --- |
+| **Vets** in Italy first, then anywhere in Europe | A vet's confirmation is what makes a venue trust the card | Register at [pawid.hospet.eu/vet](https://pawid.hospet.eu/vet); we check your register number |
+| **Country rules** | Only 5 countries are covered; the UK, Switzerland, Austria and the Netherlands come next | One YAML file per country, every rule from an official page ([how](CONTRIBUTING.md)) |
+| **Translations** | The app is in English only | Italian, French, German and Spanish first ([open a translation issue](https://github.com/ovixis/pawid/issues/new?template=translation.yml)) |
+| **Venues that try it** | Real feedback from reception desks and restaurants | Add a component, tell us what staff think |
+| **Code** | Security and features | See [good first issues](https://github.com/ovixis/pawid/issues?q=is%3Aopen+label%3A%22good+first+issue%22) and [help wanted](https://github.com/ovixis/pawid/issues?q=is%3Aopen+label%3A%22help+wanted%22) |
+| **Security reviews** | The app signs codes and handles vet confirmations | Report privately, see [SECURITY.md](SECURITY.md) |
 
-## Connect: API and MCP
+## How it works
+
+- **On the phone:** the pet's details are stored in the browser on the owner's phone (localStorage). Backups go to the owner's own email or files.
+- **Signed codes:** a code holds only what the owner chose, signed with a key made on the phone (Ed25519). A venue's check shows if anything was changed and if the code expired. Without a vet confirmation, the card says "declared by the owner".
+- **Vet confirmation:** the vet signs with a passkey on their phone (WebAuthn). The PawID API checks it and seals the confirmed values; the seal travels inside the code and breaks if a value changes. Vets are approved by HosPet.eu after checking their professional register, and can be revoked.
+- **Pairing a vet and an owner:** a 6 digit code, then the same 2 digit number on both phones (computed from both phones' one-time keys, like GitHub's number matching). After the owner says yes, everything travels encrypted between the two phones; the API only passes ciphertext along.
+- **Rules:** YAML files in `rules/`, checked by tests: every source must be on an official host (EU institutions or a national authority).
+
+## For developers and AI assistants
 
 Read-only, no key, about 120 requests a minute per IP. Base URL: `https://pawid-api.hospet.workers.dev`.
 
 | | |
 | --- | --- |
-| `GET /v1/verify?token=` | Check a PawID code: genuine, unchanged, not expired. Declared by the owner, never verified by a vet. |
+| `GET /v1/verify?token=` | Check a PawID code: genuine, unchanged, not expired, and whether a vet confirmation holds. |
 | `GET /v1/rules?country=IT` | EU base rules plus a country's differences, each with status, official sources and last check date. |
 | `GET /v1/countries` | Countries with their own rules file. |
 | `GET /v1/keys` | PawID's public keys for vet confirmation seals. |
@@ -84,7 +103,49 @@ Read-only, no key, about 120 requests a minute per IP. Base URL: `https://pawid-
 
 For AI agents: [`skills/pawid/SKILL.md`](skills/pawid/SKILL.md).
 
+Venue components, one script tag:
+
+```html
+<script type="module" src="https://pawid.hospet.eu/embed/v1.js"></script>
+<pawid-scanner></pawid-scanner>            <!-- staff check a guest's PawID with the camera -->
+<pawid-policy with-button>…</pawid-policy> <!-- the venue's own pet rules -->
+<pawid-button venue="Hotel X"></pawid-button>
+<pawid-travel-check country="IT"></pawid-travel-check>
+```
+
 Usage is counted per day without personal data: a metric, a coarse label (country code, site host name or client app name) and a number. No IP addresses, no tokens, no pet data.
+
+## Status
+
+| Part | Status |
+| --- | --- |
+| App (pets, card, QR, Can I travel?, calendar, backup) | live |
+| Vet confirmation (passkey, code pairing, number matching) | live, pilot with the first vets |
+| Venue components | live |
+| Rules: EU base + IT, FR, ES, DE, IE | live; 6 rules still being checked |
+| API and MCP server | live |
+| Translations | not started |
+| Owner's signing key as a non-extractable key | planned |
+| Microchip registry check | not started |
+
+## Structure
+
+```
+packages/core     shared logic: schema, expiry, signed codes, vet seals, passkey check, pairing
+packages/ui       design tokens, components and the pet card
+packages/rules    rules/*.yaml as typed data, with a check that every source is official
+packages/widgets  Web Components for venues, built to /embed/v1.js
+rules/            country requirements as YAML, each with source URL and last check date
+apps/api          Cloudflare Worker (Hono) + D1
+apps/web          the app (PWA), the venues page, the install guide and the vet page
+```
+
+## Principles
+
+1. The vet is the issuer of health data. PawID never creates it by itself.
+2. Data stays on the device by default. The server stores only what it must: vets' public records, anonymous counters.
+3. Every rule has an official source and a date. Unverified rules are marked `needs_review`.
+4. Follow the official formats (the EU passport model, the EU Digital Identity Wallet) where they exist.
 
 ## Develop
 
@@ -94,19 +155,20 @@ npm test
 npm run typecheck
 ```
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for country rules and code.
+
 ## License
 
 Apache-2.0 for code. Rules data: CC BY 4.0 (see `rules/README.md`).
 
 ## Privacy
 
-Your pets' details stay on your phone. See [PRIVACY.md](PRIVACY.md) for what the app, the API and the venue components do with data.
+Your pets' details stay on your phone. See [PRIVACY.md](PRIVACY.md) for what the app, the API, the vet page and the venue components do with data.
 
 ## Logos
 
 The PawID mark is a paw inside a scan frame, with a check on the pad. The files are made from
-`packages/ui/src/brand.ts` with `npm run brand -w @pawid/ui` (SVG in `apps/web/public/brand`,
-favicon and app icons in `apps/web/public/icons`).
+`packages/ui/src/brand.ts` with `npm run brand -w @pawid/ui`; the README images with `npx vite-node scripts/readme-assets.ts`.
 
 The HosPet.eu name and logo belong to HosPet.eu. They are not covered by the Apache-2.0 licence
 of this code. If you run your own copy of PawID, remove the HosPet mark and the "by HosPet.eu" line.

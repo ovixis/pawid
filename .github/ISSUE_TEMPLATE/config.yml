@@ -1,1 +1,11 @@
 blank_issues_enabled: true
+contact_links:
+  - name: I am a vet and want to confirm pets
+    url: https://pawid.hospet.eu/vet
+    about: Register once with your phone (two minutes). No issue needed.
+  - name: Report a security problem privately
+    url: https://github.com/ovixis/pawid/security/advisories/new
+    about: Please do not open a public issue for security problems.
+  - name: Questions and ideas to discuss
+    url: https://github.com/ovixis/pawid/discussions
+    about: Ask, share how you use PawID, or discuss an idea before writing code.

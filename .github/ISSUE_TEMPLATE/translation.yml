@@ -1,0 +1,31 @@
+name: Translate PawID
+description: Help bring PawID to your language.
+title: "Translation: <language>"
+labels: ["translation", "help wanted"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        PawID is in English today. The app needs a translation layer first (see the open issue), then each language.
+        Tell us which language you can help with, and whether you can also review texts about vaccines and travel rules.
+  - type: input
+    id: language
+    attributes:
+      label: Language
+      placeholder: Italian
+    validations:
+      required: true
+  - type: dropdown
+    id: help
+    attributes:
+      label: How you can help
+      options:
+        - Translate the app
+        - Review a translation
+        - Both
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else

@@ -1,0 +1,20 @@
+name: Something is not working
+description: A bug in the app, the venue components, the vet page or the API.
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, what you saw. Do not paste your pet's microchip or passport number.
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: Where
+      placeholder: "App on iPhone, Safari 18 / venue component on our site / vet page / API"
+  - type: textarea
+    id: more
+    attributes:
+      label: Screenshots or error text

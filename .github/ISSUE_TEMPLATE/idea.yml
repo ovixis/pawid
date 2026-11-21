@@ -1,0 +1,22 @@
+name: Idea or request
+description: Something PawID should do, for owners, venues, vets or developers.
+labels: ["enhancement"]
+body:
+  - type: dropdown
+    id: who
+    attributes:
+      label: Who is it for
+      options:
+        - Pet owners
+        - Hotels, restaurants, museums and other places
+        - Vets
+        - Developers and AI assistants
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: The problem it solves and how you would use it.
+    validations:
+      required: true

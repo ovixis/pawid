@@ -1,0 +1,36 @@
+name: Add or update a country
+description: Add the pet travel rules of a country, from its official pages.
+title: "Country rules: <country>"
+labels: ["rules", "help wanted"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Every rule needs an official source: the country's ministry, veterinary or customs authority, or its law text. No blogs, airlines or travel sites.
+        If you can, open a pull request with `rules/countries/<iso2>.yaml` (see CONTRIBUTING.md). Otherwise, paste what you found here.
+  - type: input
+    id: country
+    attributes:
+      label: Country
+      placeholder: Austria (AT)
+    validations:
+      required: true
+  - type: textarea
+    id: pages
+    attributes:
+      label: Official pages
+      description: Links to the national authority's pages about bringing a dog or cat into the country.
+    validations:
+      required: true
+  - type: textarea
+    id: differences
+    attributes:
+      label: What differs from the EU rules
+      description: Young animals, tapeworm treatment, banned or restricted breeds, number of animals, documents. Quote the official text, and say if something is unclear.
+  - type: checkboxes
+    id: check
+    attributes:
+      label: Check
+      options:
+        - label: Every rule above comes from an official page I linked.
+          required: true
