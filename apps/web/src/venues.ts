@@ -97,7 +97,6 @@ const main = el(
   "main",
   { id: "main" },
   el("section", { class: "v-hero" },
-    el("p", { class: "pw-eyebrow" }, "For places that welcome pets"),
     el("h1", {}, "PawID for places that ", el("em", {}, "welcome pets.")),
     el("p", {}, "Four free components for hotels, restaurants, bars, museums, tourist offices and places to visit in Europe. Paste one line of code, keep your own colours, no account and no fee."),
   ),

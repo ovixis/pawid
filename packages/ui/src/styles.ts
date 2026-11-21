@@ -194,10 +194,6 @@ fieldset.pw-card > legend + * { clear: both; }
 .pw-tile-lg { width: 3.5rem; height: 3.5rem; border-radius: 1.125rem; }
 .pw-tile-lg .pw-icon { width: 1.75rem; height: 1.75rem; }
 
-/* Eyebrow label above a title. */
-.pw-eyebrow { display: inline-flex; align-items: center; gap: .5rem; margin: 0; padding: .3rem .75rem .3rem .4rem; border-radius: 9999px; font-size: .8125rem; font-weight: 700; letter-spacing: .01em; background: rgb(255 255 255 / .08); color: rgb(255 255 255 / .9); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .14); justify-self: start; }
-.pw-eyebrow::before { content: ""; width: .5rem; height: .5rem; margin-left: .2rem; border-radius: 9999px; background: var(--pw-gold-400); box-shadow: 0 0 0 3px rgb(255 198 41 / .25); }
-
 @media (prefers-reduced-motion: reduce) {
   .pw-btn, .pw-input { transition: none; }
   .pw-btn:hover:not(:disabled) { translate: none; }

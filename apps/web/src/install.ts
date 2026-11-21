@@ -158,7 +158,6 @@ const notes = el("section", { class: "i-sec pw-card" },
 );
 
 const hero = el("section", { class: "i-hero" },
-  el("p", { class: "pw-eyebrow" }, "Free web app, no app store"),
   el("h1", {}, "Install PawID ", el("em", {}, "on your phone.")),
   el("p", {}, "It opens like an app, from your home screen. Your pet's details stay on the phone, ready to show at a hotel, a restaurant or a museum."),
   el("div", { class: "row" }, installBtn, el("a", { class: "pw-btn pw-btn-secondary", href: "#steps" }, "Show me the steps"), el("a", { class: "pw-btn pw-btn-ghost i-ghost", href: "/" }, "Open PawID")),

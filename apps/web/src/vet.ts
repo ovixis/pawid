@@ -175,7 +175,6 @@ function home(): Node[] {
   } });
   const parts: Node[] = [
     el("section", { class: "vh" },
-      el("p", { class: "pw-eyebrow" }, "For vets"),
       el("h1", {}, "PawID for vets: ", el("em", {}, "confirm in 30 seconds.")),
       el("p", {}, "Pet owners copy the passport into PawID. You check the microchip and the rabies vaccine against the passport, and confirm with your fingerprint. Hotels and venues then see \"confirmed by a vet\". No app, no software, free."),
     ),
