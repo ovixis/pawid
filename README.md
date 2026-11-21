@@ -25,6 +25,8 @@
   <img src="apps/web/public/shots/share.webp" alt="A QR code to show a hotel, valid for 15 minutes" width="220">
 </p>
 
+Read the manifesto: [A pet friendly Europe, built in the open](https://pawid.hospet.eu/manifesto).
+
 ## The problem
 
 People who travel in Europe with a dog or a cat carry a paper passport that hotels, restaurants and

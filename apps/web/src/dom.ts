@@ -89,7 +89,7 @@ export function siteFooter(): HTMLElement {
       el("div", { class: "f-cols" },
         col("App", [["Open PawID", "/"], ["Install the app", "/install"], ["How to use it", "/install#guide"], ["For vets", "/vet"]]),
         col("For places", [["Components", "/venues"], ["Where it works", "/venues#places"], ["For developers", "/venues#developers"], ["AI assistants", "/ai"]]),
-        col("Project", [["GitHub: contribute", "https://github.com/ovixis/pawid"], ["API description", API_DOCS], ["Privacy", "https://github.com/ovixis/pawid/blob/main/PRIVACY.md"], ["Support PawID", "/support"], ["HosPet.eu", "https://hospet.eu"]]),
+        col("Project", [["Manifesto", "/manifesto"], ["GitHub: contribute", "https://github.com/ovixis/pawid"], ["API description", API_DOCS], ["Privacy", "https://github.com/ovixis/pawid/blob/main/PRIVACY.md"], ["Support PawID", "/support"], ["HosPet.eu", "https://hospet.eu"]]),
       ),
       el("p", { class: "f-notice" }, svg("info"), el("span", {}, el("b", {}, "Not an official document. "), "The EU pet passport, issued by an authorised vet, is. Always carry it when you travel.")),
       el("div", { class: "f-base" },
