@@ -13,7 +13,8 @@
     "@pawid/core": "*",
     "qrcode": "^1.5.4",
     "@pawid/ui": "*",
-    "@pawid/widgets": "*"
+    "@pawid/widgets": "*",
+    "@pawid/rules": "*"
   },
   "devDependencies": {
     "@types/qrcode": "^1.5.5",

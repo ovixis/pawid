@@ -1,8 +1,19 @@
 # Hosts accepted as official sources for rules in this folder.
 # EU institutions are listed here. When you add a country, add its national
-# authority's host (ministry, veterinary or customs authority) in the same pull request.
+# authority's host (ministry, veterinary or customs authority, official law text) in the same pull request.
 # Hosts match themselves and their subdomains.
 eu:
   - europa.eu          # European Commission, Your Europe, EU agencies
   - eur-lex.europa.eu  # the law itself
-national: []
+national:
+  - salute.gov.it            # IT Ministry of Health
+  - agriculture.gouv.fr      # FR Ministry of Agriculture
+  - douane.gouv.fr           # FR Customs
+  - mapa.gob.es              # ES Ministry of Agriculture, Fisheries and Food
+  - boe.es                   # ES Official State Gazette (law text)
+  - bmleh.de                 # DE Federal Ministry of Agriculture
+  - zoll.de                  # DE Customs
+  - gesetze-im-internet.de   # DE federal law text (Federal Ministry of Justice)
+  - gov.ie                   # IE Department of Agriculture, Food and the Marine
+  - citizensinformation.ie   # IE Citizens Information Board (state body)
+  - irishstatutebook.ie      # IE law text

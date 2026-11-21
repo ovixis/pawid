@@ -3,84 +3,93 @@
 export const RAW = {
   "euBase": {
     "id": "eu-base",
-    "scope": "dog",
+    "scope": "dog, cat, ferret",
     "applies_to": "EU member states",
     "last_checked": "2026-11-21",
     "rules": [
       {
         "id": "microchip",
-        "text": "Dog must be identified with a microchip (ISO, Annex II technical requirements), or a clearly readable tattoo if applied before 3 July 2011.",
+        "text": "The pet (dog, cat or ferret) must be identified with a microchip, or a clearly readable tattoo applied before 3 July 2011. The rabies vaccine must not be given before the microchip is implanted or read.",
         "status": "verified",
         "sources": [
-          "https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals",
-          "https://food.ec.europa.eu/animals/movement-pets/eu-legislation/non-commercial-movement-non-eu-countries_en"
+          "https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en",
+          "https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals"
         ]
       },
       {
         "id": "rabies_vaccination",
-        "text": "Dog must be vaccinated against rabies.",
+        "text": "The pet (dog, cat or ferret) must have a valid rabies vaccination, given by an official or authorised vet.",
         "status": "verified",
         "sources": [
+          "https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en",
           "https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals"
         ]
       },
       {
         "id": "min_age_at_vaccination",
-        "text": "For entry into the EU, the dog must be at least 12 weeks old at the time of rabies vaccination.",
+        "text": "The pet must be at least 12 weeks old on the day of the first (primary) rabies vaccination.",
         "status": "verified",
         "sources": [
-          "https://food.ec.europa.eu/animals/movement-pets/eu-legislation/entry-union_en"
+          "https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en",
+          "https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals"
         ]
       },
       {
         "id": "waiting_period_after_primary_vaccination",
-        "text": "A waiting period applies after completing the primary rabies vaccination before the dog can travel. The number of days is NOT filled in here yet.",
-        "status": "needs_review",
-        "todo": "Read Regulation (EU) No 576/2013 Annex III and the current delegated act 2026/131, write the exact days and cite the article.",
+        "text": "After the first (primary) rabies vaccination, the vaccination is valid for travel only from at least 21 days after the vaccination protocol was completed. A booster given before the previous vaccination expires needs no new wait. A booster given after it expired counts as a new first vaccination, and the 21 days apply again.",
+        "status": "verified",
         "sources": [
-          "https://food.ec.europa.eu/animals/movement-pets/eu-legislation/movements-within-union_en"
+          "https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en",
+          "https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals"
+        ]
+      },
+      {
+        "id": "young_animals",
+        "text": "Pets under 12 weeks without a rabies vaccination, or 12 to 16 weeks old and not yet 21 days after the vaccination, can travel only to Bulgaria, Croatia, Czechia, Estonia, Finland, Lithuania, Luxembourg, Romania, Slovakia, Slovenia and Switzerland, with a declaration of no contact with wild animals prone to rabies or with their vaccinated mother. Other EU countries do not accept them.",
+        "status": "verified",
+        "sources": [
+          "https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals"
         ]
       },
       {
         "id": "passport",
-        "text": "The EU pet passport is the identification document for travel between EU countries. It is issued by an authorised vet. It is only issued to owners resident in the EU.",
+        "text": "The EU pet passport is the document for travel between EU countries. It is issued and filled in by an authorised vet, and only to owners resident in the EU.",
         "status": "verified",
         "sources": [
-          "https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals",
-          "https://commission.europa.eu/news-and-media/news/travelling-your-pets-europe-2024-08-02_en"
+          "https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en",
+          "https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals"
         ]
       },
       {
         "id": "max_animals",
-        "text": "Non-commercial movement is limited to 5 pets per traveller, with exceptions under conditions.",
-        "status": "needs_review",
-        "todo": "Confirm number and the conditions for exceeding 5 in Regulation (EU) 2026/131.",
+        "text": "Up to 5 pets (dogs, cats or ferrets) per non-commercial movement (the Commission says 5 in a single vehicle). More than 5 only for competitions, exhibitions or sporting events (or training for them), with written proof of registration, and only if the animals are more than 6 months old.",
+        "status": "verified",
         "sources": [
-          "https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en"
+          "https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en",
+          "https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals"
         ]
       },
       {
         "id": "travel_without_owner_window",
-        "text": "The pet can travel up to five days before or after the owner, or with an authorised person with written permission.",
-        "status": "needs_review",
-        "todo": "Confirm wording and conditions in the current regulation.",
+        "text": "The pet travels with its owner. If the owner cannot, an authorised person can take it, as long as the owner travels within 5 days before or after the pet, and a written declaration is attached to the passport.",
+        "status": "verified",
         "sources": [
-          "https://food.ec.europa.eu/animals/movement-pets/eu-legislation_en",
+          "https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en",
           "https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals"
         ]
       },
       {
         "id": "echinococcus_treatment",
-        "text": "Some countries require a tapeworm (Echinococcus multilocularis) treatment before entry. Which countries, and the time window, are NOT filled in here yet.",
-        "status": "needs_review",
-        "todo": "List countries from the official EU page and put each one in rules/countries/.",
+        "text": "Dogs (not cats or ferrets) going to Finland, Ireland, Malta, Northern Ireland or Norway need a tapeworm (Echinococcus multilocularis) treatment given by a vet not more than 120 hours and not less than 24 hours before the scheduled time of entry, recorded by that vet in the passport. Dogs moving directly between these countries are exempt.",
+        "status": "verified",
         "sources": [
-          "https://food.ec.europa.eu/animals/movement-pets/eu-legislation/movements-within-union_en"
+          "https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en",
+          "https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals"
         ]
       },
       {
         "id": "non_eu_origin",
-        "text": "Dogs coming from outside the EU follow the entry rules. Some listed territories can use the pet passport. Others need an animal health certificate. EU passports issued to owners resident in Great Britain are not valid for travel from Great Britain to the EU.",
+        "text": "Pets coming from outside the EU follow the entry rules. Some listed territories can use the pet passport. Others need an animal health certificate. EU passports issued to owners resident in Great Britain are not valid for travel from Great Britain to the EU.",
         "status": "verified",
         "sources": [
           "https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals",
@@ -89,12 +98,322 @@ export const RAW = {
       }
     ]
   },
-  "countries": [],
+  "countries": [
+    {
+      "country": "DE",
+      "name": "Germany",
+      "official_pages": [
+        "https://www.bmleh.de/DE/themen/tiere/haus-und-zootiere/reisen-hunde-katzen-frettchen.html",
+        "https://www.bmleh.de/DE/themen/tiere/haus-und-zootiere/tollwutimpfung.html",
+        "https://www.zoll.de/DE/Privatpersonen/Reisen/Reisen-nach-Deutschland-aus-einem-nicht-eu-Staat/Einschraenkungen/Gefaehrliche-Hunde/gefaehrliche_hunde.html"
+      ],
+      "last_checked": "2026-11-21",
+      "checked_by": "ovixis",
+      "overrides": [
+        {
+          "id": "young_animals",
+          "text": "Germany does not accept young dogs, cats or ferrets without valid rabies protection from other EU countries (under 12 weeks and not vaccinated, or 12 to 16 weeks and not yet validly vaccinated).",
+          "status": "verified",
+          "sources": [
+            "https://www.bmleh.de/DE/themen/tiere/haus-und-zootiere/tollwutimpfung.html"
+          ]
+        },
+        {
+          "id": "echinococcus_treatment",
+          "text": "No tapeworm (Echinococcus) treatment is needed to enter Germany. It is only needed for dogs going to Finland, Ireland, Malta, Norway or Northern Ireland.",
+          "status": "verified",
+          "sources": [
+            "https://www.bmleh.de/DE/themen/tiere/haus-und-zootiere/reisen-hunde-katzen-frettchen.html"
+          ]
+        },
+        {
+          "id": "banned_breeds",
+          "text": "Pit Bull Terriers, American Staffordshire Terriers, Staffordshire Bull Terriers and Bull Terriers, and their crosses, may not be brought into Germany, also from other EU countries (puppies included). Exceptions include guide and assistance dogs, rescue dogs and service dogs.",
+          "status": "verified",
+          "sources": [
+            "https://www.gesetze-im-internet.de/hundverbreinfg/__2.html",
+            "https://www.gesetze-im-internet.de/hundverbreinfg/__1.html",
+            "https://www.gesetze-im-internet.de/hundverbreinfvo/__2.html",
+            "https://www.zoll.de/DE/Privatpersonen/Reisen/Reisen-nach-Deutschland-aus-einem-nicht-eu-Staat/Einschraenkungen/Gefaehrliche-Hunde/gefaehrliche_hunde.html"
+          ]
+        },
+        {
+          "id": "banned_breeds_short_stay",
+          "text": "A dog of these breeds may come for a stay of up to four weeks with a person who does not live in Germany. That person must carry documents proving the dog's identity (official confirmation of the chip number is enough), official certificates that the dog has not been noticed as dangerous, and must show the stay is temporary. Foreign-language documents need a certified German translation.",
+          "status": "verified",
+          "sources": [
+            "https://www.gesetze-im-internet.de/hundverbreinfvo/__2.html",
+            "https://www.gesetze-im-internet.de/hundverbreinfvo/__3.html",
+            "https://www.zoll.de/DE/Privatpersonen/Reisen/Reisen-nach-Deutschland-aus-einem-nicht-eu-Staat/Einschraenkungen/Gefaehrliche-Hunde/gefaehrliche_hunde.html"
+          ]
+        },
+        {
+          "id": "state_breed_lists",
+          "text": "Some German states (Customs names Baden-Württemberg, Bavaria, Hamburg and Hesse) list more breeds as dangerous. These may not be brought into that state to be kept there permanently, unless the local authority allows it. Muzzle and leash rules are set by states and towns.",
+          "status": "verified",
+          "sources": [
+            "https://www.gesetze-im-internet.de/hundverbreinfg/__2.html",
+            "https://www.zoll.de/DE/Privatpersonen/Reisen/Reisen-nach-Deutschland-aus-einem-nicht-eu-Staat/Einschraenkungen/Gefaehrliche-Hunde/regelungen_bundeslaender.html"
+          ]
+        }
+      ]
+    },
+    {
+      "country": "ES",
+      "name": "Spain",
+      "official_pages": [
+        "https://www.mapa.gob.es/es/ganaderia/temas/comercio-exterior-ganadero/desplazamiento-animales-compania/viajar-perros-gatos-hurones",
+        "https://www.mapa.gob.es/es/ganaderia/temas/comercio-exterior-ganadero/desplazamiento-animales-compania/faq-perros-gatos-hurones"
+      ],
+      "last_checked": "2026-11-21",
+      "checked_by": "ovixis",
+      "overrides": [
+        {
+          "id": "young_animals",
+          "text": "Spain makes no exceptions for young pets. Dogs, cats and ferrets under 15 weeks, and so without a valid rabies vaccination, cannot enter Spain.",
+          "status": "verified",
+          "sources": [
+            "https://www.mapa.gob.es/es/ganaderia/temas/comercio-exterior-ganadero/desplazamiento-animales-compania/viajar-perros-gatos-hurones"
+          ]
+        },
+        {
+          "id": "echinococcus_treatment",
+          "text": "No tapeworm (Echinococcus) treatment, other parasite treatment, antibody test or clinical exam is needed to bring a pet into Spain from another EU country.",
+          "status": "verified",
+          "sources": [
+            "https://www.mapa.gob.es/es/dam/jcr:e35fbe22-9efd-42d4-b9b3-48c45f95d697/introenespperrosgatoshuronesdeotroseemm.2026-06-11-14-01-23.pdf"
+          ]
+        },
+        {
+          "id": "potentially_dangerous_dogs",
+          "text": "Pit Bull Terrier, Staffordshire Bull Terrier, American Staffordshire Terrier, Rottweiler, Dogo Argentino, Fila Brasileiro, Tosa Inu and Akita Inu, their crosses, and dogs that match the physical traits in the law are potentially dangerous dogs. In public places they must wear a muzzle suited to the breed and be on a non-extending lead or chain shorter than 2 metres, one dog per person.",
+          "status": "verified",
+          "sources": [
+            "https://www.boe.es/buscar/act.php?id=BOE-A-2002-6016",
+            "https://www.boe.es/buscar/act.php?id=BOE-A-1999-24419"
+          ]
+        },
+        {
+          "id": "potentially_dangerous_dogs_licence",
+          "text": "Keeping a potentially dangerous dog in Spain needs a municipal licence with liability insurance, and the law makes their entry into Spain, also from the EU, subject to that licence. How a visitor on a short stay should meet this is not stated on national pages. Regions and towns can add rules.",
+          "status": "needs_review",
+          "todo": "Find an official national or regional page on visitors with a potentially dangerous dog on a short stay.",
+          "sources": [
+            "https://www.boe.es/buscar/act.php?id=BOE-A-1999-24419",
+            "https://www.boe.es/buscar/act.php?id=BOE-A-2002-6016"
+          ]
+        },
+        {
+          "id": "non_compliance",
+          "text": "A pet that does not meet the rules can be held in quarantine, sent back or, as a last resort, put down, at the owner's cost.",
+          "status": "verified",
+          "sources": [
+            "https://www.mapa.gob.es/es/ganaderia/temas/comercio-exterior-ganadero/desplazamiento-animales-compania/faq-perros-gatos-hurones"
+          ]
+        }
+      ]
+    },
+    {
+      "country": "FR",
+      "name": "France",
+      "official_pages": [
+        "https://agriculture.gouv.fr/telecharger/113276",
+        "https://www.douane.gouv.fr/demarche/vous-voyagez-avec-un-chien-chat-ou-furet",
+        "https://agriculture.gouv.fr/les-chiens-de-categorie-1-et-2-et-les-chiens-dangereux"
+      ],
+      "last_checked": "2026-11-21",
+      "checked_by": "ovixis",
+      "overrides": [
+        {
+          "id": "young_animals",
+          "text": "France does not accept dogs, cats or ferrets under three months old that are not validly vaccinated against rabies.",
+          "status": "verified",
+          "sources": [
+            "https://agriculture.gouv.fr/telecharger/113276",
+            "https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals"
+          ]
+        },
+        {
+          "id": "min_age_16_weeks",
+          "text": "A French Customs news page says dogs, cats and ferrets under 16 weeks cannot be brought into France. It does not say whether this also covers travel from EU countries.",
+          "status": "needs_review",
+          "todo": "Confirm on a current Ministry of Agriculture page whether the 16 week minimum applies to travel from EU countries (the ministry sheet says under three months and not validly vaccinated).",
+          "sources": [
+            "https://www.douane.gouv.fr/actualites/voyager-avec-son-animal-de-compagnie-4-regles-essentielles-connaitre"
+          ]
+        },
+        {
+          "id": "dangerous_dogs_category_1",
+          "text": "Category 1 dogs cannot be brought into France at all. These are dogs without a recognised pedigree that look like Staffordshire terrier or American Staffordshire terrier (pit bull), Mastiff (boerbull) or Tosa types.",
+          "status": "verified",
+          "sources": [
+            "https://agriculture.gouv.fr/les-chiens-de-categorie-1-et-2-et-les-chiens-dangereux",
+            "https://agriculture.gouv.fr/telecharger/113276",
+            "https://www.douane.gouv.fr/sites/default/files/2026-07/23/Fiche%20chiens%20de%20cat%C3%A9gorie%201%20et%202.pdf"
+          ]
+        },
+        {
+          "id": "dangerous_dogs_category_2",
+          "text": "Category 2 dogs (pedigree Staffordshire terrier, American Staffordshire terrier, Rottweiler and Tosa, and Rottweiler-type dogs) can enter, but in France the owner must be 18 or over, hold a French aptitude certificate and a behaviour assessment by an authorised French vet, have specific liability insurance, keep the dog leashed and muzzled in public and on public transport, and get a keeping permit from the town hall. French Customs says this makes short tourist stays with these dogs almost impossible.",
+          "status": "verified",
+          "sources": [
+            "https://www.douane.gouv.fr/sites/default/files/2026-07/23/Fiche%20chiens%20de%20cat%C3%A9gorie%201%20et%202.pdf",
+            "https://agriculture.gouv.fr/telecharger/113276"
+          ]
+        },
+        {
+          "id": "dog_type_attestation",
+          "text": "If a dog could be taken for a category 1 or 2 dog, carry a detailed vet attestation, understandable by French authorities, that it does not meet the category criteria. Without it, the dog can be confiscated.",
+          "status": "verified",
+          "sources": [
+            "https://www.douane.gouv.fr/sites/default/files/2026-07/23/Fiche%20chiens%20de%20cat%C3%A9gorie%201%20et%202.pdf"
+          ]
+        },
+        {
+          "id": "max_animals",
+          "text": "The ministry sheet says that from 6 dogs, cats or ferrets, a vet clinical exam within 48 hours before departure and an official TRACES certificate are also needed, except for animals over 6 months going to a show, competition or sporting event with proof of registration.",
+          "status": "needs_review",
+          "todo": "The ministry sheet predates Delegated Regulation (EU) 2026/131. Confirm the current rule for more than 5 animals on a current French page.",
+          "sources": [
+            "https://agriculture.gouv.fr/telecharger/113276"
+          ]
+        },
+        {
+          "id": "non_compliance",
+          "text": "If the rules are not met, officers can order, at the owner's cost, that the pet is sent back, put in quarantine or put down.",
+          "status": "verified",
+          "sources": [
+            "https://agriculture.gouv.fr/telecharger/113276"
+          ]
+        }
+      ]
+    },
+    {
+      "country": "IE",
+      "name": "Ireland",
+      "official_pages": [
+        "https://www.gov.ie/en/department-of-agriculture-food-and-the-marine/publications/pet-travel/",
+        "https://www.citizensinformation.ie/en/moving-country/moving-to-ireland/coming-to-live-in-ireland/bringing-pets-to-ireland/"
+      ],
+      "last_checked": "2026-11-21",
+      "checked_by": "ovixis",
+      "overrides": [
+        {
+          "id": "echinococcus_treatment",
+          "text": "Every time a dog comes into Ireland it needs a tapeworm (Echinococcus multilocularis) treatment given by a vet between 1 and 5 days (24 to 120 hours) before arrival, recorded in the pet passport. Not needed when travelling from Northern Ireland, Finland, Malta or Norway. Cats do not need it.",
+          "status": "verified",
+          "sources": [
+            "https://www.citizensinformation.ie/en/moving-country/moving-to-ireland/coming-to-live-in-ireland/bringing-pets-to-ireland/",
+            "https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en"
+          ]
+        },
+        {
+          "id": "young_animals",
+          "text": "Ireland does not accept young pets without valid rabies protection (under 12 weeks and not vaccinated, or 12 to 16 weeks and not yet validly vaccinated).",
+          "status": "verified",
+          "sources": [
+            "https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals"
+          ]
+        },
+        {
+          "id": "entry_points",
+          "text": "From another EU country (and from Northern Ireland) there is no fixed point of entry or advance notice. Pets coming from outside the EU, including Great Britain, must arrive through a designated Travellers Point of Entry, with advance notice and a check on arrival.",
+          "status": "verified",
+          "sources": [
+            "https://www.gov.ie/en/department-of-agriculture-food-and-the-marine/publications/pet-travel/",
+            "https://www.citizensinformation.ie/en/moving-country/moving-to-ireland/coming-to-live-in-ireland/bringing-pets-to-ireland/"
+          ]
+        },
+        {
+          "id": "xl_bully_ban",
+          "text": "It is illegal to import an XL Bully dog into Ireland.",
+          "status": "verified",
+          "sources": [
+            "https://www.citizensinformation.ie/en/environment/pets-and-wildlife/ban-on-xl-bully-dogs-in-ireland/"
+          ]
+        },
+        {
+          "id": "restricted_breeds",
+          "text": "In Ireland, restricted breeds (such as American pit bull terrier, Staffordshire bull terrier, Rottweiler, Dobermann, German shepherd, Japanese akita and tosa, and their crosses) must be muzzled in public, on a short strong lead (under 2 metres) held by someone over 16, and wear a collar with the owner's name and address.",
+          "status": "needs_review",
+          "todo": "The page is written for dog owners in Ireland. Confirm on an official page that these rules also apply to visiting dogs, and copy the full breed list.",
+          "sources": [
+            "https://www.citizensinformation.ie/en/environment/pets-and-wildlife/control-of-dogs/"
+          ]
+        },
+        {
+          "id": "non_compliance",
+          "text": "A pet that does not meet the rules may be refused entry and sent back, or put in quarantine, at the owner's cost.",
+          "status": "verified",
+          "sources": [
+            "https://www.citizensinformation.ie/en/moving-country/moving-to-ireland/coming-to-live-in-ireland/bringing-pets-to-ireland/"
+          ]
+        }
+      ]
+    },
+    {
+      "country": "IT",
+      "name": "Italy",
+      "official_pages": [
+        "https://www.salute.gov.it/new/it/tema/animali-daffezione/viaggio-verso-litalia/"
+      ],
+      "last_checked": "2026-11-21",
+      "checked_by": "ovixis",
+      "overrides": [
+        {
+          "id": "young_animals",
+          "text": "Italy does not accept young pets without valid rabies protection. Dogs, cats and ferrets under 12 weeks without a rabies vaccination, or 12 to 16 weeks old whose vaccination is not yet valid, cannot be brought into Italy.",
+          "status": "verified",
+          "sources": [
+            "https://www.salute.gov.it/new/it/tema/animali-daffezione/viaggio-verso-litalia/",
+            "https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals"
+          ]
+        },
+        {
+          "id": "echinococcus_treatment",
+          "text": "No tapeworm (Echinococcus) or tick treatment is needed to bring a pet into Italy.",
+          "status": "verified",
+          "sources": [
+            "https://www.salute.gov.it/new/it/tema/animali-daffezione/viaggio-verso-litalia/"
+          ]
+        },
+        {
+          "id": "dog_leash_muzzle",
+          "text": "In towns and places open to the public, dogs must be on a leash no longer than 1.5 metres (except in dog areas set by the town), the person walking the dog must always carry a muzzle to use if needed, and must pick up the dog's faeces.",
+          "status": "verified",
+          "sources": [
+            "https://www.salute.gov.it/new/it/tema/animali-daffezione/tutela-dallaggressione-dei-cani/"
+          ]
+        },
+        {
+          "id": "dog_registry_visitors",
+          "text": "Dogs kept in Italy must be registered in the regional dog registry (anagrafe canina). Whether this applies to visitors' dogs registered in another EU country is not stated.",
+          "status": "needs_review",
+          "todo": "Find an official page on whether visiting dogs from other EU countries must be registered, and after how long a stay.",
+          "sources": [
+            "https://www.salute.gov.it/new/it/tema/animali-daffezione/il-microchip-e-la-registrazione-del-proprio-animale/"
+          ]
+        }
+      ]
+    }
+  ],
   "officialHosts": {
     "eu": [
       "europa.eu",
       "eur-lex.europa.eu"
     ],
-    "national": []
+    "national": [
+      "salute.gov.it",
+      "agriculture.gouv.fr",
+      "douane.gouv.fr",
+      "mapa.gob.es",
+      "boe.es",
+      "bmleh.de",
+      "zoll.de",
+      "gesetze-im-internet.de",
+      "gov.ie",
+      "citizensinformation.ie",
+      "irishstatutebook.ie"
+    ]
   }
 } as const;

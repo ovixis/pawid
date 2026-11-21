@@ -1,0 +1,49 @@
+# Ireland: differences from the EU base for pets coming from another EU country.
+# Read on 2026-11-21. Sources: Department of Agriculture, Food and the Marine (gov.ie),
+# Citizens Information (state body). The DAFM pet travel portal refused automated access.
+country: IE
+name: Ireland
+official_pages:
+  - https://www.gov.ie/en/department-of-agriculture-food-and-the-marine/publications/pet-travel/
+  - https://www.citizensinformation.ie/en/moving-country/moving-to-ireland/coming-to-live-in-ireland/bringing-pets-to-ireland/
+last_checked: 2026-11-21
+checked_by: ovixis
+overrides:
+  - id: echinococcus_treatment
+    text: Every time a dog comes into Ireland it needs a tapeworm (Echinococcus multilocularis) treatment given by a vet between 1 and 5 days (24 to 120 hours) before arrival, recorded in the pet passport. Not needed when travelling from Northern Ireland, Finland, Malta or Norway. Cats do not need it.
+    status: verified
+    sources:
+      - https://www.citizensinformation.ie/en/moving-country/moving-to-ireland/coming-to-live-in-ireland/bringing-pets-to-ireland/
+      - https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en
+
+  - id: young_animals
+    text: Ireland does not accept young pets without valid rabies protection (under 12 weeks and not vaccinated, or 12 to 16 weeks and not yet validly vaccinated).
+    status: verified
+    sources:
+      - https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals
+
+  - id: entry_points
+    text: From another EU country (and from Northern Ireland) there is no fixed point of entry or advance notice. Pets coming from outside the EU, including Great Britain, must arrive through a designated Travellers Point of Entry, with advance notice and a check on arrival.
+    status: verified
+    sources:
+      - https://www.gov.ie/en/department-of-agriculture-food-and-the-marine/publications/pet-travel/
+      - https://www.citizensinformation.ie/en/moving-country/moving-to-ireland/coming-to-live-in-ireland/bringing-pets-to-ireland/
+
+  - id: xl_bully_ban
+    text: It is illegal to import an XL Bully dog into Ireland.
+    status: verified
+    sources:
+      - https://www.citizensinformation.ie/en/environment/pets-and-wildlife/ban-on-xl-bully-dogs-in-ireland/
+
+  - id: restricted_breeds
+    text: In Ireland, restricted breeds (such as American pit bull terrier, Staffordshire bull terrier, Rottweiler, Dobermann, German shepherd, Japanese akita and tosa, and their crosses) must be muzzled in public, on a short strong lead (under 2 metres) held by someone over 16, and wear a collar with the owner's name and address.
+    status: needs_review
+    todo: The page is written for dog owners in Ireland. Confirm on an official page that these rules also apply to visiting dogs, and copy the full breed list.
+    sources:
+      - https://www.citizensinformation.ie/en/environment/pets-and-wildlife/control-of-dogs/
+
+  - id: non_compliance
+    text: A pet that does not meet the rules may be refused entry and sent back, or put in quarantine, at the owner's cost.
+    status: verified
+    sources:
+      - https://www.citizensinformation.ie/en/moving-country/moving-to-ireland/coming-to-live-in-ireland/bringing-pets-to-ireland/

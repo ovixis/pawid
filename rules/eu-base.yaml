@@ -1,4 +1,4 @@
-# EU base rules for non-commercial movement of dogs (pets) between EU countries.
+# EU base rules for non-commercial movement of pet dogs, cats and ferrets between EU countries.
 # Country files in rules/countries/ only list DIFFERENCES from this base.
 #
 # status:
@@ -6,69 +6,78 @@
 #   needs_review  = written from partial information, a human must check before use
 #
 # Do not add a rule without an official source URL.
+# Legal basis named on the Commission pages (checked 2026-11-21): Delegated Regulation (EU) 2026/131,
+# Implementing Regulation (EU) 2026/705 (passport model), Delegated Regulation (EU) 2020/688 Annex VII.
 
 id: eu-base
-scope: dog
+scope: dog, cat, ferret
 applies_to: EU member states
 last_checked: 2026-11-21
 rules:
   - id: microchip
-    text: Dog must be identified with a microchip (ISO, Annex II technical requirements), or a clearly readable tattoo if applied before 3 July 2011.
+    text: The pet (dog, cat or ferret) must be identified with a microchip, or a clearly readable tattoo applied before 3 July 2011. The rabies vaccine must not be given before the microchip is implanted or read.
     status: verified
     sources:
+      - https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en
       - https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals
-      - https://food.ec.europa.eu/animals/movement-pets/eu-legislation/non-commercial-movement-non-eu-countries_en
 
   - id: rabies_vaccination
-    text: Dog must be vaccinated against rabies.
+    text: The pet (dog, cat or ferret) must have a valid rabies vaccination, given by an official or authorised vet.
     status: verified
     sources:
+      - https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en
       - https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals
 
   - id: min_age_at_vaccination
-    text: For entry into the EU, the dog must be at least 12 weeks old at the time of rabies vaccination.
+    text: The pet must be at least 12 weeks old on the day of the first (primary) rabies vaccination.
     status: verified
     sources:
-      - https://food.ec.europa.eu/animals/movement-pets/eu-legislation/entry-union_en
+      - https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en
+      - https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals
 
   - id: waiting_period_after_primary_vaccination
-    text: A waiting period applies after completing the primary rabies vaccination before the dog can travel. The number of days is NOT filled in here yet.
-    status: needs_review
-    todo: Read Regulation (EU) No 576/2013 Annex III and the current delegated act 2026/131, write the exact days and cite the article.
+    text: After the first (primary) rabies vaccination, the vaccination is valid for travel only from at least 21 days after the vaccination protocol was completed. A booster given before the previous vaccination expires needs no new wait. A booster given after it expired counts as a new first vaccination, and the 21 days apply again.
+    status: verified
     sources:
-      - https://food.ec.europa.eu/animals/movement-pets/eu-legislation/movements-within-union_en
+      - https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en
+      - https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals
 
-  - id: passport
-    text: The EU pet passport is the identification document for travel between EU countries. It is issued by an authorised vet. It is only issued to owners resident in the EU.
+  - id: young_animals
+    text: Pets under 12 weeks without a rabies vaccination, or 12 to 16 weeks old and not yet 21 days after the vaccination, can travel only to Bulgaria, Croatia, Czechia, Estonia, Finland, Lithuania, Luxembourg, Romania, Slovakia, Slovenia and Switzerland, with a declaration of no contact with wild animals prone to rabies or with their vaccinated mother. Other EU countries do not accept them.
     status: verified
     sources:
       - https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals
-      - https://commission.europa.eu/news-and-media/news/travelling-your-pets-europe-2024-08-02_en
 
-  - id: max_animals
-    text: Non-commercial movement is limited to 5 pets per traveller, with exceptions under conditions.
-    status: needs_review
-    todo: Confirm number and the conditions for exceeding 5 in Regulation (EU) 2026/131.
+  - id: passport
+    text: The EU pet passport is the document for travel between EU countries. It is issued and filled in by an authorised vet, and only to owners resident in the EU.
+    status: verified
     sources:
       - https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en
+      - https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals
+
+  - id: max_animals
+    text: Up to 5 pets (dogs, cats or ferrets) per non-commercial movement (the Commission says 5 in a single vehicle). More than 5 only for competitions, exhibitions or sporting events (or training for them), with written proof of registration, and only if the animals are more than 6 months old.
+    status: verified
+    sources:
+      - https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en
+      - https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals
 
   - id: travel_without_owner_window
-    text: The pet can travel up to five days before or after the owner, or with an authorised person with written permission.
-    status: needs_review
-    todo: Confirm wording and conditions in the current regulation.
+    text: The pet travels with its owner. If the owner cannot, an authorised person can take it, as long as the owner travels within 5 days before or after the pet, and a written declaration is attached to the passport.
+    status: verified
     sources:
-      - https://food.ec.europa.eu/animals/movement-pets/eu-legislation_en
+      - https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en
       - https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals
 
   - id: echinococcus_treatment
-    text: Some countries require a tapeworm (Echinococcus multilocularis) treatment before entry. Which countries, and the time window, are NOT filled in here yet.
-    status: needs_review
-    todo: List countries from the official EU page and put each one in rules/countries/.
+    text: Dogs (not cats or ferrets) going to Finland, Ireland, Malta, Northern Ireland or Norway need a tapeworm (Echinococcus multilocularis) treatment given by a vet not more than 120 hours and not less than 24 hours before the scheduled time of entry, recorded by that vet in the passport. Dogs moving directly between these countries are exempt.
+    status: verified
     sources:
-      - https://food.ec.europa.eu/animals/movement-pets/eu-legislation/movements-within-union_en
+      - https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en
+      - https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals
 
   - id: non_eu_origin
-    text: Dogs coming from outside the EU follow the entry rules. Some listed territories can use the pet passport. Others need an animal health certificate. EU passports issued to owners resident in Great Britain are not valid for travel from Great Britain to the EU.
+    text: Pets coming from outside the EU follow the entry rules. Some listed territories can use the pet passport. Others need an animal health certificate. EU passports issued to owners resident in Great Britain are not valid for travel from Great Britain to the EU.
     status: verified
     sources:
       - https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals

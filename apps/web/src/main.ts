@@ -8,6 +8,7 @@ import { saveSticker } from "./sticker";
 import { cardView } from "./views/card";
 import { backupCard, restoreView } from "./views/backup";
 import { formView } from "./views/form";
+import { tripView } from "./views/trip";
 import { homeView } from "./views/home";
 import { shareView } from "./views/share";
 
@@ -80,6 +81,7 @@ function route(): void {
   else if (pet && parts[2] === "share") { view = shareView(pet, loadOwnerName(), VERIFY_BASE, ctx.venue || ctx.days ? ctx : savedVenue()); title = `Show ${pet.name}, PawID`; }
   else if (pet) { view = cardView(pet, loadOwnerName()); title = `${pet.name}, PawID`; }
   else if (parts[0] === "share") { view = homeView(pets, ctx.venue, query); title = "Choose a pet, PawID"; }
+  else if (parts[0] === "travel") { view = tripView(pets, q); title = "Can I travel?, PawID"; }
   else if (parts[0] === "restore") { view = restoreView(q.get("b"), pets, restore, q.get("moved") === "1"); title = "Restore a backup, PawID"; }
   else {
     view = homeView(pets);

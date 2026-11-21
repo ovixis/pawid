@@ -41,6 +41,7 @@ export function cardView(pet: Pet, owner: string): Node[] {
       "div",
       { class: "bar no-print" },
       link("Show to a venue", `#/pet/${id}/share`, "primary", "qr"),
+      link("Can I travel?", `#/travel?pet=${id}`, "secondary", "world"),
       link("Edit", `#/pet/${id}/edit`, "secondary", "edit"),
       button("Print", { kind: "ghost", icon: "print", onClick: () => window.print() }),
     ),

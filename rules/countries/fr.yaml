@@ -1,0 +1,59 @@
+# France: differences from the EU base for pets coming from another EU country.
+# Read on 2026-11-21. Main sources: Ministry of Agriculture information sheet (EU to France)
+# and the Customs sheet on category 1 and 2 dogs (July 2026).
+country: FR
+name: France
+official_pages:
+  - https://agriculture.gouv.fr/telecharger/113276
+  - https://www.douane.gouv.fr/demarche/vous-voyagez-avec-un-chien-chat-ou-furet
+  - https://agriculture.gouv.fr/les-chiens-de-categorie-1-et-2-et-les-chiens-dangereux
+last_checked: 2026-11-21
+checked_by: ovixis
+overrides:
+  - id: young_animals
+    text: France does not accept dogs, cats or ferrets under three months old that are not validly vaccinated against rabies.
+    status: verified
+    sources:
+      - https://agriculture.gouv.fr/telecharger/113276
+      - https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals
+
+  - id: min_age_16_weeks
+    text: A French Customs news page says dogs, cats and ferrets under 16 weeks cannot be brought into France. It does not say whether this also covers travel from EU countries.
+    status: needs_review
+    todo: Confirm on a current Ministry of Agriculture page whether the 16 week minimum applies to travel from EU countries (the ministry sheet says under three months and not validly vaccinated).
+    sources:
+      - https://www.douane.gouv.fr/actualites/voyager-avec-son-animal-de-compagnie-4-regles-essentielles-connaitre
+
+  - id: dangerous_dogs_category_1
+    text: Category 1 dogs cannot be brought into France at all. These are dogs without a recognised pedigree that look like Staffordshire terrier or American Staffordshire terrier (pit bull), Mastiff (boerbull) or Tosa types.
+    status: verified
+    sources:
+      - https://agriculture.gouv.fr/les-chiens-de-categorie-1-et-2-et-les-chiens-dangereux
+      - https://agriculture.gouv.fr/telecharger/113276
+      - https://www.douane.gouv.fr/sites/default/files/2026-07/23/Fiche%20chiens%20de%20cat%C3%A9gorie%201%20et%202.pdf
+
+  - id: dangerous_dogs_category_2
+    text: Category 2 dogs (pedigree Staffordshire terrier, American Staffordshire terrier, Rottweiler and Tosa, and Rottweiler-type dogs) can enter, but in France the owner must be 18 or over, hold a French aptitude certificate and a behaviour assessment by an authorised French vet, have specific liability insurance, keep the dog leashed and muzzled in public and on public transport, and get a keeping permit from the town hall. French Customs says this makes short tourist stays with these dogs almost impossible.
+    status: verified
+    sources:
+      - https://www.douane.gouv.fr/sites/default/files/2026-07/23/Fiche%20chiens%20de%20cat%C3%A9gorie%201%20et%202.pdf
+      - https://agriculture.gouv.fr/telecharger/113276
+
+  - id: dog_type_attestation
+    text: If a dog could be taken for a category 1 or 2 dog, carry a detailed vet attestation, understandable by French authorities, that it does not meet the category criteria. Without it, the dog can be confiscated.
+    status: verified
+    sources:
+      - https://www.douane.gouv.fr/sites/default/files/2026-07/23/Fiche%20chiens%20de%20cat%C3%A9gorie%201%20et%202.pdf
+
+  - id: max_animals
+    text: The ministry sheet says that from 6 dogs, cats or ferrets, a vet clinical exam within 48 hours before departure and an official TRACES certificate are also needed, except for animals over 6 months going to a show, competition or sporting event with proof of registration.
+    status: needs_review
+    todo: The ministry sheet predates Delegated Regulation (EU) 2026/131. Confirm the current rule for more than 5 animals on a current French page.
+    sources:
+      - https://agriculture.gouv.fr/telecharger/113276
+
+  - id: non_compliance
+    text: If the rules are not met, officers can order, at the owner's cost, that the pet is sent back, put in quarantine or put down.
+    status: verified
+    sources:
+      - https://agriculture.gouv.fr/telecharger/113276

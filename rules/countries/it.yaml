@@ -1,0 +1,34 @@
+# Italy: differences from the EU base for pets coming from another EU country.
+# Read on 2026-11-21 (salute.gov.it blocks automated readers: read in a browser).
+country: IT
+name: Italy
+official_pages:
+  - https://www.salute.gov.it/new/it/tema/animali-daffezione/viaggio-verso-litalia/
+last_checked: 2026-11-21
+checked_by: ovixis
+overrides:
+  - id: young_animals
+    text: Italy does not accept young pets without valid rabies protection. Dogs, cats and ferrets under 12 weeks without a rabies vaccination, or 12 to 16 weeks old whose vaccination is not yet valid, cannot be brought into Italy.
+    status: verified
+    sources:
+      - https://www.salute.gov.it/new/it/tema/animali-daffezione/viaggio-verso-litalia/
+      - https://europa.eu/youreurope/citizens/travel/carry/pets-and-other-animals
+
+  - id: echinococcus_treatment
+    text: No tapeworm (Echinococcus) or tick treatment is needed to bring a pet into Italy.
+    status: verified
+    sources:
+      - https://www.salute.gov.it/new/it/tema/animali-daffezione/viaggio-verso-litalia/
+
+  - id: dog_leash_muzzle
+    text: In towns and places open to the public, dogs must be on a leash no longer than 1.5 metres (except in dog areas set by the town), the person walking the dog must always carry a muzzle to use if needed, and must pick up the dog's faeces.
+    status: verified
+    sources:
+      - https://www.salute.gov.it/new/it/tema/animali-daffezione/tutela-dallaggressione-dei-cani/
+
+  - id: dog_registry_visitors
+    text: Dogs kept in Italy must be registered in the regional dog registry (anagrafe canina). Whether this applies to visitors' dogs registered in another EU country is not stated.
+    status: needs_review
+    todo: Find an official page on whether visiting dogs from other EU countries must be registered, and after how long a stay.
+    sources:
+      - https://www.salute.gov.it/new/it/tema/animali-daffezione/il-microchip-e-la-registrazione-del-proprio-animale/

@@ -1,0 +1,47 @@
+# Germany: differences from the EU base for pets coming from another EU country.
+# Read on 2026-11-21. Sources: Federal Ministry of Agriculture (BMLEH), Customs (Zoll),
+# and the federal dog import law and ordinance (gesetze-im-internet.de).
+country: DE
+name: Germany
+official_pages:
+  - https://www.bmleh.de/DE/themen/tiere/haus-und-zootiere/reisen-hunde-katzen-frettchen.html
+  - https://www.bmleh.de/DE/themen/tiere/haus-und-zootiere/tollwutimpfung.html
+  - https://www.zoll.de/DE/Privatpersonen/Reisen/Reisen-nach-Deutschland-aus-einem-nicht-eu-Staat/Einschraenkungen/Gefaehrliche-Hunde/gefaehrliche_hunde.html
+last_checked: 2026-11-21
+checked_by: ovixis
+overrides:
+  - id: young_animals
+    text: Germany does not accept young dogs, cats or ferrets without valid rabies protection from other EU countries (under 12 weeks and not vaccinated, or 12 to 16 weeks and not yet validly vaccinated).
+    status: verified
+    sources:
+      - https://www.bmleh.de/DE/themen/tiere/haus-und-zootiere/tollwutimpfung.html
+
+  - id: echinococcus_treatment
+    text: No tapeworm (Echinococcus) treatment is needed to enter Germany. It is only needed for dogs going to Finland, Ireland, Malta, Norway or Northern Ireland.
+    status: verified
+    sources:
+      - https://www.bmleh.de/DE/themen/tiere/haus-und-zootiere/reisen-hunde-katzen-frettchen.html
+
+  - id: banned_breeds
+    text: Pit Bull Terriers, American Staffordshire Terriers, Staffordshire Bull Terriers and Bull Terriers, and their crosses, may not be brought into Germany, also from other EU countries (puppies included). Exceptions include guide and assistance dogs, rescue dogs and service dogs.
+    status: verified
+    sources:
+      - https://www.gesetze-im-internet.de/hundverbreinfg/__2.html
+      - https://www.gesetze-im-internet.de/hundverbreinfg/__1.html
+      - https://www.gesetze-im-internet.de/hundverbreinfvo/__2.html
+      - https://www.zoll.de/DE/Privatpersonen/Reisen/Reisen-nach-Deutschland-aus-einem-nicht-eu-Staat/Einschraenkungen/Gefaehrliche-Hunde/gefaehrliche_hunde.html
+
+  - id: banned_breeds_short_stay
+    text: A dog of these breeds may come for a stay of up to four weeks with a person who does not live in Germany. That person must carry documents proving the dog's identity (official confirmation of the chip number is enough), official certificates that the dog has not been noticed as dangerous, and must show the stay is temporary. Foreign-language documents need a certified German translation.
+    status: verified
+    sources:
+      - https://www.gesetze-im-internet.de/hundverbreinfvo/__2.html
+      - https://www.gesetze-im-internet.de/hundverbreinfvo/__3.html
+      - https://www.zoll.de/DE/Privatpersonen/Reisen/Reisen-nach-Deutschland-aus-einem-nicht-eu-Staat/Einschraenkungen/Gefaehrliche-Hunde/gefaehrliche_hunde.html
+
+  - id: state_breed_lists
+    text: Some German states (Customs names Baden-Württemberg, Bavaria, Hamburg and Hesse) list more breeds as dangerous. These may not be brought into that state to be kept there permanently, unless the local authority allows it. Muzzle and leash rules are set by states and towns.
+    status: verified
+    sources:
+      - https://www.gesetze-im-internet.de/hundverbreinfg/__2.html
+      - https://www.zoll.de/DE/Privatpersonen/Reisen/Reisen-nach-Deutschland-aus-einem-nicht-eu-Staat/Einschraenkungen/Gefaehrliche-Hunde/regelungen_bundeslaender.html

@@ -1,0 +1,42 @@
+# Spain: differences from the EU base for pets coming from another EU country.
+# Read on 2026-11-21. Main source: Ministry of Agriculture (MAPA) pages and the BOE law texts.
+country: ES
+name: Spain
+official_pages:
+  - https://www.mapa.gob.es/es/ganaderia/temas/comercio-exterior-ganadero/desplazamiento-animales-compania/viajar-perros-gatos-hurones
+  - https://www.mapa.gob.es/es/ganaderia/temas/comercio-exterior-ganadero/desplazamiento-animales-compania/faq-perros-gatos-hurones
+last_checked: 2026-11-21
+checked_by: ovixis
+overrides:
+  - id: young_animals
+    text: Spain makes no exceptions for young pets. Dogs, cats and ferrets under 15 weeks, and so without a valid rabies vaccination, cannot enter Spain.
+    status: verified
+    sources:
+      - https://www.mapa.gob.es/es/ganaderia/temas/comercio-exterior-ganadero/desplazamiento-animales-compania/viajar-perros-gatos-hurones
+
+  - id: echinococcus_treatment
+    text: No tapeworm (Echinococcus) treatment, other parasite treatment, antibody test or clinical exam is needed to bring a pet into Spain from another EU country.
+    status: verified
+    sources:
+      - https://www.mapa.gob.es/es/dam/jcr:e35fbe22-9efd-42d4-b9b3-48c45f95d697/introenespperrosgatoshuronesdeotroseemm.2026-06-11-14-01-23.pdf
+
+  - id: potentially_dangerous_dogs
+    text: Pit Bull Terrier, Staffordshire Bull Terrier, American Staffordshire Terrier, Rottweiler, Dogo Argentino, Fila Brasileiro, Tosa Inu and Akita Inu, their crosses, and dogs that match the physical traits in the law are potentially dangerous dogs. In public places they must wear a muzzle suited to the breed and be on a non-extending lead or chain shorter than 2 metres, one dog per person.
+    status: verified
+    sources:
+      - https://www.boe.es/buscar/act.php?id=BOE-A-2002-6016
+      - https://www.boe.es/buscar/act.php?id=BOE-A-1999-24419
+
+  - id: potentially_dangerous_dogs_licence
+    text: Keeping a potentially dangerous dog in Spain needs a municipal licence with liability insurance, and the law makes their entry into Spain, also from the EU, subject to that licence. How a visitor on a short stay should meet this is not stated on national pages. Regions and towns can add rules.
+    status: needs_review
+    todo: Find an official national or regional page on visitors with a potentially dangerous dog on a short stay.
+    sources:
+      - https://www.boe.es/buscar/act.php?id=BOE-A-1999-24419
+      - https://www.boe.es/buscar/act.php?id=BOE-A-2002-6016
+
+  - id: non_compliance
+    text: A pet that does not meet the rules can be held in quarantine, sent back or, as a last resort, put down, at the owner's cost.
+    status: verified
+    sources:
+      - https://www.mapa.gob.es/es/ganaderia/temas/comercio-exterior-ganadero/desplazamiento-animales-compania/faq-perros-gatos-hurones

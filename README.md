@@ -16,6 +16,7 @@ Open source digital companion for the EU pet passport. Built for people who trav
 - Put the rabies vaccine expiry in your phone's calendar, with alarms 30, 7 and 1 day before (made on the device, no email)
 - Back up your pets by email to yourself: one link puts everything back on any phone
 - Tell you what you need for each European country (rules are open data, with official sources)
+- "Can I travel?": checks your pet against a country's rules on your travel date (microchip, rabies vaccine and the 21 day wait, tapeworm treatment window, breed rules)
 - Show a QR code to hotels and venues: they see only the essentials, signed, no account needed
 - Work offline
 
@@ -26,7 +27,7 @@ Early scaffold. Nothing here is production ready.
 | Part | Status |
 | --- | --- |
 | `packages/core` schema, expiry logic, signed share token | started |
-| `rules/` EU base rules + per-country overrides | started, needs review |
+| `rules/` EU base rules + Italy, France, Spain, Germany, Ireland (checked 2026-11-21; open points marked `needs_review`) | in use |
 | `apps/api` Cloudflare Worker + D1 | started |
 | `apps/web` PWA (dog profile, rabies status, QR) | started |
 | Vet signing module | not started |
