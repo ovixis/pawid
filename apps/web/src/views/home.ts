@@ -20,7 +20,6 @@ export function homeView(pets: Pet[]): Node[] {
     { class: "hero" },
     el("h1", {}, "Your pet's papers, ", el("em", {}, "ready at the door.")),
     el("p", {}, "Keep the pet passport details on your phone, get a reminder before the rabies vaccine runs out, and show a signed code to hotels, restaurants and places that welcome pets."),
-    el("p", { class: "pw-sr" }, "PawID is not an official document."),
   );
   const notice = el("p", { class: "pw-notice" }, "Not an official document. It does not replace the paper EU pet passport, which is issued by an authorised vet. Your data stays on this device.");
 
