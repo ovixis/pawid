@@ -175,16 +175,8 @@ app.get("/v/:token", async (c) => {
 export default {
   fetch: app.fetch,
 
-  /** Daily cron. Picks due reminders. Sending the email is not wired yet. */
+  /** Daily cron. Reminders are made on the phone (calendar file), so the server only cleans old counters. */
   async scheduled(_event: ScheduledController, env: Env): Promise<void> {
-    const today = new Date().toISOString().slice(0, 10);
-    const due = await env.DB.prepare(
-      "SELECT id, email, dog_name, kind, valid_until FROM reminders WHERE send_on <= ?1 AND sent_at IS NULL LIMIT 100",
-    )
-      .bind(today)
-      .all();
-    // TODO: send the email with the provider you choose, then mark sent_at.
-    console.log(`reminders due: ${due.results.length}`);
     // Usage counters are kept for about 13 months.
     const cutoff = new Date(Date.now() - 400 * 86_400_000).toISOString().slice(0, 10);
     await env.DB.prepare("DELETE FROM usage_daily WHERE day < ?1").bind(cutoff).run();

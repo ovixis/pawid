@@ -9,6 +9,6 @@ database_name = "pawid"
 database_id = "c58620f1-8fb5-4898-a5be-d3794bd7d0fc"
 migrations_dir = "migrations"
 
-# Daily job for reminders (09:00 UTC).
+# Daily job (09:00 UTC): deletes usage counters older than about 13 months.
 [triggers]
 crons = ["0 9 * * *"]

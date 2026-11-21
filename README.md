@@ -13,7 +13,8 @@ Open source digital companion for the EU pet passport. Built for people who trav
 ## What it does (goal)
 
 - Store your dog's passport data (microchip, vaccines, expiry dates), on your device first
-- Remind you before the rabies vaccine and other treatments expire
+- Put the rabies vaccine expiry in your phone's calendar, with alarms 30, 7 and 1 day before (made on the device, no email)
+- Back up your pets by email to yourself: one link puts everything back on any phone
 - Tell you what you need for each European country (rules are open data, with official sources)
 - Show a QR code to hotels and venues: they see only the essentials, signed, no account needed
 - Work offline
@@ -92,6 +93,10 @@ npm run typecheck
 ## License
 
 Apache-2.0 for code. Rules data: CC BY 4.0 (see `rules/README.md`).
+
+## Privacy
+
+Your pets' details stay on your phone. See [PRIVACY.md](PRIVACY.md) for what the app, the API and the venue components do with data.
 
 ## Logos
 

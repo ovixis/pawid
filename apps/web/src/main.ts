@@ -1,9 +1,10 @@
 import type { Pet } from "@pawid/core";
 import { BY_HOSPET } from "@pawid/ui";
 import { el, topBar, siteFooter } from "./dom";
-import { loadOwnerName, loadPets, savePets } from "./storage";
+import { loadOwnerName, loadPets, saveOwnerName, savePets } from "./storage";
 import { injectStyles } from "./style";
 import { cardView } from "./views/card";
+import { backupCard, restoreView } from "./views/backup";
 import { formView } from "./views/form";
 import { homeView } from "./views/home";
 import { shareView } from "./views/share";
@@ -32,6 +33,15 @@ function save(p: Pet): void {
   // Came from a venue's button with no pet yet: go straight on to showing it.
   const v = savedVenue();
   location.hash = i < 0 && v.venue ? `#/pet/${encodeURIComponent(p.id)}/share` : `#/pet/${encodeURIComponent(p.id)}`;
+}
+
+function restore(next: Pet[], owner?: string): void {
+  pets = next;
+  savePets(pets);
+  if (owner && !loadOwnerName()) saveOwnerName(owner);
+  // Drop the backup code from the address bar and the history entry.
+  history.replaceState(null, "", "#/");
+  route();
 }
 
 function remove(p: Pet): void {
@@ -66,7 +76,11 @@ function route(): void {
   else if (pet && parts[2] === "share") { view = shareView(pet, loadOwnerName(), VERIFY_BASE, ctx.venue || ctx.days ? ctx : savedVenue()); title = `Show ${pet.name}, PawID`; }
   else if (pet) { view = cardView(pet, loadOwnerName()); title = `${pet.name}, PawID`; }
   else if (parts[0] === "share") { view = homeView(pets, ctx.venue, query); title = "Choose a pet, PawID"; }
-  else { view = homeView(pets); }
+  else if (parts[0] === "restore") { view = restoreView(q.get("b"), pets, restore); title = "Restore a backup, PawID"; }
+  else {
+    view = homeView(pets);
+    view.push(pets.length ? backupCard(pets, loadOwnerName()) : el("p", { class: "restore-cta" }, "New phone? ", el("a", { href: "#/restore", class: "pw-link" }, "Restore a backup")));
+  }
   document.title = title;
   main.replaceChildren(...view);
   if (document.activeElement !== document.body) main.focus({ preventScroll: true });

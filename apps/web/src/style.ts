@@ -72,6 +72,12 @@ details.more[open] summary { margin-bottom: 1rem; }
 .qr-wrap { display: grid; gap: 1rem; justify-items: center; text-align: center; }
 .qr-wrap canvas { width: min(18rem, 100%) !important; height: auto !important; border-radius: .75rem; box-shadow: 0 0 0 1px var(--pw-line); background: #fff; padding: .5rem; }
 .qr-wrap .bar { justify-content: center; }
+.restore-cta { margin: 0; text-align: center; color: var(--pw-ink-muted); }
+.restore-list { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: .5rem; }
+.restore-list li { display: grid; grid-template-columns: 2rem auto minmax(0, 1fr); gap: .625rem; align-items: center; }
+.restore-list span { color: var(--pw-ink-muted); font-size: var(--pw-text-xs); overflow-wrap: anywhere; }
+.backup .bar, .reminder .bar { margin-top: .75rem; }
+.reminder .pw-hint.flush { margin-top: .75rem; }
 #app { min-height: 100svh; display: grid; grid-template-rows: auto 1fr auto; }
 #app > main { width: 100%; box-sizing: border-box; align-content: start; }
 .site-foot { background: var(--pw-navy-800); color: rgb(255 255 255 / .78); font-size: var(--pw-text-xs); border-top: 3px solid var(--pw-gold-400); }
