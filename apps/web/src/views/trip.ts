@@ -86,7 +86,7 @@ export function tripView(pets: Pet[], q: URLSearchParams): Node[] {
       el("div", { class: "pw-card-head" }, el("h2", { id: "rules-title" }, rules.countryCovered ? `Rules for ${countryName(to)}` : "EU rules")),
       rules.countryCovered ? "" : el("p", { class: "pw-notice" }, `PawID has not checked ${countryName(to)}'s own rules yet. These are the EU rules only: check ${countryName(to)}'s official page too.`),
       allRules,
-      el("p", { class: "pw-hint flush" }, rules.disclaimer, " ", el("a", { href: "https://github.com/ovixis/pawid/issues/new/choose", class: "pw-link", target: "_blank", rel: "noopener" }, "Report a wrong rule"), "."),
+      el("p", { class: "pw-hint flush" }, rules.disclaimer, " ", el("a", { href: `/rules${rules.countryCovered ? `?c=${to}` : ""}#rules`, class: "pw-link" }, "Confirm or correct a rule"), "."),
     ),
   ];
 }

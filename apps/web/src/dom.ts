@@ -58,7 +58,7 @@ export function brandMark(which: "pawid" | "hospet", cls = "pw-mark"): HTMLSpanE
 
 /** The site's pages, in menu order. */
 const NAV: [string, string][] = [
-  ["/", "App"], ["/venues", "Venues"], ["/vet", "Vets"], ["/install", "Install"],
+  ["/", "App"], ["/rules", "Rules"], ["/venues", "Venues"], ["/vet", "Vets"], ["/install", "Install"],
   ["/ai", "AI assistants"], ["/manifesto", "Manifesto"], ["/support", "Support"],
 ];
 
@@ -141,7 +141,7 @@ export function siteFooter(): HTMLElement {
       el("div", { class: "f-cols" },
         col("App", [["Open PawID", "/"], ["Install the app", "/install"], ["How to use it", "/install#guide"], ["For vets", "/vet"]]),
         col("For places", [["Components", "/venues"], ["Where it works", "/venues#places"], ["For developers", "/venues#developers"], ["AI assistants", "/ai"]]),
-        col("Project", [["Manifesto", "/manifesto"], ["GitHub: contribute", "https://github.com/ovixis/pawid"], ["API description", API_DOCS], ["Privacy", "https://github.com/ovixis/pawid/blob/main/PRIVACY.md"], ["Support PawID", "/support"], ["HosPet.eu", "https://hospet.eu"]]),
+        col("Project", [["Manifesto", "/manifesto"], ["Travel rules, fact checks", "/rules"], ["GitHub: contribute", "https://github.com/ovixis/pawid"], ["API description", API_DOCS], ["Privacy", "https://github.com/ovixis/pawid/blob/main/PRIVACY.md"], ["Support PawID", "/support"], ["HosPet.eu", "https://hospet.eu"]]),
       ),
       el("p", { class: "f-notice" }, svg("info"), el("span", {}, el("b", {}, "Not an official document. "), "The EU pet passport, issued by an authorised vet, is. Always carry it when you travel.")),
       el("div", { class: "f-base" },

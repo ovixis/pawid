@@ -87,6 +87,16 @@ statements, in applications for open source funding and in answers to EU consult
 never shown or shared; it is used only to write to you about PawID if you gave it. To remove your
 statement, write to info@hospet.eu.
 
+## Fact checks on the travel rules
+
+On [pawid.hospet.eu/rules](https://pawid.hospet.eu/rules) anyone can confirm a rule or suggest a correction. A check holds the rule, your verdict, the source address, the words you copied from it, your suggested text if any, and your role. Name, organisation and email are optional.
+
+- HosPet.eu reviews each check. Accepted checks show on the rule. Your name and organisation show only if you ticked the box; otherwise the check shows with your role only. Rejected checks are never shown.
+- Your email is never shown or shared. We use it only to ask about your check, or to confirm that you work for a fact-checking organisation.
+- Your network address is used for a few minutes to limit how many checks one address can send, and is not stored. The Cloudflare check that you are a person works as on the support form.
+- The rules themselves change only in the files on GitHub, where every change is public.
+- To have a check removed, write to info@hospet.eu.
+
 ## Reminders
 
 "Add to my calendar" makes a calendar file on your phone with the rabies vaccine date and three

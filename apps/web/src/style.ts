@@ -43,7 +43,7 @@ main > * { min-width: 0; }
 .hero h1 { margin: 0; font-size: clamp(1.875rem, 1.4rem + 1.8vw, 2.625rem); line-height: 1.06; font-weight: 800; letter-spacing: -.035em; text-wrap: balance; }
 
 /* The hero on every PawID page: deep navy, two soft glows, a faint dot grid and a light edge. */
-.hero, .v-hero, .i-hero, .vh, .s-hero, .a-hero, .m-hero {
+.hero, .v-hero, .i-hero, .vh, .s-hero, .a-hero, .m-hero, .r-hero {
   position: relative; isolation: isolate; overflow: hidden; border-radius: var(--pw-radius-hero); padding: 1.75rem 1.5rem;
   background:
     radial-gradient(55% 70% at 100% 0%, rgb(255 198 41 / .17), transparent 65%),
@@ -51,12 +51,12 @@ main > * { min-width: 0; }
     var(--pw-grad-navy);
   box-shadow: inset 0 0 0 1px rgb(255 255 255 / .07), inset 0 1px 0 rgb(255 255 255 / .12), 0 24px 48px -24px rgb(14 26 49 / .55);
 }
-.hero::before, .v-hero::before, .i-hero::before, .vh::before, .s-hero::before, .a-hero::before, .m-hero::before {
+.hero::before, .v-hero::before, .i-hero::before, .vh::before, .s-hero::before, .a-hero::before, .m-hero::before, .r-hero::before {
   content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background-image: radial-gradient(rgb(255 255 255 / .09) 1px, transparent 1.2px); background-size: 18px 18px;
   -webkit-mask-image: linear-gradient(to bottom, #000, transparent 85%); mask-image: linear-gradient(to bottom, #000, transparent 85%);
 }
-@media (min-width: 40rem) { .hero, .v-hero, .i-hero, .vh, .s-hero, .a-hero, .m-hero { padding: 2.5rem 2.25rem; } }
+@media (min-width: 40rem) { .hero, .v-hero, .i-hero, .vh, .s-hero, .a-hero, .m-hero, .r-hero { padding: 2.5rem 2.25rem; } }
 
 /* Sections ease in as they scroll into view (marketing pages only; off with reduced motion). */
 @media (prefers-reduced-motion: no-preference) {

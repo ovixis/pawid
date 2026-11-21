@@ -21,6 +21,7 @@ css.textContent = `
 .m-sec { display: grid; gap: 1rem; padding: 1.25rem; }
 @media (min-width: 40rem) { .m-sec { padding: 1.75rem; } }
 .m-sec > * { min-width: 0; }
+#eu h2 .pw-tile .pw-icon { width: 1.875rem; height: 1.875rem; }
 .m-sec h2 { margin: 0; display: flex; align-items: center; gap: .75rem; font-size: var(--pw-text-2xl); font-weight: 800; letter-spacing: -.02em; }
 .m-sec > p { margin: 0; color: var(--pw-ink-muted); max-width: 44rem; }
 .m-time { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
@@ -120,7 +121,7 @@ const main = el("main", { id: "main" },
     shareBar(),
   ),
 
-  sec("eu", "world", "What the EU is doing",
+  sec("eu", "eu", "What the EU is doing",
     el("p", {}, "Three changes, all decided in 2026."),
     el("ol", { class: "m-time" },
       el("li", {}, el("time", { attrs: { datetime: "2026-04-22" } }, "22 Apr 2026"), el("span", {}, el("b", {}, "New rules for travelling with pets. "), "Delegated Regulation (EU) 2026/131 replaces the old pet travel rules. A new paper passport model (Implementing Regulation (EU) 2026/705) becomes mandatory for passports issued from 1 January 2028.")),
@@ -172,7 +173,8 @@ const main = el("main", { id: "main" },
     el("div", { class: "m-join" },
       join("/vet", "stethoscope", "I am a vet", "Confirm your patients' passports"),
       join("/venues", "hotel", "I run a venue", "Add PawID to your site"),
-      join("https://github.com/ovixis/pawid/issues/new?template=country.yml", "scale", "I know my country's rules", "Add or correct a country"),
+      join("/rules", "factCheck", "I check facts", "Confirm or correct a rule with a source"),
+      join("https://github.com/ovixis/pawid/issues/new?template=country.yml", "scale", "I know my country's rules", "Add a country"),
       join("https://github.com/ovixis/pawid/issues/new?template=translation.yml", "translate", "I speak another language", "Help translate"),
       join("/ai", "code", "I build software", "API, MCP and open code"),
       join("/support", "heartHandshake", "I support this", "Add your name"),

@@ -15,6 +15,7 @@
 - [For hotels, restaurants and places to visit](https://pawid.hospet.eu/venues): free components
 - [For vets](https://pawid.hospet.eu/vet): confirm a pet's microchip and rabies vaccine
 - [Install the app](https://pawid.hospet.eu/install)
+- [Travel rules and fact checks](https://pawid.hospet.eu/rules): every rule with its official source; confirm or correct one with a source
 - [Support PawID](https://pawid.hospet.eu/support)
 - [Source code](https://github.com/ovixis/pawid) and [privacy](https://github.com/ovixis/pawid/blob/main/PRIVACY.md)
 

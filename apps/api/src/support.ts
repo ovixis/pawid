@@ -28,7 +28,7 @@ async function sameSecret(a: string, b: string): Promise<boolean> {
   for (let i = 0; i < x.length; i++) d |= x[i]! ^ y[i]!;
   return d === 0;
 }
-const isAdmin = async (c: C) => Boolean(c.env.STATS_KEY) && (await sameSecret(c.req.header("authorization") ?? "", `Bearer ${c.env.STATS_KEY}`));
+export const isAdmin = async (c: C) => Boolean(c.env.STATS_KEY) && (await sameSecret(c.req.header("authorization") ?? "", `Bearer ${c.env.STATS_KEY}`));
 
 // At most 5 statements per address per hour (per Worker instance; the address is not stored).
 const recent = new Map<string, number[]>();
