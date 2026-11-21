@@ -14,7 +14,7 @@ export function subline(p: Pet): string {
   return [p.species === "cat" ? "Cat" : "Dog", p.breed, p.sex ? (p.sex === "female" ? "Female" : "Male") : null, p.weightKg ? `${p.weightKg} kg` : null].filter(Boolean).join(", ");
 }
 
-export function homeView(pets: Pet[]): Node[] {
+export function homeView(pets: Pet[], venue?: string, query = ""): Node[] {
   const hero = el(
     "section",
     { class: "hero" },
@@ -49,12 +49,12 @@ export function homeView(pets: Pet[]): Node[] {
         petImg(p),
         el("h2", {}, el("a", { href: `#/pet/${encodeURIComponent(p.id)}` }, p.name)),
         el("p", { class: "pet-sub" }, subline(p), el("span", { class: `pw-status ${cls}` }, label)),
-        el("div", { class: "pet-actions" }, link("Show to a venue", `#/pet/${encodeURIComponent(p.id)}/share`, "primary", "qr"), link("Card", `#/pet/${encodeURIComponent(p.id)}`, "secondary")),
+        el("div", { class: "pet-actions" }, link(venue ? `Show ${p.name}` : "Show to a venue", `#/pet/${encodeURIComponent(p.id)}/share${query ? `?${query}` : ""}`, "primary", "qr"), venue ? null : link("Card", `#/pet/${encodeURIComponent(p.id)}`, "secondary")),
       ),
     );
   }
   return [
-    el("div", { class: "bar" }, el("h1", { class: "page-title grow" }, pets.length === 1 ? "Your pet" : "Your pets"), button("Add a pet", { icon: "add", sm: true, onClick: () => (location.hash = "#/pet/new") })),
+    el("div", { class: "bar" }, el("h1", { class: "page-title grow" }, venue ? `Which pet is coming to ${venue}?` : pets.length === 1 ? "Your pet" : "Your pets"), button("Add a pet", { icon: "add", sm: true, onClick: () => (location.hash = "#/pet/new") })),
     list,
     notice,
   ];

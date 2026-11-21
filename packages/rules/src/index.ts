@@ -58,7 +58,7 @@ export interface RulesFor {
 }
 
 export const DISCLAIMER =
-  "Not legal advice and not official. Rules change. Rules marked needs_review are not confirmed: check the official source before travelling.";
+  "Not legal advice and not official. Rules change. Rules still being checked are not confirmed: check the official source before travelling.";
 
 /** EU base rules, with a country's overrides replacing the base rule of the same id. */
 export function rulesFor(country?: string | null): RulesFor {

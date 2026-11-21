@@ -1,4 +1,5 @@
-import { countryName, esc, icon, longDate } from "./html";
+import { countryName, esc, longDate, svgOf } from "./html";
+import { I_cat, I_dog, I_pawFill } from "./icons";
 
 /** The fields a pet card can show. Same names as ShareCard in @pawid/core. */
 export interface CardData {
@@ -80,7 +81,7 @@ export function petCardHtml(c: CardData, o: CardOptions): string {
   const h = o.headingLevel ?? 2;
   const pic = o.imageSrc
     ? `<img src="${esc(o.imageSrc)}" alt="" width="64" height="64">`
-    : `<span class="pw-ring">${icon(c.species === "cat" ? "cat" : "dog")}</span>`;
+    : `<span class="pw-ring">${svgOf(c.species === "cat" ? I_cat : I_dog)}</span>`;
 
   const rab = rabiesState(c.rabiesValidUntil, o.todayIso);
   const until = c.rabiesValidUntil
@@ -114,7 +115,7 @@ export function petCardHtml(c: CardData, o: CardOptions): string {
   ].join("");
 
   return `<article class="pw-card pw-pc">
-<header class="pw-pc-head"><p class="pw-pc-brand">${icon("pawFill")} PawID pet card</p>${o.meta ? `<p class="pw-pc-meta">${esc(o.meta)}</p>` : ""}</header>
+<header class="pw-pc-head"><p class="pw-pc-brand">${svgOf(I_pawFill)} PawID pet card</p>${o.meta ? `<p class="pw-pc-meta">${esc(o.meta)}</p>` : ""}</header>
 <div class="pw-pc-hero">${pic}<div><h${h}>${esc(c.name)}</h${h}><p>${esc(sub)}</p></div></div>
 <div class="pw-pc-grid">${parts}</div>
 <footer class="pw-pc-foot">${esc(o.footer ?? DEFAULT_FOOTER)}</footer>

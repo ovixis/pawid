@@ -73,6 +73,14 @@ app.get("/v1/countries", (c) => {
   return c.json({ countries: coveredCountries() });
 });
 
+/** A venue component loaded on a page: counts which component, on which site (host name only). */
+const WIDGETS = new Set(["scanner", "policy", "button", "travel"]);
+app.get("/v1/w", (c) => {
+  const w = c.req.query("c") ?? "";
+  if (WIDGETS.has(w)) count(c.env, waiter(c), `widget.${w}`, siteOf(c.req.raw) || "unknown");
+  return c.body(null, 204);
+});
+
 app.get("/v1/openapi.json", (c) => c.json(openapi(new URL(c.req.url).origin)));
 
 app.get("/v1", (c) =>

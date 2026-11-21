@@ -9,6 +9,7 @@ const APP = /* css */ `
 .by { font-size: var(--pw-text-xs); color: var(--pw-ink-subtle); text-decoration: none; }
 .by:hover { color: var(--pw-ink); }
 main { max-width: 48rem; margin: 0 auto; padding: 1.25rem 1rem 4rem; display: grid; gap: 1rem; }
+main > * { min-width: 0; }
 
 .hero { background: var(--pw-navy-800); color: #fff; border-radius: var(--pw-radius-card); padding: 1.5rem; display: grid; gap: .75rem; }
 .hero h1 { margin: 0; font-size: clamp(1.625rem, 1.35rem + 1vw, 2.125rem); line-height: 1.12; font-weight: 800; letter-spacing: -.03em; }

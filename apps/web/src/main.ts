@@ -25,14 +25,20 @@ const header = el(
   ),
 );
 const main = el("main", { id: "main", tabIndex: -1 });
-const footer = el("footer", { class: "foot" }, "Open source. Not an official document. ", el("a", { href: "https://github.com/ovixis/pawid", rel: "noopener" }, "Source code"), ". ", el("a", { href: BY_HOSPET.href, rel: "noopener" }, BY_HOSPET.text), ".");
+const footer = el("footer", { class: "foot" }, el("a", { href: "/venues" }, "For hotels, restaurants and places to visit"), ". Open source. Not an official document. ", el("a", { href: "https://github.com/ovixis/pawid", rel: "noopener" }, "Source code"), ". ", el("a", { href: BY_HOSPET.href, rel: "noopener" }, BY_HOSPET.text), ".");
 root.replaceChildren(header, main, footer);
+
+function savedVenue(): { venue?: string; days?: number } {
+  try { return JSON.parse(sessionStorage.getItem("pawid.venue") ?? "{}") as { venue?: string; days?: number }; } catch { return {}; }
+}
 
 function save(p: Pet): void {
   const i = pets.findIndex((x) => x.id === p.id);
   pets = i >= 0 ? pets.map((x) => (x.id === p.id ? p : x)) : [...pets, p];
   savePets(pets);
-  location.hash = `#/pet/${encodeURIComponent(p.id)}`;
+  // Came from a venue's button with no pet yet: go straight on to showing it.
+  const v = savedVenue();
+  location.hash = i < 0 && v.venue ? `#/pet/${encodeURIComponent(p.id)}/share` : `#/pet/${encodeURIComponent(p.id)}`;
 }
 
 function remove(p: Pet): void {
@@ -42,15 +48,31 @@ function remove(p: Pet): void {
   location.hash = "#/";
 }
 
+/** Venue context from a venue's button: #/share?venue=Hotel%20X&days=7 (kept for this tab only). */
+function venueContext(q: URLSearchParams): { venue?: string; days?: number } {
+  const venue = (q.get("venue") ?? "").trim().slice(0, 100) || undefined;
+  const days = q.get("days") === "7" ? 7 : undefined;
+  return { venue, days };
+}
+
 function route(): void {
-  const parts = location.hash.replace(/^#\/?/, "").split("/").map(decodeURIComponent);
+  const [path = "", query = ""] = location.hash.replace(/^#\/?/, "").split("?");
+  const q = new URLSearchParams(query);
+  const ctx = venueContext(q);
+  const parts = path.split("/").map(decodeURIComponent);
+  if (parts[0] === "share") {
+    try { sessionStorage.setItem("pawid.venue", JSON.stringify(ctx)); } catch { /* private mode */ }
+    if (pets.length === 1) { location.replace(`#/pet/${encodeURIComponent(pets[0]!.id)}/share?${query}`); return; }
+    if (pets.length === 0) { location.replace(`#/pet/new?${query}`); return; }
+  }
   const pet = parts[0] === "pet" && parts[1] !== "new" ? pets.find((p) => p.id === parts[1]) : undefined;
   let view: Node[];
   let title = "PawID";
   if (parts[0] === "pet" && parts[1] === "new") { view = formView(undefined, save); title = "Add your pet, PawID"; }
   else if (pet && parts[2] === "edit") { view = formView(pet, save, () => remove(pet)); title = `Edit ${pet.name}, PawID`; }
-  else if (pet && parts[2] === "share") { view = shareView(pet, loadOwnerName(), VERIFY_BASE); title = `Show ${pet.name}, PawID`; }
+  else if (pet && parts[2] === "share") { view = shareView(pet, loadOwnerName(), VERIFY_BASE, ctx.venue || ctx.days ? ctx : savedVenue()); title = `Show ${pet.name}, PawID`; }
   else if (pet) { view = cardView(pet, loadOwnerName()); title = `${pet.name}, PawID`; }
+  else if (parts[0] === "share") { view = homeView(pets, ctx.venue, query); title = "Choose a pet, PawID"; }
   else { view = homeView(pets); }
   document.title = title;
   main.replaceChildren(...view);

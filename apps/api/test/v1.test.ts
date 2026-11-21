@@ -98,3 +98,15 @@ describe("mcp", () => {
     expect(res.status).toBe(400);
   });
 });
+
+describe("widget counter", () => {
+  it("counts a known component by site host, ignores unknown names", async () => {
+    const env = fakeDb();
+    const ok = await app.request("/v1/w?c=policy", { headers: { origin: "https://www.trattoria-example.it" } }, env);
+    expect(ok.status).toBe(204);
+    await app.request("/v1/w?c=<script>", { headers: { origin: "https://x.test" } }, env);
+    expect(env.writes).toHaveLength(1);
+    expect(JSON.stringify(env.writes)).toContain("widget.policy");
+    expect(JSON.stringify(env.writes)).toContain("www.trattoria-example.it");
+  });
+});

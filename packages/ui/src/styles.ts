@@ -131,7 +131,7 @@ fieldset.pw-card > legend + * { clear: both; }
 .pw-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
 /* The pet card: the same layout as the HosPet.eu pet card, shown by the app and the verify page. */
-.pw-pc { overflow: hidden; }
+.pw-pc { overflow: hidden; container-type: inline-size; }
 .pw-pc-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding: 1rem 1.5rem; background: var(--pw-navy-800); color: #fff; }
 .pw-pc-head p { margin: 0; }
 .pw-pc-brand { display: flex; align-items: center; gap: .5rem; font-weight: 800; }
@@ -142,7 +142,7 @@ fieldset.pw-card > legend + * { clear: both; }
 .pw-pc-hero h1, .pw-pc-hero h2 { margin: 0; font-size: var(--pw-text-3xl); font-weight: 800; letter-spacing: -.025em; line-height: 1.15; color: var(--pw-ink); overflow-wrap: anywhere; }
 .pw-pc-hero p { margin: .125rem 0 0; font-size: var(--pw-text-lg); color: var(--pw-ink-muted); }
 .pw-pc-grid { display: grid; gap: 1.5rem 2rem; padding: 0 1.5rem 1.5rem; }
-@media (min-width: 40rem) { .pw-pc-row { grid-template-columns: minmax(0, 9rem) minmax(0, 1fr); } .pw-pc-grid { grid-template-columns: 1fr 1fr; padding: 0 2rem 2rem; } .pw-pc-hero { padding: 2rem 2rem 1rem; } }
+@container (min-width: 36rem) { .pw-pc-row { grid-template-columns: minmax(0, 9rem) minmax(0, 1fr); } .pw-pc-grid { grid-template-columns: 1fr 1fr; padding: 0 2rem 2rem; } .pw-pc-hero { padding: 2rem 2rem 1rem; } }
 .pw-pc-grid h3 { margin: 0 0 .25rem; font-size: var(--pw-text-sm); font-weight: 800; color: var(--pw-ink-subtle); }
 .pw-pc-grid dl { margin: 0; }
 .pw-pc-row { display: grid; grid-template-columns: minmax(0, 7.5rem) minmax(0, 1fr); gap: .75rem; padding: .625rem 0; border-top: 1px solid var(--pw-line); }
@@ -153,7 +153,7 @@ fieldset.pw-card > legend + * { clear: both; }
 .pw-pc-wide { grid-column: 1 / -1; }
 .pw-pc-notes { margin: 0; white-space: pre-line; color: var(--pw-ink); overflow-wrap: anywhere; }
 .pw-pc-foot { padding: .75rem 1.5rem; border-top: 1px solid var(--pw-line); background: var(--pw-canvas); font-size: var(--pw-text-xs); color: var(--pw-ink-muted); }
-@media (min-width: 40rem) { .pw-pc-foot { padding: .75rem 2rem; } }
+@container (min-width: 36rem) { .pw-pc-foot { padding: .75rem 2rem; } }
 
 @media (prefers-reduced-motion: reduce) {
   .pw-btn, .pw-input { transition: none; }

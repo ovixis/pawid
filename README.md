@@ -33,6 +33,7 @@ Early scaffold. Nothing here is production ready.
 packages/core   shared logic, no UI, runs in Node and Workers
 packages/ui     design tokens, components and the pet card (HosPet.eu design system)
 packages/rules  rules/*.yaml as typed data, with a check that every source is official
+packages/widgets Web Components for venues, built to /embed/v1.js
 rules/          country requirements as YAML, each with source URL and last check date
 apps/api        Cloudflare Worker (Hono) + D1
 apps/web        PWA (next)
@@ -45,6 +46,20 @@ docs/           spec and decisions
 2. The vet is the issuer. PawID never creates health data by itself.
 3. Data stays on the device by default. Cloud sync is optional.
 4. Every rule has an official source and a date. Unverified rules are marked `needs_review`.
+
+## For venues
+
+Four components for hotels, restaurants, bars, museums and places to visit. One script tag, no account:
+
+```html
+<script type="module" src="https://pawid.pages.dev/embed/v1.js"></script>
+<pawid-scanner></pawid-scanner>            <!-- staff check a guest's PawID with the camera -->
+<pawid-policy with-button>…</pawid-policy> <!-- the venue's own pet rules -->
+<pawid-button venue="Hotel X"></pawid-button>
+<pawid-travel-check country="IT"></pawid-travel-check>
+```
+
+Live demos and the code to copy: https://pawid.pages.dev/venues
 
 ## Connect: API and MCP
 

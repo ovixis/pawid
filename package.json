@@ -3,10 +3,14 @@
   "private": true,
   "version": "0.0.1",
   "description": "PawID: open source digital companion for the EU pet passport",
-  "workspaces": ["packages/*", "apps/*"],
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
     "test": "npm run test --workspaces --if-present",
-    "typecheck": "npm run typecheck --workspaces --if-present"
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "build:site": "npm run build -w @pawid/web && npm run build -w @pawid/widgets"
   },
   "license": "Apache-2.0"
 }

@@ -1,14 +1,19 @@
-import { ICON_BODIES, type IconName } from "./icons";
+import { ICON_BODIES, type IconName } from "./icon-map";
 
 /** Escapes text for HTML content and attribute values. Use on every piece of user data. */
 export function esc(value: unknown): string {
   return String(value ?? "").replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 }
 
-/** Inline SVG icon (MingCute). Decorative unless a label is given. */
-export function icon(name: IconName, label?: string, cls = "pw-icon"): string {
+/** Inline SVG from an icon body (I_paw…). Decorative unless a label is given. Keeps bundles small. */
+export function svgOf(body: string, label?: string, cls = "pw-icon"): string {
   const a11y = label ? `role="img" aria-label="${esc(label)}"` : `aria-hidden="true"`;
-  return `<svg class="${esc(cls)}" viewBox="0 0 24 24" ${a11y}>${ICON_BODIES[name]}</svg>`;
+  return `<svg class="${esc(cls)}" viewBox="0 0 24 24" ${a11y}>${body}</svg>`;
+}
+
+/** Inline SVG icon by name (MingCute). Pulls in every icon: prefer svgOf in code that ships to venues. */
+export function icon(name: IconName, label?: string, cls = "pw-icon"): string {
+  return svgOf(ICON_BODIES[name], label, cls);
 }
 
 /** 1 March 2026 */

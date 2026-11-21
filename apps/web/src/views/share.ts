@@ -18,7 +18,7 @@ const DURATIONS = [
   { sec: 7 * 86_400, title: "7 days", text: "To send to the place before you arrive." },
 ];
 
-export function shareView(pet: Pet, owner: string, verifyBase: string): Node[] {
+export function shareView(pet: Pet, owner: string, verifyBase: string, ctx: { venue?: string; days?: number } = {}): Node[] {
   const id = encodeURIComponent(pet.id);
   const result = el("div", { class: "qr-wrap", attrs: { "aria-live": "polite" } });
 
@@ -31,7 +31,8 @@ export function shareView(pet: Pet, owner: string, verifyBase: string): Node[] {
   picks.append(el("div", { class: "mt" }, el("label", { class: "pw-label", htmlFor: "f-owner" }, "Your first name (optional)"), ownerInput));
 
   const dur = el("fieldset", { class: "pw-card pw-card-pad" }, el("legend", { class: "pw-card-head" }, el("h2", {}, "For how long")));
-  DURATIONS.forEach((d, i) => dur.append(el("label", { class: "check" }, el("input", { type: "radio", name: "ttl", value: String(d.sec), checked: i === 0 }), el("span", {}, el("b", {}, d.title), el("span", {}, d.text)))));
+  const pick7 = ctx.days === 7;
+  DURATIONS.forEach((d, i) => dur.append(el("label", { class: "check" }, el("input", { type: "radio", name: "ttl", value: String(d.sec), checked: pick7 ? i === 1 : i === 0 }), el("span", {}, el("b", {}, d.title), el("span", {}, d.text)))));
 
   const make = button("Make the code", { kind: "primary", icon: "qr" });
   const form = el("form", { class: "no-print stack" }, picks, dur, el("div", { class: "bar" }, make));
@@ -71,10 +72,11 @@ export function shareView(pet: Pet, owner: string, verifyBase: string): Node[] {
     }
   });
 
-  return [
+  return ([
     el("div", { class: "bar no-print" }, el("a", { href: `#/pet/${id}`, class: "back" }, svg("back"), pet.name)),
-    el("h1", { class: "page-title" }, `Show ${pet.name} to a venue`),
+    el("h1", { class: "page-title" }, ctx.venue ? `Show ${pet.name} to ${ctx.venue}` : `Show ${pet.name} to a venue`),
+    ctx.venue ? el("p", { class: "pw-notice" }, `${ctx.venue} asked for your pet's details. You choose what they see, and the link stops working when it expires.`) : null,
     form,
     result,
-  ];
+  ].filter(Boolean) as Node[]);
 }
