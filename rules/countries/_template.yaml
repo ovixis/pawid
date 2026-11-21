@@ -1,0 +1,16 @@
+# Copy this file to rules/countries/<iso2>.yaml (for example it.yaml) and fill only the DIFFERENCES
+# from eu-base.yaml. Leave out anything that is the same.
+# Every rule needs an official source URL (ministry or national authority). No blogs.
+
+country: XX
+name: Country name
+official_pages:
+  - https://example.gov/pet-travel   # replace with the national authority page
+last_checked: YYYY-MM-DD
+checked_by: github-handle
+overrides:
+  - id: echinococcus_treatment
+    text: Describe the difference in one sentence.
+    status: needs_review
+    sources:
+      - https://example.gov/pet-travel

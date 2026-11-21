@@ -1,0 +1,16 @@
+* { box-sizing: border-box; }
+body { font-family: system-ui, sans-serif; margin: 0; background: #f6f7f6; color: #1b1f1d; }
+main { max-width: 32rem; margin: 0 auto; padding: 1rem; }
+h1 { margin: .5rem 0; }
+.note { background: #fff4d6; padding: .6rem .8rem; border-radius: .5rem; font-size: .9rem; }
+.card { background: #fff; border-radius: .75rem; padding: 1rem; margin: 1rem 0; border-left: 6px solid #ccc; display: grid; gap: .5rem; }
+.card.valid { border-left-color: #2e9e6b; }
+.card.expiring_soon { border-left-color: #e0a100; }
+.card.expired, .card.missing { border-left-color: #c43d3d; }
+input, button { font: inherit; padding: .6rem; border-radius: .5rem; border: 1px solid #bbb; }
+button { background: #1f6f5c; color: #fff; border: 0; cursor: pointer; }
+button.ghost { background: transparent; color: #444; border: 1px solid #bbb; }
+.row { display: flex; gap: .5rem; }
+.qr canvas { max-width: 100%; }
+.error { color: #c43d3d; margin: 0; }
+label { font-size: .85rem; color: #555; }

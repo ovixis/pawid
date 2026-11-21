@@ -1,0 +1,9 @@
+{
+  "name": "PawID",
+  "short_name": "PawID",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1f6f5c",
+  "icons": []
+}
