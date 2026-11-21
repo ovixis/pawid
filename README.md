@@ -5,8 +5,7 @@
 <h1 align="center">PawID</h1>
 
 <p align="center">
-  <b>Your pet's EU passport details on your phone, ready to show at the door.</b><br>
-  Open source, free, no account. By <img src="apps/web/public/brand/hospet-mark.svg" alt="" width="16" height="16"> <a href="https://hospet.eu">HosPet.eu</a>
+  <b>Your pet's EU passport details on your phone, ready to show at the door.</b>
 </p>
 
 <p align="center">
