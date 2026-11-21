@@ -2,6 +2,11 @@ name = "pawid-api"
 main = "src/index.ts"
 compatibility_date = "2024-11-01"
 
+# The page a venue sees after scanning a QR code, on the HosPet domain (the zone hospet.eu is on Cloudflare).
+# The API stays on workers.dev as well.
+workers_dev = true
+routes = [{ pattern = "pawid.hospet.eu/v/*", zone_name = "hospet.eu" }]
+
 # Created with: npx wrangler d1 create pawid --jurisdiction eu
 [[d1_databases]]
 binding = "DB"

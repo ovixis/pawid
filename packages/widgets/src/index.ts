@@ -1,6 +1,6 @@
 /**
  * PawID components for venues. One script:
- *   <script type="module" src="https://pawid.pages.dev/embed/v1.js"></script>
+ *   <script type="module" src="https://pawid.hospet.eu/embed/v1.js"></script>
  * then any of: <pawid-scanner>, <pawid-policy>, <pawid-button>, <pawid-travel-check>.
  */
 import { PawidButton } from "./button";

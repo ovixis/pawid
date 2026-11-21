@@ -14,7 +14,7 @@ export const SERVER_INFO = {
   title: "PawID: pet travel in Europe",
   description: "Open source companion for the EU pet passport, by HosPet.eu. Verify a PawID pet card and read EU pet travel rules with their official sources.",
   version: "0.1.0",
-  websiteUrl: "https://pawid.pages.dev",
+  websiteUrl: "https://pawid.hospet.eu",
 };
 
 const INSTRUCTIONS =

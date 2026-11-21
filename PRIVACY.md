@@ -3,7 +3,7 @@
 Last updated: 21 November 2026
 
 PawID is an open source app by [HosPet.eu](https://hospet.eu). This page says what happens to your
-data in the PawID app (pawid.pages.dev), the PawID API (pawid-api.hospet.workers.dev) and the
+data in the PawID app (pawid.hospet.eu, also reachable at pawid.pages.dev), the PawID API (pawid-api.hospet.workers.dev) and the
 components venues add to their sites. Everything here can be checked in the code of this repository.
 
 PawID is not an official document. The EU pet passport, issued by an authorised vet, is.
@@ -92,7 +92,7 @@ in the last minute, in memory only. This is never written to a database.
 
 ## Venues that use the PawID components
 
-The components on a venue's site load from pawid.pages.dev and talk to the PawID API. They set no
+The components on a venue's site load from pawid.hospet.eu (or pawid.pages.dev) and talk to the PawID API. They set no
 cookies. The scanner uses the camera only after staff press "Scan", and the picture never leaves the
 device: only the code found in it is checked. The venue's own pet rules are the venue's, and the
 venue's own privacy policy applies to its site.

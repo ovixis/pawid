@@ -1,6 +1,6 @@
 // Backup and restore, all on the device.
 // The backup is the pets' details as JSON. It travels as a file, or packed (gzip + base64url) into a
-// restore link: https://pawid.pages.dev/#/restore?b=<code>. The code is after "#", so browsers never
+// restore link: https://pawid.hospet.eu/#/restore?b=<code>. The code is after "#", so browsers never
 // send it to a server. PawID keeps no copy.
 // The signing key is not in the backup: a new one is made on the new phone, and codes made before
 // still verify (each code carries its own public key).

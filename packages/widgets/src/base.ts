@@ -1,7 +1,7 @@
 import { COMPONENTS, TOKENS, BY_HOSPET, hospetMark, pawidMark } from "@pawid/ui";
 
 export const DEFAULT_API = "https://pawid-api.hospet.workers.dev";
-export const DEFAULT_APP = "https://pawid.pages.dev";
+export const DEFAULT_APP = "https://pawid.hospet.eu";
 
 /**
  * Styles inside every component. The venue's font is used (font-family: inherit).
@@ -43,7 +43,7 @@ const counted = new Set<string>();
 export function countLoad(api: string, component: string): void {
   if (counted.has(component)) return;
   // Our own demo pages are not a venue using PawID.
-  if (/(^|\.)pawid\.pages\.dev$|^localhost$|^127\.0\.0\.1$/.test(location.hostname)) return;
+  if (/(^|\.)pawid\.pages\.dev$|^pawid\.hospet\.eu$|^localhost$|^127\.0\.0\.1$/.test(location.hostname)) return;
   counted.add(component);
   try {
     fetch(`${api}/v1/w?c=${encodeURIComponent(component)}`, { mode: "cors", credentials: "omit", keepalive: true }).catch(() => {});

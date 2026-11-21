@@ -57,14 +57,14 @@ docs/           spec and decisions
 Four components for hotels, restaurants, bars, museums and places to visit. One script tag, no account:
 
 ```html
-<script type="module" src="https://pawid.pages.dev/embed/v1.js"></script>
+<script type="module" src="https://pawid.hospet.eu/embed/v1.js"></script>
 <pawid-scanner></pawid-scanner>            <!-- staff check a guest's PawID with the camera -->
 <pawid-policy with-button>…</pawid-policy> <!-- the venue's own pet rules -->
 <pawid-button venue="Hotel X"></pawid-button>
 <pawid-travel-check country="IT"></pawid-travel-check>
 ```
 
-Live demos and the code to copy: https://pawid.pages.dev/venues
+Live demos and the code to copy: https://pawid.hospet.eu/venues
 
 ## Connect: API and MCP
 

@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 
-// Builds the one script venues paste: https://pawid.pages.dev/embed/v1.js
+// Builds the one script venues paste: https://pawid.hospet.eu/embed/v1.js
 // (a normal build, not lib mode, so the ES output is minified).
 // The QR decoder for browsers without BarcodeDetector is a separate chunk, loaded only when needed.
 export default defineConfig({

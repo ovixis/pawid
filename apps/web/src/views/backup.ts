@@ -85,7 +85,7 @@ export function restoreView(code: string | null, current: Pet[], onRestore: (pet
     );
   };
 
-  const paste = el("textarea", { class: "pw-input", rows: 3, id: "restore-paste", attrs: { placeholder: "https://pawid.pages.dev/#/restore?b=…" } });
+  const paste = el("textarea", { class: "pw-input", rows: 3, id: "restore-paste", attrs: { placeholder: "https://pawid.hospet.eu/#/restore?b=…" } });
   const pick = el("input", { type: "file", accept: ".json,application/json", id: "restore-file", class: "pw-input" });
   const tryText = async (text: string) => {
     err.textContent = "";
