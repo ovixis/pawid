@@ -1,38 +1,47 @@
-// Makes the images used by README.md: category buttons (SVG) and an example pet card as a venue sees it.
+// Makes the images used by README.md: category cards (SVG) and an example pet card as a venue sees it.
 // Run: npx vite-node scripts/readme-assets.ts   (needs the Brave or Chrome path in CHROME, for the card picture)
 import { writeFileSync } from "node:fs";
-import { COMPONENTS, PAGE, TOKENS, petCardHtml } from "@pawid/ui";
+import { COMPONENTS, ICON_BODIES, PAGE, TOKENS, petCardHtml } from "@pawid/ui";
 
 const out = new URL("../docs/readme/", import.meta.url).pathname;
 const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
 
-/** A two line button: bold title, then the action. Width from the longer line. */
-function btn(file: string, title: string, action: string, dark = true) {
-  const w = Math.max(title.length * 8.5, action.length * 7.3 + 14) + 44;
-  const bg = dark ? "#14233f" : "#f5b800";
-  const fg = dark ? "#ffffff" : "#16181d";
-  const ac = dark ? "#f5b800" : "#14233f";
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${Math.round(w)}" height="60" viewBox="0 0 ${Math.round(w)} 60" role="img" aria-label="${esc(title)}: ${esc(action)}">
-<rect width="${Math.round(w)}" height="60" rx="14" fill="${bg}"/>
-<text x="22" y="26" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="${fg}">${esc(title)}</text>
-<text x="22" y="45" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="${ac}">${esc(action)} →</text>
+/**
+ * A card: an icon in a gold tile, a title and one line. All cards are the same size, so they line up
+ * in rows on GitHub. Navy, so they read in GitHub's light and dark themes.
+ */
+const W = 300, H = 92;
+function cta(file: string, icon: keyof typeof ICON_BODIES, title: string, line: string) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(title)}: ${esc(line)}">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22395f"/><stop offset="1" stop-color="#0f1b33"/></linearGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd44a"/><stop offset="1" stop-color="#f5b800"/></linearGradient>
+<radialGradient id="glow" cx="1" cy="0" r="0.9"><stop offset="0" stop-color="#ffc629" stop-opacity=".09"/><stop offset="1" stop-color="#ffc629" stop-opacity="0"/></radialGradient>
+</defs>
+<rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" rx="18" fill="url(#bg)"/>
+<rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" rx="18" fill="url(#glow)"/>
+<rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" rx="18" fill="none" stroke="#ffffff" stroke-opacity=".1"/>
+<rect x="18" y="20" width="52" height="52" rx="15" fill="url(#gold)"/>
+<rect x="18.5" y="20.5" width="51" height="51" rx="14.5" fill="none" stroke="#ffffff" stroke-opacity=".45"/>
+<g transform="translate(29.6 31.6) scale(1.2)" color="#14233f">${ICON_BODIES[icon]}</g>
+<text x="86" y="42" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" font-size="17" font-weight="700" fill="#ffffff">${esc(title)}</text>
+<text x="86" y="63" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="500" fill="#c7d3e8">${esc(line)}</text>
 </svg>
 `;
   writeFileSync(out + file, svg);
 }
 
-btn("btn-owners.svg", "Pet owners", "Open the app", false);
-btn("btn-venues.svg", "Hotels, restaurants, museums", "Add PawID to your site");
-btn("btn-vets.svg", "Vets", "Confirm a pet");
-btn("btn-developers.svg", "Developers and AI", "API and MCP server");
-btn("btn-contribute.svg", "Contribute", "Help on GitHub");
+cta("card-owners.svg", "pawFill", "Pet owners", "Open the app");
+cta("card-venues.svg", "hotelFill", "Hotels and restaurants", "Add PawID to your site");
+cta("card-vets.svg", "certificateFill", "Vets", "Confirm a pet in 30 seconds");
+cta("card-developers.svg", "worldFill", "Developers and AI", "API and MCP server");
 
-btn("need-vets.svg", "Vets for the pilot", "Register in 2 minutes");
-btn("need-rules.svg", "Country rules", "Add a country");
-btn("need-translations.svg", "Translations", "Bring PawID to your language");
-btn("need-venues.svg", "Venues", "Try the components");
-btn("need-code.svg", "Code", "Good first issues");
-btn("need-bugs.svg", "Bugs and ideas", "Open an issue");
+cta("need-vets.svg", "certificateFill", "Vets for the pilot", "Register in 2 minutes");
+cta("need-rules.svg", "worldFill", "Country rules", "Add a country");
+cta("need-translations.svg", "translateFill", "Translations", "Bring PawID to your language");
+cta("need-venues.svg", "museumFill", "Venues", "Try the components");
+cta("need-code.svg", "pullRequestFill", "Code", "Good first issues");
+cta("need-bugs.svg", "bugFill", "Bugs and ideas", "Open an issue");
 
 // The pet card a venue sees, with an example vet confirmation (example data, not a real vet or pet).
 const card = petCardHtml(

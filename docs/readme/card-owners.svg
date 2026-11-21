@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="92" viewBox="0 0 300 92" role="img" aria-label="Pet owners: Open the app">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22395f"/><stop offset="1" stop-color="#0f1b33"/></linearGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd44a"/><stop offset="1" stop-color="#f5b800"/></linearGradient>
+<radialGradient id="glow" cx="1" cy="0" r="0.9"><stop offset="0" stop-color="#ffc629" stop-opacity=".09"/><stop offset="1" stop-color="#ffc629" stop-opacity="0"/></radialGradient>
+</defs>
+<rect x="0.5" y="0.5" width="299" height="91" rx="18" fill="url(#bg)"/>
+<rect x="0.5" y="0.5" width="299" height="91" rx="18" fill="url(#glow)"/>
+<rect x="0.5" y="0.5" width="299" height="91" rx="18" fill="none" stroke="#ffffff" stroke-opacity=".1"/>
+<rect x="18" y="20" width="52" height="52" rx="15" fill="url(#gold)"/>
+<rect x="18.5" y="20.5" width="51" height="51" rx="14.5" fill="none" stroke="#ffffff" stroke-opacity=".45"/>
+<g transform="translate(29.6 31.6) scale(1.2)" color="#14233f"><path fill="currentColor" d="M12.699 12.03c2.439.212 5.46 1.806 6.169 4.326c.194.69.186 1.419-.155 2.061c-.623 1.173-2.009 1.79-3.221 2.133c-2.672.758-7.259.693-9.473-1.241c-1.544-1.348-1.158-3.193.035-4.643c1.577-1.914 4.209-2.847 6.645-2.636M5.401 6.547c.537.067 1 .204 1.444.528c1.213.885 1.827 2.71 1.12 4.09a2.25 2.25 0 0 1-1.039 1.02a2.25 2.25 0 0 1-1.547.115c-1.458-.397-2.415-1.994-2.315-3.462c.038-.548.23-.991.524-1.446c-.42-1.279 1.103-1.99 1.813-.845m15.011.841c.294.455.486.898.524 1.447c.106 1.559-.998 3.292-2.614 3.524c-.422.06-.861.006-1.248-.178a2.25 2.25 0 0 1-1.039-1.02c-.706-1.38-.093-3.205 1.12-4.089c.444-.324.907-.462 1.444-.529c.71-1.144 2.233-.434 1.813.845M13 4.19c.326.16.405.177.691.405c1.611 1.286 1.72 3.934.38 5.446c-.528.597-1.268.959-2.071.959s-1.543-.362-2.071-.959c-1.34-1.512-1.231-4.16.38-5.446c.286-.228.365-.245.691-.405c0-.22.002-.427.102-.63c.358-.732 1.438-.732 1.796 0c.1.203.102.41.102.63"/></g>
+<text x="86" y="42" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" font-size="17" font-weight="700" fill="#ffffff">Pet owners</text>
+<text x="86" y="63" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="500" fill="#c7d3e8">Open the app</text>
+</svg>

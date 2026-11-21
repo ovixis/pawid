@@ -10,11 +10,11 @@
 </p>
 
 <p align="center">
-  <a href="https://pawid.hospet.eu"><img src="docs/readme/btn-owners.svg" alt="Pet owners: open the app" height="60"></a>
-  <a href="https://pawid.hospet.eu/venues"><img src="docs/readme/btn-venues.svg" alt="Hotels, restaurants, museums: add PawID to your site" height="60"></a>
-  <a href="https://pawid.hospet.eu/vet"><img src="docs/readme/btn-vets.svg" alt="Vets: confirm a pet" height="60"></a>
-  <a href="#for-developers-and-ai-assistants"><img src="docs/readme/btn-developers.svg" alt="Developers and AI: API and MCP server" height="60"></a>
-  <a href="#what-we-need"><img src="docs/readme/btn-contribute.svg" alt="Contribute: help on GitHub" height="60"></a>
+  <a href="https://pawid.hospet.eu"><img src="docs/readme/card-owners.svg" alt="Pet owners: open the app" width="300"></a>
+  <a href="https://pawid.hospet.eu/venues"><img src="docs/readme/card-venues.svg" alt="Hotels and restaurants: add PawID to your site" width="300"></a>
+  <br>
+  <a href="https://pawid.hospet.eu/vet"><img src="docs/readme/card-vets.svg" alt="Vets: confirm a pet in 30 seconds" width="300"></a>
+  <a href="#for-developers-and-ai-assistants"><img src="docs/readme/card-developers.svg" alt="Developers and AI: API and MCP server" width="300"></a>
 </p>
 
 > **PawID is not an official document.** It does not replace the paper EU pet passport, which is
@@ -62,12 +62,14 @@ wait starts again.
 PawID is young. These are the places where help makes the biggest difference.
 
 <p align="center">
-  <a href="https://pawid.hospet.eu/vet"><img src="docs/readme/need-vets.svg" alt="Vets for the pilot: register in 2 minutes" height="60"></a>
-  <a href="https://github.com/ovixis/pawid/issues/new?template=country.yml"><img src="docs/readme/need-rules.svg" alt="Country rules: add a country" height="60"></a>
-  <a href="https://github.com/ovixis/pawid/issues/new?template=translation.yml"><img src="docs/readme/need-translations.svg" alt="Translations: bring PawID to your language" height="60"></a>
-  <a href="https://pawid.hospet.eu/venues"><img src="docs/readme/need-venues.svg" alt="Venues: try the components" height="60"></a>
-  <a href="https://github.com/ovixis/pawid/issues?q=is%3Aopen+label%3A%22good+first+issue%22"><img src="docs/readme/need-code.svg" alt="Code: good first issues" height="60"></a>
-  <a href="https://github.com/ovixis/pawid/issues/new/choose"><img src="docs/readme/need-bugs.svg" alt="Bugs and ideas: open an issue" height="60"></a>
+  <a href="https://pawid.hospet.eu/vet"><img src="docs/readme/need-vets.svg" alt="Vets for the pilot: register in 2 minutes" width="300"></a>
+  <a href="https://github.com/ovixis/pawid/issues/new?template=country.yml"><img src="docs/readme/need-rules.svg" alt="Country rules: add a country" width="300"></a>
+  <br>
+  <a href="https://github.com/ovixis/pawid/issues/new?template=translation.yml"><img src="docs/readme/need-translations.svg" alt="Translations: bring PawID to your language" width="300"></a>
+  <a href="https://pawid.hospet.eu/venues"><img src="docs/readme/need-venues.svg" alt="Venues: try the components" width="300"></a>
+  <br>
+  <a href="https://github.com/ovixis/pawid/issues?q=is%3Aopen+label%3A%22good+first+issue%22"><img src="docs/readme/need-code.svg" alt="Code: good first issues" width="300"></a>
+  <a href="https://github.com/ovixis/pawid/issues/new/choose"><img src="docs/readme/need-bugs.svg" alt="Bugs and ideas: open an issue" width="300"></a>
 </p>
 
 | We need | Why it matters | How |
@@ -168,7 +170,7 @@ Your pets' details stay on your phone. See [PRIVACY.md](PRIVACY.md) for what the
 ## Logos
 
 The PawID mark is a paw inside a scan frame, with a check on the pad. The files are made from
-`packages/ui/src/brand.ts` with `npm run brand -w @pawid/ui`; the README images with `npx vite-node scripts/readme-assets.ts`.
+`packages/ui/src/brand.ts` with `npm run brand -w @pawid/ui`; the README cards and picture with `npx vite-node scripts/readme-assets.ts`.
 
 The HosPet.eu name and logo belong to HosPet.eu. They are not covered by the Apache-2.0 licence
 of this code. If you run your own copy of PawID, remove the HosPet mark and the "by HosPet.eu" line.
