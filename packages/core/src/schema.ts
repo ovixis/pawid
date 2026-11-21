@@ -61,10 +61,10 @@ export const petSchema = z.object({
   /** National registry number, where the home country has one. */
   registryNumber: z.string().max(60).optional(),
 
-  vaccinations: z.array(vaccinationSchema).default([]),
+  vaccinations: z.array(vaccinationSchema).max(200).default([]),
   /** Booster given before the previous vaccine expired, as written in the passport. */
   boosterInTime: z.boolean().optional(),
-  treatments: z.array(treatmentSchema).default([]),
+  treatments: z.array(treatmentSchema).max(500).default([]),
 
   /** Papers some trips need. Which ones apply comes from rules/, not from this schema. */
   healthCertificateDate: isoDate.optional(),
