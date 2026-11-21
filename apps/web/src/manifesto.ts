@@ -9,7 +9,7 @@ injectStyles();
 moveToNewAddress();
 
 const URL_ = "https://pawid.hospet.eu/manifesto";
-const SHARE_TEXT = "The EU is studying a digital pet passport. PawID is a free, open source way to build it together with vets, venues and pet owners across Europe.";
+const SHARE_TEXT = "Free and open source, for a pet friendly Europe. The EU is studying a digital pet passport: with PawID, vets, venues and pet owners can build it together.";
 
 const css = document.createElement("style");
 css.textContent = `
@@ -78,10 +78,10 @@ function shareBar(): HTMLElement {
     ["linkedin", "linkedin", `https://www.linkedin.com/sharing/share-offsite/?url=${u}`],
     ["whatsapp", "whatsapp", `https://wa.me/?text=${both}`],
     ["telegram", "telegram", `https://t.me/share/url?url=${u}&text=${t}`],
-    ["reddit", "reddit", `https://www.reddit.com/submit?url=${u}&title=${encodeURIComponent("A pet friendly Europe, built in the open: the PawID manifesto")}`],
+    ["reddit", "reddit", `https://www.reddit.com/submit?url=${u}&title=${encodeURIComponent("Free and open source, for a pet friendly Europe: the PawID manifesto")}`],
     ["bluesky", "bluesky", `https://bsky.app/intent/compose?text=${both}`],
     ["threads", "threads", `https://www.threads.net/intent/post?text=${both}`],
-    ["mail", "mail", `mailto:?subject=${encodeURIComponent("A pet friendly Europe, built in the open")}&body=${both}`],
+    ["mail", "mail", `mailto:?subject=${encodeURIComponent("Free and open source, for a pet friendly Europe")}&body=${both}`],
   ];
   const label: Record<string, string> = { x: "X", facebook: "Facebook", linkedin: "LinkedIn", whatsapp: "WhatsApp", telegram: "Telegram", reddit: "Reddit", bluesky: "Bluesky", threads: "Threads", mail: "Email" };
   const status = el("p", { attrs: { role: "status" } });
@@ -99,7 +99,7 @@ function shareBar(): HTMLElement {
   copy.replaceChildren(svg("copy"));
   if ("share" in navigator) {
     const more = el("button", { type: "button", class: "s-more", attrs: { "aria-label": "Share with another app", title: "More" } }, svg("share"));
-    more.addEventListener("click", () => void navigator.share({ title: "A pet friendly Europe, built in the open", text: SHARE_TEXT, url: URL_ }).catch(() => {}));
+    more.addEventListener("click", () => void navigator.share({ title: "Free and open source, for a pet friendly Europe", text: SHARE_TEXT, url: URL_ }).catch(() => {}));
     row.append(more);
   }
   return el("div", { class: "share" }, row, status);
@@ -115,7 +115,7 @@ const src = (href: string, text: string) => el("li", {}, el("a", { href, class: 
 const main = el("main", { id: "main" },
   el("section", { class: "m-hero" },
     el("p", { class: "m-kicker" }, "PawID manifesto"),
-    el("h1", {}, "A pet friendly Europe, ", el("em", {}, "built in the open.")),
+    el("h1", {}, "Free and open source, ", el("em", {}, "for a pet friendly Europe.")),
     el("p", {}, "Many people travel in Europe with a dog or a cat. The rules are changing, and the European Union is studying a digital pet passport. We think the tools for it should belong to everyone: free, open source, and built with the vets, venues and owners who use them."),
     shareBar(),
   ),

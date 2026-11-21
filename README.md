@@ -25,7 +25,7 @@
   <img src="apps/web/public/shots/share.webp" alt="A QR code to show a hotel, valid for 15 minutes" width="220">
 </p>
 
-Read the manifesto: [A pet friendly Europe, built in the open](https://pawid.hospet.eu/manifesto).
+Read the manifesto: [Free and open source, for a pet friendly Europe](https://pawid.hospet.eu/manifesto).
 
 ## The problem
 

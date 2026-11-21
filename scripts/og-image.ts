@@ -27,9 +27,9 @@ ${stars}
 <g transform="translate(865 235) scale(2.5)">${PAWID_MARK_BODY}</g>
 <text x="80" y="118" font-family="${font}" font-size="26" font-weight="700" fill="#ffc629" letter-spacing="3">PAWID MANIFESTO</text>
 <text font-family="${font}" font-weight="800" fill="#ffffff" letter-spacing="-2">
-  <tspan x="78" y="215" font-size="72">A pet friendly</tspan>
-  <tspan x="78" y="297" font-size="72">Europe,</tspan>
-  <tspan x="78" y="379" font-size="72" fill="#ffc629">built in the open.</tspan>
+  <tspan x="78" y="210" font-size="64">Free and open source,</tspan>
+  <tspan x="78" y="288" font-size="64" fill="#ffc629">for a pet friendly</tspan>
+  <tspan x="78" y="366" font-size="64" fill="#ffc629">Europe.</tspan>
 </text>
 <text font-family="${font}" font-size="28" fill="#c7d3e8">
   <tspan x="80" y="460">The EU is studying a digital pet passport.</tspan>
