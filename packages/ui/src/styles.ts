@@ -42,12 +42,17 @@ export const TOKENS = /* css */ `
   --pw-no: #d92d20;
   --pw-danger: #b42318;
 
-  --pw-radius-control: 0.75rem;
-  --pw-radius-card: 0.875rem;
-  --pw-shadow-raised: 0 1px 2px rgb(22 24 29 / 0.06), 0 0 0 1px var(--pw-line);
-  --pw-shadow-lifted: 0 12px 32px -12px rgb(22 24 29 / 0.18), 0 0 0 1px var(--pw-line);
-  --pw-shadow-overlay: 0 24px 64px -24px rgb(22 24 29 / 0.3), 0 0 0 1px var(--pw-line);
+  /* Shape and depth (2026-11-21, "Framer" pass): rounder cards, pill buttons, layered soft shadows. */
+  --pw-radius-control: 0.875rem;
+  --pw-radius-card: 1.25rem;
+  --pw-radius-hero: 1.5rem;
+  --pw-shadow-raised: 0 0 0 1px rgb(16 24 40 / 0.07), 0 1px 2px rgb(16 24 40 / 0.04), 0 4px 14px -4px rgb(16 24 40 / 0.06);
+  --pw-shadow-lifted: 0 0 0 1px rgb(16 24 40 / 0.07), 0 2px 4px rgb(16 24 40 / 0.04), 0 18px 40px -14px rgb(16 24 40 / 0.2);
+  --pw-shadow-overlay: 0 0 0 1px rgb(16 24 40 / 0.08), 0 28px 64px -24px rgb(16 24 40 / 0.35);
   --pw-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --pw-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --pw-grad-navy: linear-gradient(160deg, #22395f, #0f1b33);
+  --pw-grad-gold: linear-gradient(180deg, #ffd44a, #f5b800);
 
   --pw-font: "Switzer", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --pw-text-xs: 0.875rem;
@@ -165,8 +170,37 @@ fieldset.pw-card > legend + * { clear: both; }
 .pw-pc-foot { padding: .75rem 1.5rem; border-top: 1px solid var(--pw-line); background: var(--pw-canvas); font-size: var(--pw-text-xs); color: var(--pw-ink-muted); }
 @container (min-width: 36rem) { .pw-pc-foot { padding: .75rem 2rem; } }
 
+/* "Framer" pass: pill buttons with a soft top light, a small lift on hover and a press on tap. */
+.pw-btn { border-radius: 9999px; transition: background-color 160ms var(--pw-ease), box-shadow 200ms var(--pw-ease-out), translate 200ms var(--pw-ease-out), scale 120ms var(--pw-ease), color 160ms; }
+.pw-btn:active:not(:disabled) { transform: none; scale: .97; }
+.pw-btn:focus-visible { outline: 3px solid color-mix(in oklab, var(--pw-accent) 70%, var(--pw-navy-800)); outline-offset: 3px; }
+.pw-btn-primary {
+  background: linear-gradient(to bottom, rgb(255 255 255 / .28), rgb(255 255 255 / 0) 60%), var(--pw-accent);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .55), 0 1px 2px rgb(16 24 40 / .14), 0 6px 16px -6px color-mix(in oklab, var(--pw-accent) 75%, transparent);
+}
+.pw-btn-primary:hover:not(:disabled) { background: linear-gradient(to bottom, rgb(255 255 255 / .4), rgb(255 255 255 / .05) 60%), var(--pw-accent); translate: 0 -1px; box-shadow: inset 0 1px 0 rgb(255 255 255 / .6), 0 2px 4px rgb(16 24 40 / .12), 0 12px 24px -8px color-mix(in oklab, var(--pw-accent) 80%, transparent); }
+.pw-btn-secondary { background: var(--pw-surface); box-shadow: var(--pw-shadow-raised); }
+.pw-btn-secondary:hover:not(:disabled) { background: var(--pw-surface); translate: 0 -1px; box-shadow: var(--pw-shadow-lifted); }
+.pw-btn-dark { background: var(--pw-grad-navy); box-shadow: inset 0 1px 0 rgb(255 255 255 / .14), 0 1px 2px rgb(16 24 40 / .2), 0 8px 18px -8px rgb(20 35 63 / .6); }
+.pw-btn-dark:hover:not(:disabled) { background: var(--pw-grad-navy); translate: 0 -1px; filter: brightness(1.12); }
+.pw-card { border-radius: var(--pw-radius-card); }
+.pw-input { border-radius: var(--pw-radius-control); }
+
+/* Icon tiles: an icon in a rounded tile with a soft top light, like app icons. */
+.pw-tile { display: inline-grid; place-items: center; flex: none; width: 2.75rem; height: 2.75rem; border-radius: .875rem; background: var(--pw-grad-navy); color: var(--pw-gold-400); box-shadow: inset 0 1px 0 rgb(255 255 255 / .16), inset 0 -1px 0 rgb(0 0 0 / .2), 0 1px 2px rgb(16 24 40 / .18), 0 8px 18px -8px rgb(20 35 63 / .55); }
+.pw-tile .pw-icon { width: 1.375rem; height: 1.375rem; }
+.pw-tile-gold { background: var(--pw-grad-gold); color: var(--pw-navy-800); box-shadow: inset 0 1px 0 rgb(255 255 255 / .6), inset 0 -1px 0 rgb(0 0 0 / .08), 0 1px 2px rgb(16 24 40 / .12), 0 8px 18px -8px rgb(245 184 0 / .6); }
+.pw-tile-soft { background: linear-gradient(180deg, #fff, var(--pw-gold-50)); color: var(--pw-navy-800); box-shadow: inset 0 0 0 1px var(--pw-gold-200), 0 1px 2px rgb(16 24 40 / .06); }
+.pw-tile-lg { width: 3.5rem; height: 3.5rem; border-radius: 1.125rem; }
+.pw-tile-lg .pw-icon { width: 1.75rem; height: 1.75rem; }
+
+/* Eyebrow label above a title. */
+.pw-eyebrow { display: inline-flex; align-items: center; gap: .5rem; margin: 0; padding: .3rem .75rem .3rem .4rem; border-radius: 9999px; font-size: .8125rem; font-weight: 700; letter-spacing: .01em; background: rgb(255 255 255 / .08); color: rgb(255 255 255 / .9); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .14); justify-self: start; }
+.pw-eyebrow::before { content: ""; width: .5rem; height: .5rem; margin-left: .2rem; border-radius: 9999px; background: var(--pw-gold-400); box-shadow: 0 0 0 3px rgb(255 198 41 / .25); }
+
 @media (prefers-reduced-motion: reduce) {
   .pw-btn, .pw-input { transition: none; }
+  .pw-btn:hover:not(:disabled) { translate: none; }
   .pw-spin { animation-duration: 3s; }
 }
 `;

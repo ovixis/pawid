@@ -2,7 +2,8 @@ import { COMPONENTS, PAGE, TOKENS } from "@pawid/ui";
 
 const APP = /* css */ `
 @font-face { font-family: "Switzer"; src: url("/fonts/Switzer-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
-.top { position: sticky; top: 0; z-index: 10; background: color-mix(in oklab, var(--pw-canvas) 92%, transparent); border-bottom: 1px solid var(--pw-line); }
+.top { position: sticky; top: 0; z-index: 10; background: color-mix(in oklab, var(--pw-canvas) 94%, transparent); border-bottom: 1px solid var(--pw-line); }
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) { .top { background: color-mix(in oklab, var(--pw-canvas) 70%, transparent); -webkit-backdrop-filter: saturate(1.8) blur(16px); backdrop-filter: saturate(1.8) blur(16px); } }
 .top-in { max-width: 48rem; margin: 0 auto; padding: .625rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .logo { display: flex; align-items: center; gap: .5rem; font-weight: 800; font-size: var(--pw-text-lg); letter-spacing: -.02em; color: var(--pw-ink); text-decoration: none; }
 .mark-wrap { display: contents; }
@@ -15,8 +16,34 @@ const APP = /* css */ `
 main { max-width: 48rem; margin: 0 auto; padding: 1.25rem 1rem 4rem; display: grid; gap: 1rem; }
 main > * { min-width: 0; }
 
-.hero { background: var(--pw-navy-800); color: #fff; border-radius: var(--pw-radius-card); padding: 1.5rem; display: grid; gap: .75rem; }
-.hero h1 { margin: 0; font-size: clamp(1.625rem, 1.35rem + 1vw, 2.125rem); line-height: 1.12; font-weight: 800; letter-spacing: -.03em; }
+.hero { color: #fff; padding: 1.75rem 1.5rem; display: grid; gap: .875rem; }
+.hero h1 { margin: 0; font-size: clamp(1.875rem, 1.4rem + 1.8vw, 2.625rem); line-height: 1.06; font-weight: 800; letter-spacing: -.035em; text-wrap: balance; }
+
+/* The hero on every PawID page: deep navy, two soft glows, a faint dot grid and a light edge. */
+.hero, .v-hero, .i-hero, .vh {
+  position: relative; isolation: isolate; overflow: hidden; border-radius: var(--pw-radius-hero); padding: 1.75rem 1.5rem;
+  background:
+    radial-gradient(55% 70% at 100% 0%, rgb(255 198 41 / .17), transparent 65%),
+    radial-gradient(60% 80% at 0% 100%, rgb(86 128 214 / .32), transparent 62%),
+    var(--pw-grad-navy);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / .07), inset 0 1px 0 rgb(255 255 255 / .12), 0 24px 48px -24px rgb(14 26 49 / .55);
+}
+.hero::before, .v-hero::before, .i-hero::before, .vh::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: radial-gradient(rgb(255 255 255 / .09) 1px, transparent 1.2px); background-size: 18px 18px;
+  -webkit-mask-image: linear-gradient(to bottom, #000, transparent 85%); mask-image: linear-gradient(to bottom, #000, transparent 85%);
+}
+@media (min-width: 40rem) { .hero, .v-hero, .i-hero, .vh { padding: 2.5rem 2.25rem; } }
+
+/* Sections ease in as they scroll into view (marketing pages only; off with reduced motion). */
+@media (prefers-reduced-motion: no-preference) {
+  html.js-reveal .reveal { opacity: 0; translate: 0 18px; transition: opacity .7s var(--pw-ease-out), translate .7s var(--pw-ease-out); }
+  html.js-reveal .reveal.in { opacity: 1; translate: 0 0; }
+}
+
+/* Cards lift a little on hover where they are links or hold actions. */
+.pet { transition: box-shadow 200ms var(--pw-ease-out), translate 200ms var(--pw-ease-out); }
+@media (hover: hover) { .pet:hover { box-shadow: var(--pw-shadow-lifted); translate: 0 -2px; } }
 .hero h1 em { font-style: normal; color: var(--pw-gold-400); }
 .hero p { margin: 0; color: rgb(255 255 255 / .82); }
 .hero .pw-btn { justify-self: start; }

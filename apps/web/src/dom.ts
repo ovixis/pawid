@@ -101,3 +101,19 @@ export function siteFooter(): HTMLElement {
     ),
   );
 }
+
+/** Marketing pages: sections ease in as they reach the screen. Without JS or with reduced motion they are simply there. */
+export function revealOnScroll(root: ParentNode, selector = "main > section, main > .pw-card"): void {
+  if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const items = [...root.querySelectorAll<HTMLElement>(selector)];
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+  for (const el of items) {
+    el.classList.add("reveal");
+    // Already on screen: show at once, no flash.
+    if (el.getBoundingClientRect().top < innerHeight * 0.92) el.classList.add("in");
+    else io.observe(el);
+  }
+  document.documentElement.classList.add("js-reveal");
+}

@@ -18,6 +18,7 @@ export function homeView(pets: Pet[], venue?: string, query = ""): Node[] {
   const hero = el(
     "section",
     { class: "hero" },
+    el("p", { class: "pw-eyebrow" }, "Free, open source, no account"),
     el("h1", {}, "Your pet's papers, ", el("em", {}, "ready at the door.")),
     el("p", {}, "Keep the pet passport details on your phone, put the rabies vaccine date in your phone's calendar with an alarm, and show a signed code to hotels, restaurants and places that welcome pets."),
   );

@@ -4,7 +4,7 @@ import "@pawid/widgets";
 import { BY_HOSPET } from "@pawid/ui";
 import { CODE_WINDOW_CSS, codeWindow } from "./codewin";
 import { GITHUB_CSS, SHOWCASE_CSS, githubInvite, phoneRow, placeCards } from "./showcase";
-import { el, svg, topBar, siteFooter } from "./dom";
+import { el, revealOnScroll, svg, topBar, siteFooter } from "./dom";
 import { injectStyles } from "./style";
 import { moveToNewAddress } from "./move";
 
@@ -16,7 +16,7 @@ const API = "https://pawid-api.hospet.workers.dev";
 
 const css = document.createElement("style");
 css.textContent = `
-.v-hero { background: var(--pw-navy-800); color: #fff; border-radius: var(--pw-radius-card); padding: 1.75rem 1.5rem; display: grid; gap: .75rem; }
+.v-hero { color: #fff; display: grid; gap: .75rem; }
 .v-hero h1 { margin: 0; font-size: clamp(1.875rem, 1.4rem + 1.6vw, 2.5rem); line-height: 1.08; font-weight: 800; letter-spacing: -.03em; }
 .v-hero h1 em { font-style: normal; color: var(--pw-gold-400); }
 .v-hero p { margin: 0; color: rgb(255 255 255 / .85); max-width: 40rem; }
@@ -36,7 +36,7 @@ css.textContent = `
 .v-notes { margin: 0; padding-left: 1.1rem; color: var(--pw-ink-muted); font-size: var(--pw-text-xs); display: grid; gap: .25rem; }
 .v-steps { counter-reset: s; display: grid; gap: .75rem; margin: 0; padding: 0; list-style: none; }
 .v-steps li { counter-increment: s; display: grid; grid-template-columns: 2rem 1fr; gap: .75rem; align-items: start; }
-.v-steps li::before { content: counter(s); display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 9999px; background: var(--pw-gold-100); color: var(--pw-navy-800); font-weight: 800; }
+.v-steps li::before { content: counter(s); display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: .75rem; background: var(--pw-grad-gold); box-shadow: inset 0 1px 0 rgb(255 255 255 / .6), 0 1px 2px rgb(16 24 40 / .12), 0 6px 14px -6px rgb(245 184 0 / .55); color: var(--pw-navy-800); font-weight: 800; }
 .v-steps b { display: block; }
 .v-steps span { color: var(--pw-ink-muted); }
 ${CODE_WINDOW_CSS}${SHOWCASE_CSS}${GITHUB_CSS}
@@ -97,6 +97,7 @@ const main = el(
   "main",
   { id: "main" },
   el("section", { class: "v-hero" },
+    el("p", { class: "pw-eyebrow" }, "For places that welcome pets"),
     el("h1", {}, "PawID for places that ", el("em", {}, "welcome pets.")),
     el("p", {}, "Four free components for hotels, restaurants, bars, museums, tourist offices and places to visit in Europe. Paste one line of code, keep your own colours, no account and no fee."),
   ),
@@ -198,3 +199,4 @@ const main = el(
 
 const footer = siteFooter();
 document.getElementById("app")!.replaceChildren(header, main, footer);
+revealOnScroll(document);

@@ -1,6 +1,6 @@
 // "Install PawID": an install button where the browser allows it, steps for each phone, and a short guide.
 import { BY_HOSPET, type IconName } from "@pawid/ui";
-import { el, svg, topBar, siteFooter } from "./dom";
+import { el, revealOnScroll, svg, topBar, siteFooter } from "./dom";
 import { GITHUB_CSS, SHOWCASE_CSS, githubInvite, phoneRow } from "./showcase";
 import { injectStyles } from "./style";
 import { moveToNewAddress } from "./move";
@@ -10,7 +10,7 @@ moveToNewAddress();
 
 const css = document.createElement("style");
 css.textContent = `${SHOWCASE_CSS}${GITHUB_CSS}
-.i-hero { background: var(--pw-navy-800); color: #fff; border-radius: var(--pw-radius-card); padding: 1.75rem 1.5rem; display: grid; gap: .75rem; }
+.i-hero { color: #fff; display: grid; gap: .75rem; }
 .i-hero h1 { margin: 0; font-size: clamp(1.875rem, 1.4rem + 1.6vw, 2.5rem); line-height: 1.08; font-weight: 800; letter-spacing: -.03em; }
 .i-hero h1 em { font-style: normal; color: var(--pw-gold-400); }
 .i-hero p { margin: 0; color: rgb(255 255 255 / .85); max-width: 40rem; }
@@ -27,7 +27,7 @@ css.textContent = `${SHOWCASE_CSS}${GITHUB_CSS}
 .os summary::-webkit-details-marker { display: none; }
 .os summary::after { content: "+"; margin-left: auto; color: var(--pw-ink-muted); font-weight: 600; }
 .os[open] summary::after { content: "\\2212"; }
-.os-ic { display: grid; place-items: center; flex: none; width: 2.5rem; height: 2.5rem; border-radius: .75rem; color: #fff; }
+.os-ic { display: grid; place-items: center; flex: none; width: 2.5rem; height: 2.5rem; border-radius: .75rem; color: #fff; background-image: linear-gradient(to bottom, rgb(255 255 255 / .18), rgb(255 255 255 / 0) 55%); box-shadow: inset 0 1px 0 rgb(255 255 255 / .25), 0 1px 2px rgb(16 24 40 / .18), 0 8px 16px -8px rgb(16 24 40 / .45); }
 .os-ic .pw-icon { width: 1.5rem; height: 1.5rem; }
 .os-ic-iphone { background: #16181d; }
 .os-ic-iphone .pw-icon { margin-top: -.125rem; }
@@ -36,14 +36,14 @@ css.textContent = `${SHOWCASE_CSS}${GITHUB_CSS}
 .os summary small { font-weight: 500; color: var(--pw-ink-muted); }
 .os ol { margin: 0; padding: 0 1rem 1rem; list-style: none; counter-reset: s; display: grid; gap: .75rem; }
 .os li { counter-increment: s; display: grid; grid-template-columns: 2rem 1fr; gap: .75rem; align-items: start; }
-.os li::before { content: counter(s); display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 9999px; background: var(--pw-gold-100); color: var(--pw-navy-800); font-weight: 800; }
+.os li::before { content: counter(s); display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: .75rem; background: var(--pw-grad-gold); box-shadow: inset 0 1px 0 rgb(255 255 255 / .6), 0 1px 2px rgb(16 24 40 / .12), 0 6px 14px -6px rgb(245 184 0 / .55); color: var(--pw-navy-800); font-weight: 800; }
 .os li span { padding-top: .25rem; }
 .os .key { display: inline-flex; align-items: center; gap: .25rem; padding: 0 .375rem; border-radius: .375rem; background: var(--pw-surface); box-shadow: inset 0 0 0 1px var(--pw-line); font-weight: 700; white-space: nowrap; }
 .os .key .pw-icon { width: 1rem; height: 1rem; }
 .os .pw-notice { margin: 0 1rem 1rem; }
 .guide { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; }
 .guide li { display: grid; grid-template-columns: 2.5rem 1fr; gap: .75rem; align-items: start; }
-.guide .g-ic { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: .75rem; background: var(--pw-navy-800); color: var(--pw-gold-400); }
+.guide .g-ic.pw-tile { width: 2.5rem; height: 2.5rem; }
 .guide b { display: block; }
 .guide span { color: var(--pw-ink-muted); }
 .i-notes { margin: 0; padding-left: 1.1rem; color: var(--pw-ink-muted); display: grid; gap: .375rem; }
@@ -139,12 +139,12 @@ const devices = el("div", { class: "i-sec pw-card", id: "steps" },
 const guide = el("section", { class: "i-sec pw-card", id: "guide" },
   el("h2", {}, "How to use PawID"),
   el("ol", { class: "guide" },
-    el("li", {}, el("span", { class: "g-ic" }, svg("add")), el("div", {}, el("b", {}, "1. Add your pet"), el("span", {}, "Open the EU pet passport and copy the microchip number, the rabies vaccine dates and your vet. It takes two minutes."))),
+    el("li", {}, el("span", { class: "g-ic pw-tile" }, svg("add")), el("div", {}, el("b", {}, "1. Add your pet"), el("span", {}, "Open the EU pet passport and copy the microchip number, the rabies vaccine dates and your vet. It takes two minutes."))),
   ),
   phoneRow(true),
   el("ol", { class: "guide", start: 5 },
-    el("li", {}, el("span", { class: "g-ic" }, svg("scan")), el("div", {}, el("b", {}, "5. Show it at the door"), el("span", {}, "Staff scan the code with any phone camera and see the card. No app or account for them. A 7 day link you can send before you arrive."))),
-    el("li", {}, el("span", { class: "g-ic" }, svg("calendar")), el("div", {}, el("b", {}, "6. Keep it up to date"), el("span", {}, "After each vet visit, update the dates. PawID shows if the rabies vaccine is still valid on the day."))),
+    el("li", {}, el("span", { class: "g-ic pw-tile" }, svg("scan")), el("div", {}, el("b", {}, "5. Show it at the door"), el("span", {}, "Staff scan the code with any phone camera and see the card. No app or account for them. A 7 day link you can send before you arrive."))),
+    el("li", {}, el("span", { class: "g-ic pw-tile" }, svg("calendar")), el("div", {}, el("b", {}, "6. Keep it up to date"), el("span", {}, "After each vet visit, update the dates. PawID shows if the rabies vaccine is still valid on the day."))),
   ),
 );
 
@@ -158,6 +158,7 @@ const notes = el("section", { class: "i-sec pw-card" },
 );
 
 const hero = el("section", { class: "i-hero" },
+  el("p", { class: "pw-eyebrow" }, "Free web app, no app store"),
   el("h1", {}, "Install PawID ", el("em", {}, "on your phone.")),
   el("p", {}, "It opens like an app, from your home screen. Your pet's details stay on the phone, ready to show at a hotel, a restaurant or a museum."),
   el("div", { class: "row" }, installBtn, el("a", { class: "pw-btn pw-btn-secondary", href: "#steps" }, "Show me the steps"), el("a", { class: "pw-btn pw-btn-ghost i-ghost", href: "/" }, "Open PawID")),
@@ -165,5 +166,6 @@ const hero = el("section", { class: "i-hero" },
 );
 
 const main = el("main", { id: "main" }, hero, devices, guide, notes, githubInvite());
+queueMicrotask(() => revealOnScroll(document));
 const footer = siteFooter();
 document.getElementById("app")!.replaceChildren(topBar("/", BY_HOSPET.href), main, footer);

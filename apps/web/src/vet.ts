@@ -17,13 +17,13 @@ injectStyles();
 moveToNewAddress();
 const css = document.createElement("style");
 css.textContent = `
-.vh { background: var(--pw-navy-800); color: #fff; border-radius: var(--pw-radius-card); padding: 1.5rem; display: grid; gap: .625rem; }
+.vh { color: #fff; display: grid; gap: .75rem; }
 .vh h1 { margin: 0; font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.25rem); line-height: 1.1; font-weight: 800; letter-spacing: -.03em; }
 .vh h1 em { font-style: normal; color: var(--pw-gold-400); }
 .vh p { margin: 0; color: rgb(255 255 255 / .85); }
 .vsteps { list-style: none; margin: 0; padding: 0; display: grid; gap: .625rem; counter-reset: s; }
 .vsteps li { counter-increment: s; display: grid; grid-template-columns: 2rem 1fr; gap: .75rem; align-items: start; }
-.vsteps li::before { content: counter(s); display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 9999px; background: var(--pw-gold-100); color: var(--pw-navy-800); font-weight: 800; }
+.vsteps li::before { content: counter(s); display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: .75rem; background: var(--pw-grad-gold); box-shadow: inset 0 1px 0 rgb(255 255 255 / .6), 0 1px 2px rgb(16 24 40 / .12), 0 6px 14px -6px rgb(245 184 0 / .55); color: var(--pw-navy-800); font-weight: 800; }
 .vsteps span { color: var(--pw-ink-muted); }
 .vpet { display: flex; align-items: center; gap: .75rem; margin-bottom: .5rem; }
 .vpet img { width: 3rem; height: 3rem; }
@@ -175,6 +175,7 @@ function home(): Node[] {
   } });
   const parts: Node[] = [
     el("section", { class: "vh" },
+      el("p", { class: "pw-eyebrow" }, "For vets"),
       el("h1", {}, "PawID for vets: ", el("em", {}, "confirm in 30 seconds.")),
       el("p", {}, "Pet owners copy the passport into PawID. You check the microchip and the rabies vaccine against the passport, and confirm with your fingerprint. Hotels and venues then see \"confirmed by a vet\". No app, no software, free."),
     ),

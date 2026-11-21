@@ -23,7 +23,7 @@ export function placeCards(linkParts: boolean): HTMLElement {
     { class: "places", attrs: { role: "list" } },
     ...PLACES.map((p) =>
       el("li", { class: "place" },
-        el("span", { class: "place-ic" }, svg(p.icon)),
+        el("span", { class: "place-ic pw-tile" }, svg(p.icon)),
         el("h3", {}, p.title),
         el("p", {}, p.text),
         el("p", { class: "place-parts" }, ...p.parts.map((x) => (linkParts ? el("a", { href: `#${x}` }, PART_NAME[x]) : el("span", {}, PART_NAME[x])))),
@@ -57,7 +57,8 @@ export function phoneRow(steps = false): HTMLElement {
 export const SHOWCASE_CSS = /* css */ `
 /* Phones: one compact row per place (icon, name, components). Wide screens: cards with a line of text. */
 .places { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
-.place { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); column-gap: .75rem; row-gap: .25rem; align-items: center; padding: .625rem .75rem; border-radius: var(--pw-radius-card); background: var(--pw-canvas); box-shadow: inset 0 0 0 1px var(--pw-line); min-width: 0; }
+.place { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); column-gap: .75rem; row-gap: .25rem; align-items: center; padding: .625rem .75rem; border-radius: var(--pw-radius-card); background: linear-gradient(180deg, var(--pw-surface), var(--pw-canvas)); box-shadow: var(--pw-shadow-raised); min-width: 0; transition: box-shadow 200ms var(--pw-ease-out), translate 200ms var(--pw-ease-out); }
+@media (hover: hover) { .place:hover { box-shadow: var(--pw-shadow-lifted); translate: 0 -2px; } }
 .place .place-ic { grid-row: span 2; }
 .place > p:not(.place-parts) { display: none; }
 @media (min-width: 40rem) {
@@ -66,8 +67,7 @@ export const SHOWCASE_CSS = /* css */ `
   .place .place-ic { grid-row: auto; }
   .place > p:not(.place-parts) { display: block; }
 }
-.place-ic { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: .75rem; background: var(--pw-navy-800); color: var(--pw-gold-400); }
-.place-ic .pw-icon { width: 1.375rem; height: 1.375rem; }
+.place-ic.pw-tile { width: 2.5rem; height: 2.5rem; }
 .place h3 { margin: 0; font-size: var(--pw-text-base); font-weight: 800; letter-spacing: -.01em; line-height: 1.25; }
 .place p { margin: 0; color: var(--pw-ink-muted); font-size: var(--pw-text-xs); line-height: 1.45; }
 .place .place-parts { display: flex; flex-wrap: wrap; gap: .25rem; }
@@ -81,7 +81,7 @@ export const SHOWCASE_CSS = /* css */ `
 .phone-item { flex: 0 0 min(15rem, 72%); scroll-snap-align: center; }
 @media (min-width: 46rem) { .phones { overflow: visible; justify-content: center; } .phone-item { flex: 0 1 15rem; } }
 .phone { margin: 0; display: grid; gap: .75rem; justify-items: center; }
-.phone-screen { position: relative; width: 100%; aspect-ratio: 390 / 844; padding: .5rem; border-radius: 2.25rem; background: #0d1426; box-shadow: inset 0 0 0 2px #2a3550, 0 18px 40px -18px rgb(13 23 43 / .55); }
+.phone-screen { position: relative; width: 100%; aspect-ratio: 390 / 844; padding: .5rem; border-radius: 2.25rem; background: linear-gradient(160deg, #34415e, #0d1426 45%); box-shadow: inset 0 0 0 1.5px rgb(255 255 255 / .12), inset 0 0 0 3px #0b1222, 0 2px 4px rgb(16 24 40 / .12), 0 30px 60px -24px rgb(13 23 43 / .6); }
 .phone-screen::before { content: ""; position: absolute; top: 1rem; left: 50%; width: 28%; height: .875rem; translate: -50% 0; border-radius: 9999px; background: #0d1426; z-index: 1; }
 .phone-screen img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 1.75rem; background: var(--pw-canvas); }
 .phone figcaption { text-align: center; font-size: var(--pw-text-xs); color: var(--pw-ink-muted); max-width: 14rem; }
