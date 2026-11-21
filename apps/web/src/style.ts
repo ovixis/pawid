@@ -2,9 +2,32 @@ import { COMPONENTS, PAGE, TOKENS } from "@pawid/ui";
 
 const APP = /* css */ `
 @font-face { font-family: "Switzer"; src: url("/fonts/Switzer-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
-.top { position: sticky; top: 0; z-index: 10; background: color-mix(in oklab, var(--pw-canvas) 94%, transparent); border-bottom: 1px solid var(--pw-line); }
+.top { position: sticky; top: 0; z-index: 10; min-width: 0; background: color-mix(in oklab, var(--pw-canvas) 94%, transparent); border-bottom: 1px solid var(--pw-line); }
 @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) { .top { background: color-mix(in oklab, var(--pw-canvas) 70%, transparent); -webkit-backdrop-filter: saturate(1.8) blur(16px); backdrop-filter: saturate(1.8) blur(16px); } }
-.top-in { max-width: 48rem; margin: 0 auto; padding: .625rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.top-in { max-width: 72rem; margin: 0 auto; padding: .625rem 1rem; display: flex; align-items: center; gap: 1rem; overflow: hidden; /* also keeps the row from widening the page while measured */ }
+.top-in > * { flex-shrink: 0; white-space: nowrap; }
+.top-in > .by { margin-left: auto; }
+.site-nav { order: 3; }
+.nav-btn { display: inline-flex; align-items: center; gap: .375rem; min-height: 2.5rem; padding: 0 .875rem; border: 0; border-radius: 9999px; background: var(--pw-surface); color: var(--pw-ink); font: inherit; font-weight: 700; box-shadow: var(--pw-shadow-raised); cursor: pointer; anchor-name: --pw-menu; }
+.nav-btn:focus-visible, .nav-list a:focus-visible { outline: 3px solid var(--pw-gold-500); outline-offset: 2px; }
+.nav-btn .pw-icon { width: 1.25rem; height: 1.25rem; }
+/* Collapsed: the list is a popover under the button (fixed offset where anchor positioning is missing). */
+.nav-list { list-style: none; margin: 0; padding: .5rem; border: 0; border-radius: var(--pw-radius-card); background: var(--pw-surface); color: var(--pw-ink); box-shadow: var(--pw-shadow-overlay);
+  position: fixed; inset: auto; inset-block-start: 4rem; inset-block-start: anchor(--pw-menu bottom); inset-inline-end: 1rem;
+  inline-size: min(80dvw, 18rem); max-block-size: calc(100dvh - 6rem); overflow: auto; margin-block-start: .5rem; }
+.nav-list:not([popover]):not([hidden]) { display: grid; z-index: 20; }
+.nav-list[popover]:is(:popover-open) { display: grid; }
+.nav-list a { display: flex; align-items: center; min-height: 2.75rem; padding: 0 .875rem; border-radius: var(--pw-radius-control); color: var(--pw-ink); text-decoration: none; font-weight: 600; }
+.nav-list a:hover { background: var(--pw-surface-muted); }
+.nav-list a[aria-current="page"] { font-weight: 800; box-shadow: inset 3px 0 0 var(--pw-gold-500); background: var(--pw-gold-50); }
+/* Wide: the same list inline in the header. */
+.top.is-wide .site-nav { order: 0; }
+.top.is-wide .nav-btn { display: none; }
+.top.is-wide .nav-list { position: static; display: flex; gap: .125rem; padding: 0; margin: 0; inline-size: auto; max-block-size: none; overflow: visible; background: transparent; box-shadow: none; }
+.top.is-wide .nav-list a { min-height: 2.25rem; padding: 0 .75rem; border-radius: 9999px; font-size: var(--pw-text-xs); }
+.top.is-wide .nav-list a[aria-current="page"] { box-shadow: inset 0 -2px 0 var(--pw-gold-500); background: var(--pw-gold-50); border-radius: .625rem .625rem .25rem .25rem; }
+.top.is-measuring * { transition: none !important; }
+@media (forced-colors: active) { .nav-list a[aria-current="page"] { outline: 2px solid CanvasText; } }
 .logo { display: flex; align-items: center; gap: .5rem; font-weight: 800; font-size: var(--pw-text-lg); letter-spacing: -.02em; color: var(--pw-ink); text-decoration: none; }
 .mark-wrap { display: contents; }
 .logo-mark { width: 2.25rem; height: 2.25rem; }

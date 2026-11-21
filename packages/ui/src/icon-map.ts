@@ -135,6 +135,8 @@ export const ICON_BODIES = {
   mailFill: I.I_mailFill,
   users: I.I_users,
   usersFill: I.I_usersFill,
+  menu: I.I_menu,
+  menuFill: I.I_menuFill,
   terminal: I.I_terminal,
   terminalFill: I.I_terminalFill,
   chatbot: I.I_chatbot,

@@ -56,16 +56,68 @@ export function brandMark(which: "pawid" | "hospet", cls = "pw-mark"): HTMLSpanE
   return s;
 }
 
-/** Header: the PawID logo on the left, "by HosPet.eu" with the HosPet mark on the right. */
+/** The site's pages, in menu order. */
+const NAV: [string, string][] = [
+  ["/", "App"], ["/venues", "Venues"], ["/vet", "Vets"], ["/install", "Install"],
+  ["/ai", "AI assistants"], ["/manifesto", "Manifesto"], ["/support", "Support"],
+];
+
+/**
+ * Header: logo, the site menu, "by HosPet.eu". One <nav> for every width: inline when the row fits,
+ * otherwise a "Menu" button that opens the same list as a popover. Without script it stays a popover.
+ */
 export function topBar(home: string, byHref: string): HTMLElement {
-  return el(
+  const here = location.pathname.replace(/\.html$/, "").replace(/\/index$/, "/") || "/";
+  const list = el("ul", { class: "nav-list", id: "site-menu" },
+    ...NAV.map(([href, label]) => el("li", {}, el("a", { href, ...(here === href ? { attrs: { "aria-current": "page" } } : {}) }, label))),
+  );
+  list.setAttribute("popover", "auto");
+  const btn = el("button", { type: "button", class: "nav-btn", attrs: { popovertarget: "site-menu", "aria-controls": "site-menu" } }, svg("menu"), el("span", {}, "Menu"));
+  const header = el(
     "header",
     { class: "top" },
     el("div", { class: "top-in" },
       el("a", { href: home, class: "logo", attrs: { "aria-label": "PawID home" } }, brandMark("pawid", "pw-mark logo-mark"), el("span", {}, "Paw", el("span", { class: "logo-id" }, "ID"))),
+      el("nav", { class: "site-nav", attrs: { "aria-label": "PawID" } }, btn, list),
       el("a", { href: byHref, class: "by", rel: "noopener" }, "by", brandMark("hospet", "pw-mark by-mark"), el("b", {}, "HosPet.eu")),
     ),
   );
+  // Browsers without popover (before 2024): the button shows and hides the list itself.
+  if (!Object.hasOwn(HTMLElement.prototype, "popover")) {
+    list.removeAttribute("popover");
+    list.hidden = true;
+    btn.addEventListener("click", () => { list.hidden = !list.hidden; btn.setAttribute("aria-expanded", String(!list.hidden)); });
+  }
+  queueMicrotask(() => fitNav(header, list));
+  return header;
+}
+
+/** Inline when logo, links and byline fit in one row; otherwise the Menu button (measured, no fixed breakpoint). */
+function fitNav(header: HTMLElement, list: HTMLElement): void {
+  const inner = header.firstElementChild as HTMLElement;
+  const hasPopover = Object.hasOwn(HTMLElement.prototype, "popover");
+  let lastWidth = 0;
+  const sync = () => {
+    const w = inner.clientWidth;
+    const wide = header.classList.contains("is-wide");
+    if (!wide && w <= lastWidth) return; // collapsed: measure again only when there is more room
+    lastWidth = w;
+    const wasOpen = list.matches(":popover-open");
+    header.classList.add("is-wide", "is-measuring");
+    if (hasPopover) list.removeAttribute("popover");
+    list.hidden = false;
+    const fits = inner.scrollWidth <= inner.clientWidth;
+    if (!fits) {
+      header.classList.remove("is-wide");
+      if (hasPopover) { list.setAttribute("popover", "auto"); if (wasOpen) list.showPopover(); }
+      else list.hidden = true;
+    }
+    requestAnimationFrame(() => header.classList.remove("is-measuring"));
+  };
+  const ro = new ResizeObserver(sync);
+  ro.observe(header);
+  ro.observe(list);
+  sync();
 }
 
 const API_DOCS = "https://pawid-api.hospet.workers.dev/v1/openapi.json";
