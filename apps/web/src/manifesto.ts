@@ -56,6 +56,20 @@ css.textContent = `
 .share-row .pw-icon { width: 1.25rem; height: 1.25rem; }
 .s-x { background: #000; } .s-facebook { background: #1877f2; } .s-linkedin { background: #0a66c2; } .s-whatsapp { background: #25d366; }
 .s-telegram { background: #26a5e4; } .s-reddit { background: #ff4500; } .s-bluesky { background: #1185fe; } .s-threads { background: #000; }
+.s-instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%); }
+.ig-panel { display: grid; gap: .75rem; padding: 1rem; border-radius: var(--pw-radius-card); background: var(--pw-surface); color: var(--pw-ink); box-shadow: var(--pw-shadow-raised); }
+.ig-panel[hidden] { display: none; }
+.ig-panel > * { margin: 0; min-width: 0; }
+.ig-title { display: flex; align-items: center; gap: .5rem; font-weight: 800; }
+.ig-title .pw-icon { width: 1.25rem; height: 1.25rem; color: #d6249f; }
+.ig-thumbs { display: flex; gap: .5rem; overflow-x: auto; scrollbar-width: none; }
+.ig-thumbs a { flex: none; border-radius: .625rem; overflow: hidden; box-shadow: var(--pw-shadow-raised); line-height: 0; }
+.ig-thumbs img { display: block; height: 8.4375rem; width: auto; }
+.ig-thumbs a:focus-visible { outline: 3px solid var(--pw-gold-500); outline-offset: 2px; }
+.ig-caption { font-size: var(--pw-text-xs); resize: vertical; }
+.ig-panel [role="status"] { color: var(--pw-ink-muted); font-size: var(--pw-text-xs); min-height: 1rem; }
+.m-hero .ig-panel p { color: var(--pw-ink); font-size: var(--pw-text-sm); }
+.m-hero .ig-panel [role="status"] { color: var(--pw-ink-muted); font-size: var(--pw-text-xs); }
 .s-mail, .s-copy, .s-more { background: var(--pw-navy-800); }
 .share [role="status"] { margin: 0; min-height: 1.25rem; font-size: var(--pw-text-xs); color: var(--pw-ink-muted); }
 .m-hero .share-row a, .m-hero .share-row button { box-shadow: inset 0 0 0 1px rgb(255 255 255 / .2), 0 2px 6px -2px rgb(0 0 0 / .4); }
@@ -67,6 +81,60 @@ css.textContent = `
 .m-src { margin: 0; padding-left: 1.1rem; display: grid; gap: .375rem; color: var(--pw-ink-muted); font-size: var(--pw-text-xs); overflow-wrap: anywhere; }
 `;
 document.head.append(css);
+
+const IG_CAPTION = `Free and open source, for a pet friendly Europe. 🐾
+
+The EU is studying a digital pet passport. Until then, a hotel, a restaurant or a museum has no easy way to check a pet's papers.
+
+PawID is our proposal: a free, open source companion to the EU pet passport. Vets confirm the microchip and rabies vaccine, venues check a pet with one scan, and anyone can confirm or correct the travel rules with a source.
+
+Read the manifesto: pawid.hospet.eu/manifesto
+
+#PawID #PetTravel #PetFriendly #DogFriendly #TravelWithPets #EUPetPassport #OpenSource #DogsOfInstagram #CatsOfInstagram`;
+const IG_POST = [1, 2, 3, 4].map((i) => `/social/manifesto-${i}.jpg`);
+const IG_STORY = "/social/manifesto-story.jpg";
+
+async function filesOf(urls: string[]): Promise<File[]> {
+  return Promise.all(urls.map(async (u) => new File([await (await fetch(u)).blob()], u.split("/").pop()!, { type: "image/jpeg" })));
+}
+
+/** Instagram has no share link: the post is ready as images plus a caption to paste. */
+function instagramPanel(): HTMLElement {
+  const status = el("p", { attrs: { role: "status" } });
+  const copyCaption = async () => {
+    try { await navigator.clipboard.writeText(IG_CAPTION); return true; } catch { return false; }
+  };
+  const shareImages = async (urls: string[]) => {
+    const copied = await copyCaption();
+    try {
+      const files = await filesOf(urls);
+      // Phones: the share sheet lists Instagram. Computers: their share sheet does not, so save the files.
+      if (matchMedia("(pointer: coarse)").matches && navigator.canShare?.({ files })) {
+        await navigator.share({ files });
+        status.textContent = copied ? "Caption copied: paste it in Instagram." : "";
+        return;
+      }
+    } catch (x) { if ((x as Error).name === "AbortError") return; }
+    // No sharing of files here (most computers): download them instead.
+    for (const u of urls) el("a", { href: u, download: u.split("/").pop()! }).click();
+    status.textContent = `Images saved${copied ? " and caption copied" : ""}. Post them from the Instagram app or instagram.com.`;
+  };
+  const caption = el("textarea", { class: "pw-input ig-caption", readOnly: true, rows: 6, attrs: { "aria-label": "Caption" } }, IG_CAPTION);
+  return el("div", { class: "ig-panel", hidden: true },
+    el("p", { class: "ig-title" }, svg("instagram"), "Ready for Instagram"),
+    el("div", { class: "ig-thumbs" },
+      ...IG_POST.map((u, i) => el("a", { href: u, download: u.split("/").pop()!, attrs: { "aria-label": `Slide ${i + 1}, save` } }, el("img", { src: u, alt: "", width: 108, height: 135, loading: "lazy" }))),
+      el("a", { href: IG_STORY, download: "manifesto-story.jpg", class: "ig-story", attrs: { "aria-label": "Story, save" } }, el("img", { src: IG_STORY, alt: "", width: 76, height: 135, loading: "lazy" })),
+    ),
+    el("div", { class: "bar" },
+      button("Share the post (4 images)", { kind: "primary", onClick: () => void shareImages(IG_POST) }),
+      button("Share the story", { kind: "secondary", onClick: () => void shareImages([IG_STORY]) }),
+      button("Copy caption", { kind: "ghost", icon: "copy", onClick: async () => { status.textContent = (await copyCaption()) ? "Caption copied." : "Select the caption and copy it."; } }),
+    ),
+    caption,
+    status,
+  );
+}
 
 /** Share links with the text filled in. Each opens the network's own share page in a new tab. */
 function shareBar(): HTMLElement {
@@ -98,12 +166,16 @@ function shareBar(): HTMLElement {
   copy.setAttribute("aria-label", "Copy the text and link");
   copy.title = "Copy";
   copy.replaceChildren(svg("copy"));
+  const ig = instagramPanel();
+  const igBtn = el("button", { type: "button", class: "s-instagram", attrs: { "aria-label": "Post on Instagram", title: "Instagram", "aria-expanded": "false" } }, svg("instagram"));
+  igBtn.addEventListener("click", () => { ig.hidden = !ig.hidden; igBtn.setAttribute("aria-expanded", String(!ig.hidden)); });
+  row.insertBefore(igBtn, row.querySelector(".s-x"));
   if ("share" in navigator) {
     const more = el("button", { type: "button", class: "s-more", attrs: { "aria-label": "Share with another app", title: "More" } }, svg("share"));
     more.addEventListener("click", () => void navigator.share({ title: "Free and open source, for a pet friendly Europe", text: SHARE_TEXT, url: URL_ }).catch(() => {}));
     row.append(more);
   }
-  return el("div", { class: "share" }, row, status);
+  return el("div", { class: "share" }, row, status, ig);
 }
 
 const item = (icon: IconName, title: string, text: string | Node) => el("li", {}, svg(icon), el("span", {}, el("b", {}, title), " ", text));

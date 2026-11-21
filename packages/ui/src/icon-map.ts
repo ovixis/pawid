@@ -167,6 +167,8 @@ export const ICON_BODIES = {
   mcpFill: I.I_mcpFill,
   eu: I.I_eu,
   euFill: I.I_euFill,
+  instagram: I.I_instagram,
+  instagramFill: I.I_instagramFill,
   x: I.I_x,
   xFill: I.I_xFill,
   facebook: I.I_facebook,

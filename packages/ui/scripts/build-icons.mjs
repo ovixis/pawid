@@ -13,7 +13,7 @@ const set = JSON.parse(readFileSync(require.resolve("@iconify-json/tabler/icons.
 const brands = JSON.parse(readFileSync(require.resolve("@iconify-json/simple-icons/icons.json"), "utf8"));
 const BRANDS = {
   claude: "claude", cursor: "cursor", chatgpt: "openai", vscodeLogo: "visualstudiocode", mcp: "modelcontextprotocol",
-  eu: "europeanunion", x: "x", facebook: "facebook", linkedin: "linkedin", whatsapp: "whatsapp", telegram: "telegram", reddit: "reddit", bluesky: "bluesky", threads: "threads",
+  eu: "europeanunion", instagram: "instagram", x: "x", facebook: "facebook", linkedin: "linkedin", whatsapp: "whatsapp", telegram: "telegram", reddit: "reddit", bluesky: "bluesky", threads: "threads",
 };
 
 // Our name -> Tabler name.
