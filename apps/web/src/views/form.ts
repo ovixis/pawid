@@ -1,6 +1,8 @@
 import { petSchema, type Pet, type Treatment, type Vaccination } from "@pawid/core";
+import { CAT_BREEDS, DOG_BREEDS } from "../breeds";
 import { COUNTRY_GROUPS } from "../countries";
 import { button, el, svg, today } from "../dom";
+import { loadPets } from "../storage";
 
 type Field = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
@@ -40,6 +42,32 @@ export function formView(pet: Pet | undefined, onSave: (p: Pet) => void, onDelet
   const country = el("select", { name: "homeCountry" }, el("option", { value: "" }, "Choose a country"));
   for (const g of COUNTRY_GROUPS) country.append(el("optgroup", { label: g.label }, ...g.items.map((c) => el("option", { value: c.code }, c.name))));
   country.value = pet?.homeCountry ?? "";
+  // Suggestions while typing (<datalist>): breeds for the chosen species, and the vets of your other pets.
+  // They only suggest: any text can still be written.
+  const others = loadPets().filter((x) => x.id !== pet?.id);
+  const breedInput = input("breed", pet?.breed ?? "", { maxLength: 100, autocomplete: "off" });
+  breedInput.setAttribute("list", "breed-list");
+  const breedList = el("datalist", { id: "breed-list" });
+  const fillBreeds = (sp: string) => {
+    const own = others.filter((x) => x.species === sp && x.breed).map((x) => x.breed!);
+    const all = [...new Set([...own, ...(sp === "cat" ? CAT_BREEDS : DOG_BREEDS)])];
+    breedList.replaceChildren(...all.map((b) => el("option", { value: b })));
+  };
+  fillBreeds(pet?.species ?? "dog");
+  species.addEventListener("change", (e) => fillBreeds((e.target as HTMLInputElement).value));
+
+  const vets = new Map<string, string>();
+  for (const x of others) if (x.vet?.name && !vets.has(x.vet.name)) vets.set(x.vet.name, x.vet.phone ?? "");
+  const vetName = input("vetName", pet?.vet?.name ?? "", { maxLength: 120, autocomplete: "off" });
+  const vetPhone = input("vetPhone", pet?.vet?.phone ?? "", { type: "tel", maxLength: 40, autocomplete: "off" });
+  const vetList = el("datalist", { id: "vet-list" }, ...[...vets.keys()].map((v) => el("option", { value: v })));
+  if (vets.size) vetName.setAttribute("list", "vet-list");
+  // Picking a vet you already used fills in the phone, if it is still empty.
+  vetName.addEventListener("change", () => {
+    const phone = vets.get(vetName.value.trim());
+    if (phone && !vetPhone.value.trim()) vetPhone.value = phone;
+  });
+
   const booster = el("input", { type: "checkbox", name: "boosterInTime", checked: pet?.boosterInTime === true });
 
   const err = el("p", { class: "pw-error", attrs: { role: "alert" } });
@@ -52,7 +80,7 @@ export function formView(pet: Pet | undefined, onSave: (p: Pet) => void, onDelet
         species,
         field("Name", input("name", pet?.name ?? "", { required: true, autocomplete: "off", maxLength: 100 })),
         el("div", { class: "fields fields-2" },
-          field("Breed", input("breed", pet?.breed ?? "", { maxLength: 100 })),
+          field("Breed", breedInput, "Start typing to see breeds, or write your own."),
           field("Sex", sex),
           field("Weight in kg", input("weightKg", pet?.weightKg?.toString() ?? "", { inputMode: "decimal" })),
           field("Born on", date("birthDate", pet?.birthDate)),
@@ -79,8 +107,8 @@ export function formView(pet: Pet | undefined, onSave: (p: Pet) => void, onDelet
     card(
       "Vet",
       el("div", { class: "fields fields-2" },
-        field("Name or clinic", input("vetName", pet?.vet?.name ?? "", { maxLength: 120, autocomplete: "off" })),
-        field("Phone", input("vetPhone", pet?.vet?.phone ?? "", { type: "tel", maxLength: 40, autocomplete: "off" })),
+        field("Name or clinic", vetName, vets.size ? "Your other pets' vets are suggested." : undefined),
+        field("Phone", vetPhone),
       ),
     ),
     el(
@@ -97,6 +125,8 @@ export function formView(pet: Pet | undefined, onSave: (p: Pet) => void, onDelet
     ),
     card("Notes", field("For the people who look after your pet", el("textarea", { name: "notes", value: pet?.notes ?? "", maxLength: 1000 }), "Food, character, anything a host should know. Up to 280 characters can go on the code you show.")),
     err,
+    breedList,
+    vetList,
   );
 
   const save = button(pet ? "Save changes" : "Save", { kind: "primary", type: "submit" });
