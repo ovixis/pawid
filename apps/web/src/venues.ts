@@ -4,7 +4,7 @@ import "@pawid/widgets";
 import { BY_HOSPET } from "@pawid/ui";
 import { CODE_WINDOW_CSS, codeWindow } from "./codewin";
 import { SHOWCASE_CSS, phoneRow, placeCards } from "./showcase";
-import { el, svg, topBar } from "./dom";
+import { el, svg, topBar, siteFooter } from "./dom";
 import { injectStyles } from "./style";
 
 injectStyles();
@@ -193,5 +193,5 @@ const main = el(
   ),
 );
 
-const footer = el("footer", { class: "foot" }, "Open source. Not an official document. ", el("a", { href: BY_HOSPET.href, rel: "noopener" }, BY_HOSPET.text), ".");
+const footer = siteFooter();
 document.getElementById("app")!.replaceChildren(header, main, footer);

@@ -1,6 +1,6 @@
 // "Install PawID": an install button where the browser allows it, steps for each phone, and a short guide.
 import { BY_HOSPET, type IconName } from "@pawid/ui";
-import { el, svg, topBar } from "./dom";
+import { el, svg, topBar, siteFooter } from "./dom";
 import { SHOWCASE_CSS, phoneRow } from "./showcase";
 import { injectStyles } from "./style";
 
@@ -158,5 +158,5 @@ const hero = el("section", { class: "i-hero" },
 );
 
 const main = el("main", { id: "main" }, hero, devices, guide, notes);
-const footer = el("footer", { class: "foot" }, el("a", { href: "/" }, "Open PawID"), ". ", el("a", { href: "/venues" }, "For hotels, restaurants and places to visit"), ". Not an official document. ", el("a", { href: BY_HOSPET.href, rel: "noopener" }, BY_HOSPET.text), ".");
+const footer = siteFooter();
 document.getElementById("app")!.replaceChildren(topBar("/", BY_HOSPET.href), main, footer);

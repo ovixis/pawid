@@ -67,3 +67,37 @@ export function topBar(home: string, byHref: string): HTMLElement {
     ),
   );
 }
+
+const API_DOCS = "https://pawid-api.hospet.workers.dev/v1/openapi.json";
+
+/** The site footer, the same on every page: brand, three link columns, the not-official notice. */
+export function siteFooter(): HTMLElement {
+  const col = (title: string, links: [string, string][]) =>
+    el("nav", { class: "f-col", attrs: { "aria-label": title } },
+      el("h2", {}, title),
+      el("ul", {}, ...links.map(([text, href]) => el("li", {}, el("a", { href, ...(href.startsWith("http") ? { rel: "noopener" } : {}) }, text)))),
+    );
+  return el(
+    "footer",
+    { class: "site-foot" },
+    el("div", { class: "f-in" },
+      el("div", { class: "f-brand" },
+        el("a", { href: "/", class: "f-logo" }, brandMark("pawid", "pw-mark f-mark"), "PawID"),
+        el("p", {}, "Open source companion for the EU pet passport, for people who travel in Europe with a dog or a cat."),
+        el("a", { href: "https://hospet.eu", class: "f-by", rel: "noopener" }, "by", brandMark("hospet", "pw-mark f-hmark"), el("b", {}, "HosPet.eu")),
+      ),
+      el("div", { class: "f-cols" },
+        col("App", [["Open PawID", "/"], ["Install the app", "/install"], ["How to use it", "/install#guide"]]),
+        col("For places", [["Components", "/venues"], ["Where it works", "/venues#places"], ["For developers", "/venues#developers"]]),
+        col("Project", [["Source code", "https://github.com/ovixis/pawid"], ["API description", API_DOCS], ["HosPet.eu", "https://hospet.eu"]]),
+      ),
+      el("p", { class: "f-notice" }, svg("info"), el("span", {}, el("b", {}, "Not an official document. "), "The EU pet passport, issued by an authorised vet, is. Always carry it when you travel.")),
+      el("div", { class: "f-base" },
+        el("span", {}, `© ${new Date().getFullYear()} HosPet.eu`),
+        el("span", {}, "Apache-2.0"),
+        el("span", {}, "Made in Europe"),
+        el("span", {}, "No cookies, no account"),
+      ),
+    ),
+  );
+}
