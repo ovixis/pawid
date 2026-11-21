@@ -2,6 +2,7 @@
 // The page renders the components from source; venues load the same code from /embed/v1.js.
 import "@pawid/widgets";
 import { BY_HOSPET } from "@pawid/ui";
+import { CODE_WINDOW_CSS, codeWindow } from "./codewin";
 import { el, svg, topBar } from "./dom";
 import { injectStyles } from "./style";
 
@@ -24,9 +25,6 @@ css.textContent = `
 .v-for { display: flex; flex-wrap: wrap; gap: .375rem; }
 .v-for span { display: inline-flex; align-items: center; height: 1.75rem; padding: 0 .7rem; border-radius: 9999px; background: var(--pw-surface-muted); font-size: .8125rem; font-weight: 700; }
 .v-demo { padding: 1rem; border-radius: var(--pw-radius-card); background: var(--pw-canvas); box-shadow: inset 0 0 0 1px var(--pw-line); }
-.v-code { position: relative; }
-.v-code pre { margin: 0; padding: 1rem 1rem 1rem 1rem; padding-right: 6.5rem; overflow-x: auto; border-radius: var(--pw-radius-control); background: var(--pw-navy-800); color: #e4eaf4; font: .8125rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; }
-.v-code .pw-btn { position: absolute; top: .5rem; right: .5rem; }
 .v-get summary { cursor: pointer; display: flex; align-items: center; justify-content: space-between; min-height: 2.75rem; font-weight: 700; color: var(--pw-navy-700); list-style: none; }
 .v-get summary::-webkit-details-marker { display: none; }
 .v-get summary::after { content: "+"; color: var(--pw-ink-muted); font-weight: 600; }
@@ -38,18 +36,12 @@ css.textContent = `
 .v-steps li::before { content: counter(s); display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 9999px; background: var(--pw-gold-100); color: var(--pw-navy-800); font-weight: 800; }
 .v-steps b { display: block; }
 .v-steps span { color: var(--pw-ink-muted); }
-`;
+${CODE_WINDOW_CSS}`;
 document.head.append(css);
 
-function code(text: string): HTMLElement {
-  const copy = el("button", { type: "button", class: "pw-btn pw-btn-secondary pw-btn-sm" }, svg("copy"), "Copy");
-  copy.addEventListener("click", async () => {
-    try { await navigator.clipboard.writeText(text); copy.lastChild!.textContent = "Copied"; setTimeout(() => (copy.lastChild!.textContent = "Copy"), 1500); } catch { /* select by hand */ }
-  });
-  return el("div", { class: "v-code" }, el("pre", {}, el("code", {}, text)), copy);
-}
+interface Snippet { file: string; code: string; what: string; result: { label: string; text: string } }
 
-function section(id: string, title: string, intro: string, forWho: string[], demo: HTMLElement, snippet: string, notes: string[]): HTMLElement {
+function section(id: string, title: string, intro: string, forWho: string[], demo: HTMLElement, snippet: Snippet, notes: string[]): HTMLElement {
   return el(
     "section",
     { class: "pw-card v-sec", id },
@@ -60,7 +52,7 @@ function section(id: string, title: string, intro: string, forWho: string[], dem
     el("details", { class: "v-get" },
       el("summary", {}, "Get the code"),
       el("div", { class: "v-get-in" },
-        code(snippet),
+        codeWindow({ ...snippet, lang: "html" }),
         notes.length ? el("ul", { class: "v-notes" }, ...notes.map((n) => el("li", {}, n))) : "",
       ),
     ),
@@ -111,7 +103,7 @@ const main = el(
       el("li", {}, el("div", {}, el("b", {}, "Paste a component where you want it"), el("span", {}, "Each one below has its code."))),
       el("li", {}, el("div", {}, el("b", {}, "Optional: your colour"), el("span", {}, "Set --pawid-accent on the component or any parent."))),
     ),
-    code(scriptTag),
+    codeWindow({ file: "your-page.html", code: scriptTag, lang: "html", what: "the PawID script tag", result: { label: "Loaded once", text: "about 14 kB, works with a strict Content Security Policy" } }),
   ),
   section(
     "scanner",
@@ -119,7 +111,7 @@ const main = el(
     "Staff scan the QR code on the guest's phone, or paste the link the guest sent, and see the pet card: microchip, rabies vaccine, vet. The card says the details are declared by the owner.",
     ["Hotel reception", "Restaurant", "Museum desk", "Dog beach"],
     demoEl("pawid-scanner", {}),
-    "<pawid-scanner></pawid-scanner>",
+    { file: "reception.html", code: "<pawid-scanner></pawid-scanner>", what: "the scanner code", result: { label: "Shows", text: "Scan a PawID code · or paste the link the guest sent" } },
     [
       "The camera needs a page on https. Inside an iframe, the iframe needs allow=\"camera\".",
       "A scanned code is never opened as a link: only PawID codes are checked, anything else is refused.",
@@ -132,7 +124,7 @@ const main = el(
     "Show guests what you accept, in the same clear look: dogs and cats, size, fee, where pets can go, what you ask at arrival.",
     ["Hotels and B&Bs", "Restaurants and bars", "Museums", "Parks and beaches"],
     demoEl("pawid-policy", { "with-button": "" }, POLICY),
-    `<pawid-policy with-button>\n  <script type="application/json">\n${policyJson.replace(/^/gm, "  ")}\n  </script>\n</pawid-policy>`,
+    { file: "pets.html", code: `<pawid-policy with-button>\n  <script type="application/json">\n${policyJson.replace(/^/gm, "  ")}\n  </script>\n</pawid-policy>`, what: "the pet policy code", result: { label: "Shows", text: "Pets at Trattoria Da Rosa · Dogs: Welcome · Up to 30 kg" } },
     [
       "dogs, cats, aloneInRoom: \"yes\", \"conditions\" or \"no\". maxWeightKg, maxPets: numbers. where, ask: lists of words (ask knows leash, muzzle, microchip, rabies, passport, pawid).",
       "updated: the date you last checked your rules (YYYY-MM-DD). link: your own page with the full rules (https).",
@@ -146,7 +138,7 @@ const main = el(
     "For a booking confirmation or a \"before you arrive\" email page. It opens the PawID app with your name: the guest picks the pet and sends you a link valid for 7 days.",
     ["Booking confirmation", "Pre-arrival page", "Table reservation"],
     demoEl("pawid-button", { venue: "Hotel Bella Vista" }),
-    `<pawid-button venue="Hotel Bella Vista"></pawid-button>`,
+    { file: "booking-confirmed.html", code: `<pawid-button venue="Hotel Bella Vista"></pawid-button>`, what: "the button code", result: { label: "Opens", text: "PawID, ready to show a pet to Hotel Bella Vista for 7 days" } },
     ["venue: your name, shown to the guest. days=\"0\" for a 15 minute code to show at the door instead. label: your own button text."],
   ),
   section(
@@ -155,8 +147,24 @@ const main = el(
     "What a dog needs to travel to your country, from PawID's rules: each rule with its official source and the date it was checked. Rules not yet confirmed are shown apart and say so.",
     ["Tourism boards", "Museums and institutions", "Campsites", "Ferries and trains"],
     demoEl("pawid-travel-check", { country: "IT" }),
-    `<pawid-travel-check country="IT"></pawid-travel-check>`,
+    { file: "visit-italy.html", code: `<pawid-travel-check country="IT"></pawid-travel-check>`, what: "the travel check code", result: { label: "Shows", text: "Coming to Italy with a dog · each rule with its official source" } },
     ["country: two letters (IT, FR, ES, DE…). Leave it out for the EU rules only.", "Not legal advice and not official. The rules come from EU and national authority pages."],
+  ),
+  el("section", { class: "pw-card v-sec", id: "developers" },
+    el("h2", {}, "For developers"),
+    el("p", {}, "Booking software, hotel apps and AI assistants can use the same rules and checks through the open API or the MCP server."),
+    codeWindow({
+      file: "travel-rules.sh",
+      lang: "sh",
+      what: "the API example",
+      code: `# Rules for bringing a dog to Italy, each with its official source\ncurl -s "${API}/v1/rules?country=IT" \\\n  -H "Accept: application/json"`,
+      result: { label: "200 OK", text: '"country": "IT" · rules with "sources" and "lastChecked"' },
+    }),
+    el("ul", { class: "dev-points" },
+      el("li", {}, svg("check"), el("span", {}, el("b", {}, "Free, no API key"), ": up to 120 requests a minute from one address.")),
+      el("li", {}, svg("check"), el("span", {}, el("b", {}, "Verify a guest's code"), " with GET /v1/verify, or read it on the page the QR code opens.")),
+      el("li", {}, svg("check"), el("span", {}, el("b", {}, "MCP server at /mcp"), " with three read-only tools for AI assistants. ", el("a", { class: "pw-link", href: `${API}/v1/openapi.json` }, "OpenAPI description"), ".")),
+    ),
   ),
   el("section", { class: "pw-card v-sec" },
     el("h2", {}, "Good to know"),
@@ -165,7 +173,6 @@ const main = el(
       el("li", {}, `If your site has a Content Security Policy: script-src ${location.origin}; connect-src ${API}.`),
       el("li", {}, "What PawID counts: which component loaded on which site (the host name only), once per page. No cookies, no IP addresses, nothing about your guests."),
       el("li", {}, "PawID is not an official document. The EU pet passport, issued by an authorised vet, is."),
-      el("li", {}, "For developers: an open API and an MCP server for AI assistants. ", el("a", { class: "pw-link", href: `${API}/v1/openapi.json` }, "API description"), "."),
     ),
   ),
 );
