@@ -1,0 +1,23 @@
+{
+  "name": "@pawid/rules",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build:rules": "node scripts/build-rules.mjs",
+    "check:rules": "node scripts/build-rules.mjs --check",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0",
+    "yaml": "^2.6.0"
+  },
+  "license": "Apache-2.0",
+  "description": "Pet travel rules as data. Code Apache-2.0, rules data CC BY 4.0 (see rules/README.md)."
+}

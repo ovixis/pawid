@@ -10,7 +10,9 @@ Thanks for helping. The most useful contribution is correct country rules.
 4. Set `last_checked` to the date you read the source (YYYY-MM-DD) and `checked_by` to your GitHub handle.
 5. Use `status: verified` only if the source says it clearly. Otherwise use `status: needs_review` and add a `todo` that says what is missing.
 6. Never guess a number (days, months, number of animals). If the source does not give it, leave it out and mark `needs_review`.
-7. Do not change the meaning of an existing `needs_review` rule without citing a source.
+7. Add the national authority's host to `rules/official-hosts.yaml` under `national`.
+8. Run `npm run build:rules -w @pawid/rules` and `npm test`. The tests fail if a source is not on an official host.
+9. Do not change the meaning of an existing `needs_review` rule without citing a source.
 
 ## What counts as an official source
 

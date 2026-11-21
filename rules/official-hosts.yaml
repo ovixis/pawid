@@ -1,0 +1,8 @@
+# Hosts accepted as official sources for rules in this folder.
+# EU institutions are listed here. When you add a country, add its national
+# authority's host (ministry, veterinary or customs authority) in the same pull request.
+# Hosts match themselves and their subdomains.
+eu:
+  - europa.eu          # European Commission, Your Europe, EU agencies
+  - eur-lex.europa.eu  # the law itself
+national: []
