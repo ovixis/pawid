@@ -107,7 +107,11 @@ export function revealOnScroll(root: ParentNode, selector = "main > section, mai
   if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const items = [...root.querySelectorAll<HTMLElement>(selector)];
   const io = new IntersectionObserver((entries) => {
-    for (const e of entries) if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+    if (!entries.some((e) => e.isIntersecting)) return;
+    // Show everything down to the bottom of the screen, also sections a jump (a link, find in page) skipped.
+    for (const el of items) {
+      if (!el.classList.contains("in") && el.getBoundingClientRect().top < innerHeight) { el.classList.add("in"); io.unobserve(el); }
+    }
   }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
   for (const el of items) {
     el.classList.add("reveal");
