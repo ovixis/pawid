@@ -2,8 +2,9 @@
 // before it counts or shows, then brings the numbers to grant applications and EU consultations.
 import type { Context, Hono } from "hono";
 import { z } from "zod";
+import { humanCheck, type TurnstileEnv } from "./turnstile";
 
-interface SupportEnv { DB: D1Database; STATS_KEY?: string }
+interface SupportEnv extends TurnstileEnv { DB: D1Database; STATS_KEY?: string }
 type C = Context<{ Bindings: SupportEnv }>;
 
 export const ROLES = ["owner", "vet", "venue", "association", "developer", "other"] as const;
@@ -17,6 +18,7 @@ const bodySchema = z.object({
   email: z.string().trim().email().max(200).optional().or(z.literal("")),
   public: z.boolean(),
   website: z.string().max(0).optional(), // honeypot: people leave it empty
+  turnstile: z.string().max(4096).optional(),
 });
 
 async function sameSecret(a: string, b: string): Promise<boolean> {
@@ -44,6 +46,7 @@ export function supportRoutes(app: Hono<{ Bindings: SupportEnv }>): void {
     const b = bodySchema.safeParse(await c.req.json().catch(() => null));
     if (!b.success) return c.json({ error: "Check your name, role and country." }, 400);
     if (b.data.website) return c.json({ ok: true }, 201); // a bot: accept silently, keep nothing
+    if (!(await humanCheck(c.env, b.data.turnstile, c.req.header("cf-connecting-ip")))) return c.json({ error: "The check that you are a person did not pass. Try again." }, 403);
     const d = b.data;
     const id = crypto.randomUUID();
     await c.env.DB.prepare("INSERT INTO supporters (id, name, role, country, organization, message, email, public, created_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)")

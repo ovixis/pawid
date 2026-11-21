@@ -6,8 +6,9 @@ import {
   vetConfirmMessage, vetFieldsSchema, vetSealSchema, type VetFields, type VetSeal,
 } from "@pawid/core";
 import { z } from "zod";
+import { humanCheck, type TurnstileEnv } from "./turnstile";
 
-export interface VetEnv {
+export interface VetEnv extends TurnstileEnv {
   DB: D1Database;
   STATS_KEY?: string;
   /** PKCS#8 Ed25519 private key (base64url) for the "s1" confirmation key. wrangler secret put VET_SIGNING_KEY */
@@ -40,6 +41,7 @@ const registerSchema = z.object({
   credentialId: z.string().regex(/^[A-Za-z0-9_-]{16,700}$/),
   publicKey: z.string().regex(/^[A-Za-z0-9_-]{40,1200}$/),
   alg: z.number().int().refine((a) => PASSKEY_ALGS.includes(a)),
+  turnstile: z.string().max(4096).optional(),
 });
 
 interface VetRow {
@@ -92,6 +94,7 @@ export function vetRoutes(app: Hono<{ Bindings: VetEnv }>): void {
     const body = registerSchema.safeParse(await c.req.json().catch(() => null));
     if (!body.success) return c.json({ error: "Check the form: every field except the clinic is needed." }, 400);
     const b = body.data;
+    if (!(await humanCheck(c.env, b.turnstile, c.req.header("cf-connecting-ip")))) return c.json({ error: "The check that you are a person did not pass. Try again." }, 403);
     const existing = await c.env.DB.prepare("SELECT id FROM vets WHERE credential_id = ?1").bind(b.credentialId).first<{ id: string }>();
     if (existing) return c.json({ error: "This passkey is already registered. Sign in instead." }, 409);
     const id = newId();

@@ -10,6 +10,7 @@ import { COUNTRY_GROUPS } from "./countries";
 import { button, el, siteFooter, svg, topBar } from "./dom";
 import { API, PairGone, claimPair, sendResult, spaced, vetPoll } from "./pair";
 import { injectStyles } from "./style";
+import { humanCheck } from "./turnstile";
 import { moveToNewAddress } from "./move";
 import { RABIES_VACCINES } from "./vaccines";
 
@@ -108,6 +109,8 @@ function registerView(after: () => void): Node[] {
   const email = el("input", { name: "email", type: "email", required: true, maxLength: 200, autocomplete: "email" });
   const oath = el("input", { type: "checkbox", name: "oath", required: true });
   const err = el("p", { class: "pw-error", attrs: { role: "alert" } });
+  const tsBox = el("div", { class: "ts-box" });
+  const human = humanCheck(tsBox);
   const go = button("Create my passkey and register", { kind: "primary", type: "submit" });
   const form = el("form", { class: "pw-card pw-card-pad stack" },
     el("div", { class: "fields fields-2" },
@@ -119,6 +122,7 @@ function registerView(after: () => void): Node[] {
       field("Email", email, "Only for HosPet.eu to contact you about your registration. Not public."),
     ),
     el("label", { class: "check" }, oath, el("span", {}, el("b", {}, "I am a vet in this register"), el("span", {}, "I will confirm only what I check myself in the pet passport and with a microchip reader."))),
+    tsBox,
     err,
     el("div", { class: "bar" }, go),
     el("p", { class: "pw-hint flush" }, "Your phone creates a passkey: you will confirm with your fingerprint or face, no password. Your name, register and number become public once approved, so venues can see who confirmed."),
@@ -145,13 +149,16 @@ function registerView(after: () => void): Node[] {
       const spki = res.getPublicKey();
       if (!spki) throw new Error("This browser cannot share the passkey's public key. Try Safari, Chrome or Edge, up to date.");
       const credentialId = b64urlEncode(new Uint8Array(cred.rawId));
+      const turnstile = await human.token();
       const r = await api<{ id: string; status: string }>("/v1/vets", {
+        turnstile,
         name: name.value.trim(), country: country.value, registerBody: body.value.trim(), registerNumber: number.value.trim(),
         clinic: clinic.value.trim() || undefined, email: email.value.trim(), credentialId, publicKey: b64urlEncode(new Uint8Array(spki)), alg: res.getPublicKeyAlgorithm(),
       });
       saveMe({ id: r.id, name: name.value.trim(), status: r.status, credentialId });
       after();
     } catch (x) {
+      human.reset();
       err.textContent = (x as Error).name === "NotAllowedError" ? "The passkey was not created. Try again and confirm with your fingerprint, face or PIN." : (x as Error).message;
     } finally {
       go.disabled = false;

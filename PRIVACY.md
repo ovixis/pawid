@@ -125,7 +125,10 @@ in the last minute, in memory only. This is never written to a database.
   addresses to deliver and protect the service, under the
   [Cloudflare privacy policy](https://www.cloudflare.com/privacypolicy/).
 - **GitHub** hosts this source code and the issues. What you write in an issue is public.
-- PawID uses no analytics service, no ads and no third party scripts. Fonts and icons are served
+- **Cloudflare Turnstile** checks that the vet registration and the statement of support are sent by a
+  person, not a bot. It runs only on those two forms, under the
+  [Cloudflare Turnstile privacy addendum](https://www.cloudflare.com/turnstile-privacy-policy/).
+- PawID uses no analytics service, no ads and no third party scripts, except Cloudflare Turnstile on the two forms above. Fonts and icons are served
   from PawID itself.
 
 ## Venues that use the PawID components

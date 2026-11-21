@@ -7,6 +7,7 @@ import { button, el, revealOnScroll, siteFooter, svg, topBar } from "./dom";
 import { moveToNewAddress } from "./move";
 import { API } from "./pair";
 import { injectStyles } from "./style";
+import { humanCheck } from "./turnstile";
 
 injectStyles();
 moveToNewAddress();
@@ -85,6 +86,8 @@ function form(): HTMLElement {
   const pub = el("input", { type: "checkbox", name: "public", checked: true });
   const hp = el("input", { name: "website", tabIndex: -1, autocomplete: "off", attrs: { "aria-hidden": "true" } });
   const err = el("p", { class: "pw-error", attrs: { role: "alert" } });
+  const tsBox = el("div", { class: "ts-box" });
+  const human = humanCheck(tsBox);
   const go = button("Add my name", { kind: "primary", type: "submit", icon: "check" });
   const f = el("form", { class: "stack" },
     el("div", {}, el("label", { class: "pw-label", htmlFor: "s-name" }, "Your name"), name),
@@ -97,6 +100,7 @@ function form(): HTMLElement {
     el("div", {}, el("label", { class: "pw-label", htmlFor: "s-email" }, "Email (optional)"), email, el("p", { class: "pw-hint flush" }, "Only if we may write to you about PawID. Never shown, never shared.")),
     el("label", { class: "check" }, pub, el("span", {}, el("b", {}, "Show my name on this page"), el("span", {}, "With your role, country, organisation and message. Otherwise we only count you."))),
     el("label", { class: "s-hp" }, "Leave empty", hp),
+    tsBox,
     err,
     el("div", { class: "bar" }, go),
     el("p", { class: "pw-hint flush" }, "HosPet.eu checks each statement before it counts. ", el("a", { href: "https://github.com/ovixis/pawid/blob/main/PRIVACY.md", class: "pw-link" }, "Privacy"), "."),
@@ -107,10 +111,11 @@ function form(): HTMLElement {
     if (!f.reportValidity()) return;
     go.disabled = true;
     try {
+      const turnstile = await human.token();
       const role = (f.querySelector<HTMLInputElement>('input[name="role"]:checked')?.value) ?? "other";
       const r = await fetch(`${API}/v1/support`, {
         method: "POST", headers: { "Content-Type": "application/json" }, credentials: "omit",
-        body: JSON.stringify({ name: name.value.trim(), role, country: country.value, organization: org.value.trim() || undefined, message: msg.value.trim() || undefined, email: email.value.trim() || undefined, public: pub.checked, website: hp.value }),
+        body: JSON.stringify({ name: name.value.trim(), role, country: country.value, organization: org.value.trim() || undefined, message: msg.value.trim() || undefined, email: email.value.trim() || undefined, public: pub.checked, website: hp.value, turnstile }),
       });
       const d = (await r.json().catch(() => ({}))) as { error?: string };
       if (!r.ok) throw new Error(d.error ?? "Something went wrong. Try again.");
@@ -119,6 +124,7 @@ function form(): HTMLElement {
         el("p", { class: "pw-hint" }, "We check each statement, usually within a few days. Then it counts here.")));
     } catch (x) {
       err.textContent = (x as Error).message;
+      human.reset();
     } finally {
       go.disabled = false;
     }
