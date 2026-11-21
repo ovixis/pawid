@@ -122,7 +122,7 @@ Usage is counted per day without personal data: a metric, a coarse label (countr
 | App (pets, card, QR, Can I travel?, calendar, backup) | live |
 | Vet confirmation (passkey, code pairing, number matching) | live, pilot with the first vets |
 | Venue components | live |
-| Rules: EU base + IT, FR, ES, DE, IE | live; 6 rules still being checked |
+| Rules: EU base + IT, FR, ES, DE, IE | live; 5 rules still being checked |
 | API and MCP server | live |
 | Translations | not started |
 | Owner's signing key as a non-extractable key | planned |
