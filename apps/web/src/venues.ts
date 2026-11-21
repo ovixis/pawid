@@ -3,6 +3,7 @@
 import "@pawid/widgets";
 import { BY_HOSPET } from "@pawid/ui";
 import { CODE_WINDOW_CSS, codeWindow } from "./codewin";
+import { SHOWCASE_CSS, phoneRow, placeCards } from "./showcase";
 import { el, svg, topBar } from "./dom";
 import { injectStyles } from "./style";
 
@@ -36,7 +37,8 @@ css.textContent = `
 .v-steps li::before { content: counter(s); display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 9999px; background: var(--pw-gold-100); color: var(--pw-navy-800); font-weight: 800; }
 .v-steps b { display: block; }
 .v-steps span { color: var(--pw-ink-muted); }
-${CODE_WINDOW_CSS}`;
+${CODE_WINDOW_CSS}${SHOWCASE_CSS}
+.v-links { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; }`;
 document.head.append(css);
 
 interface Snippet { file: string; code: string; what: string; result: { label: string; text: string } }
@@ -95,6 +97,20 @@ const main = el(
   el("section", { class: "v-hero" },
     el("h1", {}, "PawID for places that ", el("em", {}, "welcome pets.")),
     el("p", {}, "Four free components for hotels, restaurants, bars, museums, tourist offices and places to visit in Europe. Paste one line of code, keep your own colours, no account and no fee."),
+  ),
+  el("section", { class: "pw-card v-sec", id: "places" },
+    el("h2", {}, "Where PawID works"),
+    el("p", {}, "Pick the components that fit your place. Tap one to see it working."),
+    placeCards(true),
+  ),
+  el("section", { class: "pw-card v-sec", id: "guests" },
+    el("h2", {}, "What your guests see"),
+    el("p", {}, "The free PawID app on the guest's phone. Pet owners copy the details from the pet passport once, then show a code at your door or send you a link before they arrive."),
+    phoneRow(),
+    el("div", { class: "v-links" },
+      el("a", { class: "pw-btn pw-btn-primary", href: "/" }, "Open PawID"),
+      el("a", { class: "pw-btn pw-btn-secondary", href: "/install" }, svg("download"), "How to install it"),
+    ),
   ),
   el("section", { class: "pw-card v-sec" },
     el("h2", {}, "How to add it"),

@@ -14,6 +14,8 @@ const ICONS = {
   phone: "phone", calendar: "calendar", certificate: "certificate", warning: "warning", info: "information",
   dog: "dog", cat: "cat", paw: "paw", loading: "loading", time: "time", pin: "map-pin", world: "world-2",
   hotel: "hotel", fork: "fork-knife", cup: "teacup", museum: "bank", ticket: "ticket", building: "building-2",
+  beer: "beer", beach: "beachball", tent: "tent", train: "train", ship: "ship", park: "park", store: "store",
+  cellphone: "cellphone", download: "download", safari: "safari", chrome: "chrome", addSquare: "add-square", moreV: "more-2", shareIos: "upload-2", idcard: "idcard",
 };
 
 // One named export per icon (I_<name>) so bundles keep only the icons they use,

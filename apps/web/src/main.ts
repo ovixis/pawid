@@ -18,7 +18,7 @@ const root = document.getElementById("app") as HTMLElement;
 
 const header = topBar("#/", BY_HOSPET.href);
 const main = el("main", { id: "main", tabIndex: -1 });
-const footer = el("footer", { class: "foot" }, el("a", { href: "/venues" }, "For hotels, restaurants and places to visit"), ". Open source. Not an official document. ", el("a", { href: "https://github.com/ovixis/pawid", rel: "noopener" }, "Source code"), ". ", el("a", { href: BY_HOSPET.href, rel: "noopener" }, BY_HOSPET.text), ".");
+const footer = el("footer", { class: "foot" }, el("a", { href: "/install" }, "Install the app"), ". ", el("a", { href: "/venues" }, "For hotels, restaurants and places to visit"), ". Open source. Not an official document. ", el("a", { href: "https://github.com/ovixis/pawid", rel: "noopener" }, "Source code"), ". ", el("a", { href: BY_HOSPET.href, rel: "noopener" }, BY_HOSPET.text), ".");
 root.replaceChildren(header, main, footer);
 
 function savedVenue(): { venue?: string; days?: number } {
