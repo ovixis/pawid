@@ -25,7 +25,12 @@ css.textContent = `${SHOWCASE_CSS}
 .os summary::-webkit-details-marker { display: none; }
 .os summary::after { content: "+"; margin-left: auto; color: var(--pw-ink-muted); font-weight: 600; }
 .os[open] summary::after { content: "\\2212"; }
-.os summary .pw-icon { width: 1.5rem; height: 1.5rem; color: var(--pw-navy-700); }
+.os-ic { display: grid; place-items: center; flex: none; width: 2.5rem; height: 2.5rem; border-radius: .75rem; color: #fff; }
+.os-ic .pw-icon { width: 1.5rem; height: 1.5rem; }
+.os-ic-iphone { background: #16181d; }
+.os-ic-iphone .pw-icon { margin-top: -.125rem; }
+.os-ic-android { background: #3ddc84; color: #073d22; }
+.os-ic-computer { background: var(--pw-navy-800); color: var(--pw-gold-400); }
 .os summary small { font-weight: 500; color: var(--pw-ink-muted); }
 .os ol { margin: 0; padding: 0 1rem 1rem; list-style: none; counter-reset: s; display: grid; gap: .75rem; }
 .os li { counter-increment: s; display: grid; grid-template-columns: 2rem 1fr; gap: .75rem; align-items: start; }
@@ -99,7 +104,7 @@ const isAndroid = /Android/.test(ua);
 
 function os(id: string, icon: IconName, title: string, sub: string, open: boolean, steps: (Node | string)[][], note?: string): HTMLElement {
   return el("details", { class: "os", id, open },
-    el("summary", {}, svg(icon), el("span", {}, title, el("br"), el("small", {}, sub))),
+    el("summary", {}, el("span", { class: `os-ic os-ic-${id}` }, svg(icon)), el("span", {}, title, el("br"), el("small", {}, sub))),
     el("ol", {}, ...steps.map((s) => el("li", {}, el("span", {}, ...s)))),
     note ? el("p", { class: "pw-notice" }, note) : "",
   );
@@ -108,19 +113,19 @@ function os(id: string, icon: IconName, title: string, sub: string, open: boolea
 const devices = el("div", { class: "i-sec pw-card", id: "steps" },
   el("h2", {}, "Add it to your home screen"),
   el("p", {}, "PawID is a web app: no app store, no account, free. Pick your phone."),
-  os("iphone", "safari", "iPhone and iPad", "Safari, Chrome or Edge", isIos, [
+  os("iphone", "appleFill", "iPhone and iPad", "Safari, Chrome or Edge", isIos, [
     ["Open ", el("b", {}, "pawid.pages.dev"), " in Safari."],
     ["Tap ", key("Share", "shareIos"), ". In newer iOS versions it is in the ", key("•••"), " menu at the bottom."],
     ["Scroll down and tap ", key("Add to Home Screen", "addSquare"), "."],
     ["Keep ", el("b", {}, "Open as Web App"), " on if you see it, then tap ", key("Add"), "."],
   ], "On iPhone the installed app keeps its own data, apart from Safari. Install PawID first, then add your pet in the app."),
-  os("android", "chrome", "Android", "Chrome, Samsung Internet, Edge", isAndroid, [
+  os("android", "androidFill", "Android", "Chrome, Samsung Internet, Edge", isAndroid, [
     ["Open ", el("b", {}, "pawid.pages.dev"), " in Chrome."],
     ["Tap the menu ", key("", "moreV"), " at the top right."],
     ["Tap ", key("Add to home screen", "addSquare"), " or ", key("Install app", "download"), "."],
     ["Tap ", key("Install"), ". PawID appears with your other apps."],
   ], "In Samsung Internet: menu, then Add page to, then Home screen."),
-  os("computer", "cellphone", "Computer", "Chrome, Edge or Safari on a Mac", !isIos && !isAndroid, [
+  os("computer", "laptop", "Computer", "Chrome, Edge or Safari on a Mac", !isIos && !isAndroid, [
     ["Chrome or Edge: click the install icon ", key("", "download"), " at the right of the address bar."],
     ["Safari on a Mac: ", key("File"), " then ", key("Add to Dock"), "."],
     ["Firefox: use PawID as a normal website, it works the same."],

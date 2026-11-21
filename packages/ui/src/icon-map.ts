@@ -99,6 +99,12 @@ export const ICON_BODIES = {
   shareIosFill: I.I_shareIosFill,
   idcard: I.I_idcard,
   idcardFill: I.I_idcardFill,
+  apple: I.I_apple,
+  appleFill: I.I_appleFill,
+  android: I.I_android,
+  androidFill: I.I_androidFill,
+  laptop: I.I_laptop,
+  laptopFill: I.I_laptopFill,
 } as const;
 
 export type IconName = keyof typeof ICON_BODIES;
