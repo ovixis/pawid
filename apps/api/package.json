@@ -13,7 +13,8 @@
     "@pawid/core": "*",
     "hono": "^4.6.0",
     "@pawid/ui": "*",
-    "@pawid/rules": "*"
+    "@pawid/rules": "*",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241022.0",

@@ -1,5 +1,5 @@
 import { countryName, esc, longDate, svgOf } from "./html";
-import { I_cat, I_dog } from "./icons";
+import { I_cat, I_checkCircleFill, I_dog, I_warning } from "./icons";
 import { pawidMark } from "./brand";
 
 /** The fields a pet card can show. Same names as ShareCard in @pawid/core. */
@@ -22,6 +22,17 @@ export interface CardData {
   vetPhone?: string;
   owner?: string;
   notes?: string;
+}
+
+/** Result of checking a vet seal (from the PawID API). */
+export interface VetCheckView {
+  status: "confirmed" | "revoked" | "invalid";
+  name?: string;
+  registerBody?: string;
+  registerNumber?: string;
+  country?: string;
+  /** YYYY-MM-DD */
+  on?: string;
 }
 
 export type RabiesState = "valid" | "soon" | "expired";
@@ -63,10 +74,27 @@ export interface CardOptions {
   hideEmpty?: boolean;
   /** "Declared by the owner…" footer. Always on for venues. */
   footer?: string;
+  /** Vet confirmation of microchip and rabies, when the code carries one. */
+  vet?: VetCheckView;
 }
 
 const DEFAULT_FOOTER =
   "Declared by the owner. Not verified by a vet. Not an official document: the EU pet passport and the vet's papers remain the official documents.";
+const VET_FOOTER =
+  "Microchip and rabies vaccine confirmed by a vet registered with PawID. Other details declared by the owner. Not an official document: the EU pet passport remains the official document.";
+
+/** The line that says who confirmed what. */
+function vetBanner(v: VetCheckView | undefined): string {
+  if (!v) return "";
+  if (v.status === "confirmed") {
+    const reg = [v.registerBody, v.registerNumber ? `n. ${v.registerNumber}` : ""].filter(Boolean).join(" ");
+    return `<p class="pw-pc-vet pw-pc-vet-ok">${svgOf(I_checkCircleFill)}<span><b>Microchip and rabies vaccine confirmed by a vet:</b> ${esc(v.name ?? "")}${reg ? `, ${esc(reg)}` : ""}${v.on ? `, on ${esc(longDate(v.on) ?? v.on)}` : ""}.</span></p>`;
+  }
+  const why = v.status === "revoked"
+    ? "A vet confirmation is attached, but this vet is no longer registered with PawID."
+    : "A vet confirmation is attached, but it does not match these details.";
+  return `<p class="pw-pc-vet pw-pc-vet-no">${svgOf(I_warning)}<span><b>${esc(why)}</b> Treat everything as declared by the owner.</span></p>`;
+}
 
 /** The pet card as HTML. Every value is escaped here, nowhere else. */
 /** 380 260 000 123 456: easier to compare with the passport at a desk. */
@@ -120,7 +148,8 @@ export function petCardHtml(c: CardData, o: CardOptions): string {
   return `<article class="pw-card pw-pc">
 <header class="pw-pc-head"><p class="pw-pc-brand">${pawidMark()} PawID pet card</p>${o.meta ? `<p class="pw-pc-meta">${esc(o.meta)}</p>` : ""}</header>
 <div class="pw-pc-hero">${pic}<div><h${h}>${esc(c.name)}</h${h}><p>${esc(sub)}</p></div></div>
+${vetBanner(o.vet)}
 <div class="pw-pc-grid">${parts}</div>
-<footer class="pw-pc-foot">${esc(o.footer ?? DEFAULT_FOOTER)}</footer>
+<footer class="pw-pc-foot">${esc(o.footer ?? (o.vet?.status === "confirmed" ? VET_FOOTER : DEFAULT_FOOTER))}</footer>
 </article>`;
 }

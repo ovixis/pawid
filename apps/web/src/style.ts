@@ -114,6 +114,13 @@ details.more[open] summary { margin-bottom: 1rem; }
 .rule-meta { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-bottom: .375rem !important; color: var(--pw-ink-muted); font-size: var(--pw-text-xs); }
 .rule-src { margin-top: .375rem !important; font-size: var(--pw-text-xs); color: var(--pw-ink-muted); overflow-wrap: anywhere; }
 .rule-needs_review > p:nth-child(2) { color: var(--pw-ink-muted); }
+.vet-ok { margin: 0; display: flex; gap: .625rem; align-items: flex-start; padding: .75rem .875rem; border-radius: var(--pw-radius-control); background: color-mix(in oklab, var(--pw-ok) 12%, var(--pw-surface)); }
+.vet-ok .pw-icon { flex: none; width: 1.375rem; height: 1.375rem; color: var(--pw-ok); }
+.vet-card .bar { margin-top: .75rem; }
+.vet-wait { display: flex; align-items: center; justify-content: center; gap: .5rem; margin: 0; font-weight: 700; }
+.vet-dot { width: .625rem; height: .625rem; border-radius: 50%; background: var(--pw-gold-400); animation: vet-pulse 1.2s ease-in-out infinite; }
+@keyframes vet-pulse { 50% { opacity: .25; } }
+@media (prefers-reduced-motion: reduce) { .vet-dot { animation: none; } }
 .restore-cta { margin: 0; text-align: center; color: var(--pw-ink-muted); }
 .restore-list { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: .5rem; }
 .restore-list li { display: grid; grid-template-columns: 2rem auto minmax(0, 1fr); gap: .625rem; align-items: center; }

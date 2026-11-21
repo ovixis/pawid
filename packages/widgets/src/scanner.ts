@@ -1,4 +1,4 @@
-import { petCardHtml, type CardData } from "@pawid/ui";
+import { petCardHtml, type CardData, type VetCheckView } from "@pawid/ui";
 import { PawidElement, byLine, h } from "./base";
 
 /**
@@ -19,7 +19,7 @@ export function tokenFrom(text: string): string | null {
 }
 
 type Verify =
-  | { ok: true; payload: CardData & { exp: number } }
+  | { ok: true; payload: CardData & { exp: number }; vet?: VetCheckView }
   | { ok: false; reason: "malformed" | "bad_signature" | "expired" | "unsupported_version" };
 
 const REASONS: Record<string, string> = {
@@ -175,7 +175,7 @@ form .row .pw-input { flex: 1; min-width: 12rem; margin: 0; }
     }
     const holder = h("div");
     // petCardHtml escapes every value (packages/ui/src/card.ts, covered by tests).
-    holder.innerHTML = petCardHtml(res.payload, { todayIso: new Date().toISOString().slice(0, 10), hideEmpty: true });
+    holder.innerHTML = petCardHtml(res.payload, { todayIso: new Date().toISOString().slice(0, 10), hideEmpty: true, vet: res.vet });
     const mins = Math.max(1, Math.round((res.payload.exp * 1000 - Date.now()) / 60000));
     this.show(
       h("div", { class: "box flush" },

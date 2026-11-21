@@ -14,6 +14,7 @@ PawID is not an official document. The EU pet passport, issued by an authorised 
 - A code you show or send holds only the details you chose, and stops working when it expires.
 - Reminders and backups are made on your phone. PawID sends no email and keeps no copy.
 - PawID counts how it is used, by day, without IP addresses, cookies or pet data.
+- Vets who confirm pets register with their name and professional register number, which are public once approved.
 
 ## Your pets' details
 
@@ -48,6 +49,30 @@ Treat a 7 day link like a photo of the pet card: send it only to the place you a
 
 When a venue opens the code, the PawID API checks the signature and shows the card. The API does
 not save the code or the details in it, and keeps no logs of them.
+
+## Vet confirmation
+
+You can ask your vet to confirm your pet's microchip and rabies vaccine. Your phone shows a code with
+those details, a random id and a random key (after the "#", never sent to a server). Your vet scans
+it, checks the details in the passport and confirms with a passkey on their phone.
+
+To confirm, the vet's phone sends those details (microchip, species, rabies dates, vaccine name) to the
+PawID API once. The API checks the vet's passkey, seals the details and sends them back. It does not
+keep the details. The vet's phone then encrypts the confirmation with the key from your code and
+leaves it at the API for up to one hour; your phone collects it and it is deleted. The API never has
+the key, so it cannot read it.
+
+The confirmation is kept on your phone with your pet. When you share a code, it goes along only if
+the microchip and rabies details are still the ones the vet confirmed.
+
+### Vets
+
+Vets register at pawid.hospet.eu/vet with their name, country, professional register, registration
+number, clinic (optional) and email. HosPet.eu checks the number in the professional register before
+approving. Once approved, the name, register, number, country and clinic are public, because venues see
+who confirmed a pet. The email is only used by HosPet.eu to contact the vet about the registration.
+The vet's passkey stays on their phone; PawID keeps only its public key. HosPet.eu can revoke a vet:
+venues then see a warning on that vet's confirmations. To delete a vet account, write to info@hospet.eu.
 
 ## Reminders
 

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { vetConfirmationSchema } from "./vetconfirm";
 
 /**
  * Data model for a pet profile (dog or cat).
@@ -71,6 +72,8 @@ export const petSchema = z.object({
 
   vet: vetSchema.optional(),
   notes: z.string().max(1000).optional(),
+  /** Microchip and rabies confirmed by a registered vet (see vetconfirm.ts). */
+  vetConfirmation: vetConfirmationSchema.optional(),
   updatedAt: isoDate.optional(),
 });
 

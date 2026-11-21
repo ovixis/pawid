@@ -1,6 +1,7 @@
 import { shareCardFrom, type Pet } from "@pawid/core";
 import { longDate, petCardHtml } from "@pawid/ui";
 import { loadSticker } from "../sticker";
+import { vetState, vetStatusCard } from "./vetask";
 import { googleCalendarUrl, nextRabiesExpiry, openIcs, rabiesReminderIcs } from "../calendar";
 import { button, el, link, svg, today } from "../dom";
 
@@ -9,7 +10,7 @@ export function cardView(pet: Pet, owner: string): Node[] {
   // petCardHtml escapes every value (packages/ui/src/card.ts, tested in card.test.ts).
   holder.innerHTML = petCardHtml(
     { ...shareCardFrom(pet, { identity: true, passport: true, rabies: true, vet: true, notes: true }, owner || undefined) },
-    { todayIso: today(), imageSrc: `/3d/${pet.species === "cat" ? "cat" : "dog"}.webp`, footer: "Your own copy. Typed in by you from the pet passport. Not an official document." },
+    { vet: vetState(pet) === "confirmed" && pet.vetConfirmation ? { status: "confirmed", name: pet.vetConfirmation.vet.name, registerBody: pet.vetConfirmation.vet.registerBody, registerNumber: pet.vetConfirmation.vet.registerNumber, on: new Date(pet.vetConfirmation.seal.t * 1000).toISOString().slice(0, 10) } : undefined, todayIso: today(), imageSrc: `/3d/${pet.species === "cat" ? "cat" : "dog"}.webp`, footer: "Your own copy. Typed in by you from the pet passport. Not an official document." },
   );
   const id = encodeURIComponent(pet.id);
   // Reminder in the phone's calendar, made on this device (no email, no server).
@@ -36,6 +37,7 @@ export function cardView(pet: Pet, owner: string): Node[] {
     el("div", { class: "bar no-print" }, el("a", { href: "#/", class: "back" }, svg("back"), "Your pets")),
     holder,
     ...(stickerFig ? [stickerFig] : []),
+    vetStatusCard(pet),
     ...(reminder ? [reminder] : []),
     el(
       "div",

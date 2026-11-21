@@ -87,7 +87,7 @@ export function siteFooter(): HTMLElement {
         el("a", { href: "https://hospet.eu", class: "f-by", rel: "noopener" }, "by", brandMark("hospet", "pw-mark f-hmark"), el("b", {}, "HosPet.eu")),
       ),
       el("div", { class: "f-cols" },
-        col("App", [["Open PawID", "/"], ["Install the app", "/install"], ["How to use it", "/install#guide"]]),
+        col("App", [["Open PawID", "/"], ["Install the app", "/install"], ["How to use it", "/install#guide"], ["For vets", "/vet"]]),
         col("For places", [["Components", "/venues"], ["Where it works", "/venues#places"], ["For developers", "/venues#developers"]]),
         col("Project", [["GitHub: contribute", "https://github.com/ovixis/pawid"], ["API description", API_DOCS], ["Privacy", "https://github.com/ovixis/pawid/blob/main/PRIVACY.md"], ["HosPet.eu", "https://hospet.eu"]]),
       ),

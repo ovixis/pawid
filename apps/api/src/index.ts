@@ -5,8 +5,9 @@ import { coveredCountries, rulesFor } from "@pawid/rules";
 import { handleRpc } from "./mcp";
 import { openapi } from "./openapi";
 import { allowed, clientOf, count, countryOf, siteOf } from "./usage";
+import { checkVetSeal, vetRoutes, type VetCheck, type VetEnv } from "./vets";
 
-export interface Env {
+export interface Env extends VetEnv {
   DB: D1Database;
   /** Secret for GET /v1/stats (read by the HosPet admin). Set with: wrangler secret put STATS_KEY */
   STATS_KEY?: string;
@@ -22,7 +23,7 @@ const waiter = (c: C): { waitUntil(p: Promise<unknown>): void } | undefined => {
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Accept, MCP-Protocol-Version, Mcp-Session-Id",
   "Access-Control-Max-Age": "86400",
 };
@@ -52,9 +53,20 @@ const nowSec = () => Math.floor(Date.now() / 1000);
 
 app.get("/health", (c) => c.json({ ok: true }));
 
+vetRoutes(app as never);
+
 /** JSON verification, for hotel software and the HosPet integration. /api/verify is the first version's path. */
+/** A verified code plus, when it carries a vet seal, whether the seal holds and the vet is still approved. */
+async function verifyWithVet(env: Env | undefined, token: string): Promise<VerifyResult & { vet?: VetCheck }> {
+  const res = await verifyShareToken(token, nowSec());
+  if (!res.ok || !res.payload.vetSeal) return res;
+  const p = res.payload;
+  const vet = await checkVetSeal(env?.DB, p.vetSeal, { species: p.species, microchip: p.microchip, rabiesGivenOn: p.rabiesGivenOn, rabiesValidUntil: p.rabiesValidUntil, rabiesVaccine: p.rabiesVaccine });
+  return { ...res, vet };
+}
+
 const verifyJson = async (c: C) => {
-  const res = await verifyShareToken(c.req.query("token") ?? "", nowSec());
+  const res = await verifyWithVet(c.env, c.req.query("token") ?? "");
   count(c.env, waiter(c), `api.verify.${res.ok ? "ok" : res.reason}`, siteOf(c.req.raw) || clientOf(c.req.raw));
   return c.json(res, res.ok ? 200 : 400);
 };
@@ -123,7 +135,7 @@ app.post("/mcp", async (c) => {
   let message: unknown;
   try { message = await c.req.json(); } catch { return c.json({ jsonrpc: "2.0", id: null, error: { code: -32700, message: "Parse error: body is not valid JSON." } }, 400, headers); }
   const client = clientOf(c.req.raw);
-  const [status, body] = await handleRpc(message, nowSec(), (what) => count(c.env, waiter(c), `mcp.${what}`, client));
+  const [status, body] = await handleRpc(message, nowSec(), (what) => count(c.env, waiter(c), `mcp.${what}`, client), c.env.DB);
   if (body === null) return c.body(null, 202, CORS);
   return c.json(body, status as 200, headers);
 });
@@ -149,10 +161,10 @@ function expiresIn(exp: number): string {
   return `Code valid until ${longDate(new Date(exp * 1000).toISOString().slice(0, 10))}`;
 }
 
-function page(res: VerifyResult, todayIso: string): string {
+function page(res: VerifyResult & { vet?: VetCheck }, todayIso: string): string {
   const body = res.ok
     ? `<div class="top"><p class="ok">${icon("checkCircleFill")} Not changed since the owner made this code</p><p>${esc(expiresIn(res.payload.exp))}</p></div>
-${petCardHtml(res.payload, { todayIso, headingLevel: 1, hideEmpty: true })}`
+${petCardHtml(res.payload, { todayIso, headingLevel: 1, hideEmpty: true, vet: res.vet })}`
     : `<section class="pw-card fail"><span class="pw-ring pw-ring-navy">${icon("warning")}</span><h1>Cannot verify</h1><p>${esc(REASONS[res.reason] ?? "Invalid.")}</p></section>`;
   return `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
@@ -163,7 +175,7 @@ ${petCardHtml(res.payload, { todayIso, headingLevel: 1, hideEmpty: true })}`
 
 /** Page the hotel sees after scanning the QR. No account, no app. */
 app.get("/v/:token", async (c) => {
-  const res = await verifyShareToken(c.req.param("token"), nowSec());
+  const res = await verifyWithVet(c.env, c.req.param("token"));
   count(c.env, waiter(c), `verify.page.${res.ok ? "ok" : res.reason}`, countryOf(c.req.raw));
   return c.html(page(res, new Date().toISOString().slice(0, 10)), res.ok ? 200 : 400, {
     "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'",
@@ -180,6 +192,8 @@ export default {
     // Usage counters are kept for about 13 months.
     const cutoff = new Date(Date.now() - 400 * 86_400_000).toISOString().slice(0, 10);
     await env.DB.prepare("DELETE FROM usage_daily WHERE day < ?1").bind(cutoff).run();
+    // Vet hand-overs nobody picked up.
+    await env.DB.prepare("DELETE FROM vet_relay WHERE expires < ?1").bind(nowSec()).run();
   },
 };
 

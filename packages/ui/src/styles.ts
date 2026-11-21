@@ -140,6 +140,12 @@ fieldset.pw-card > legend + * { clear: both; }
 .pw-pc-head p { margin: 0; }
 .pw-pc-brand { display: flex; align-items: center; gap: .5rem; font-weight: 800; }
 .pw-pc-brand .pw-mark { width: 1.75rem; height: 1.75rem; }
+.pw-pc-vet { display: flex; gap: .625rem; align-items: flex-start; margin: 0 1.5rem 1rem; padding: .75rem .875rem; border-radius: var(--pw-radius-control); line-height: 1.45; }
+.pw-pc-vet .pw-icon { flex: none; width: 1.375rem; height: 1.375rem; margin-top: .05rem; }
+.pw-pc-vet-ok { background: color-mix(in oklab, var(--pw-ok) 12%, #fff); }
+.pw-pc-vet-ok .pw-icon { color: var(--pw-ok); }
+.pw-pc-vet-no { background: color-mix(in oklab, #f5b800 18%, #fff); }
+.pw-pc-vet-no .pw-icon { color: #9a6700; }
 .pw-pc-meta { font-size: var(--pw-text-xs); color: rgb(255 255 255 / .8); }
 .pw-pc-hero { display: flex; align-items: center; gap: 1rem; padding: 1.5rem 1.5rem 1rem; }
 .pw-pc-hero img { width: 4rem; height: 4rem; flex: none; }

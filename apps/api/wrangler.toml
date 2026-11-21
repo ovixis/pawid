@@ -7,6 +7,11 @@ compatibility_date = "2024-11-01"
 workers_dev = true
 routes = [{ pattern = "pawid.hospet.eu/v/*", zone_name = "hospet.eu" }]
 
+# Vet passkeys: the site where vets confirm. VET_SIGNING_KEY is a secret (wrangler secret put VET_SIGNING_KEY).
+[vars]
+VET_RP_ID = "pawid.hospet.eu"
+VET_ORIGINS = "https://pawid.hospet.eu"
+
 # Created with: npx wrangler d1 create pawid --jurisdiction eu
 [[d1_databases]]
 binding = "DB"

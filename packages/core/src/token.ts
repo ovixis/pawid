@@ -3,8 +3,9 @@
  *
  * IMPORTANT, read this: this token is signed by the OWNER's device key. It proves the
  * content was not changed after the QR was generated. It does NOT prove the vaccine
- * was really done. Only a vet signature can do that (vet signing module, not built yet).
- * The verifier page must say "declared by the owner" until vet signatures exist.
+ * was really done. When a registered vet confirmed the microchip and rabies vaccine, the token
+ * also carries the vet seal (vetSeal, see vetconfirm.ts): only those values count as confirmed,
+ * and only if the API finds the vet still approved. Everything else stays "declared by the owner".
  *
  * Uses only WebCrypto, so it runs in Node 20+, browsers and Cloudflare Workers.
  *
@@ -13,6 +14,9 @@
  * v2 payload: short keys (see SHORT) so the QR stays small; the owner picks what to share.
  */
 import { z } from "zod";
+import { b64urlDecode, b64urlEncode } from "./b64";
+import { sameVetFields, vetSealSchema, type VetFields } from "./vetconfirm";
+export { b64urlDecode, b64urlEncode } from "./b64";
 import { countryCode, isoDate } from "./schema";
 
 /** What a venue sees. Readable names, also returned by GET /api/verify. */
@@ -37,6 +41,8 @@ export const shareCardSchema = z.object({
   /** Owner's first name only. */
   owner: z.string().max(60).optional(),
   notes: z.string().max(280).optional(),
+  /** Seal of a vet confirmation of microchip and rabies (see vetconfirm.ts). */
+  vetSeal: vetSealSchema.optional(),
 });
 
 export type ShareCard = z.infer<typeof shareCardSchema>;
@@ -62,27 +68,12 @@ const SHORT: Record<keyof ShareCard, string> = {
   species: "s", name: "n", breed: "b", sex: "x", weightKg: "w", birthDate: "bd",
   microchip: "c", chipDate: "cd", passportNumber: "p", homeCountry: "hc",
   rabiesGivenOn: "rg", rabiesValidUntil: "ru", rabiesVaccine: "rv", boosterInTime: "bo",
-  vetName: "vn", vetPhone: "vp", owner: "o", notes: "nt",
+  vetName: "vn", vetPhone: "vp", owner: "o", notes: "nt", vetSeal: "vc",
 };
 const LONG = Object.fromEntries(Object.entries(SHORT).map(([k, s]) => [s, k])) as Record<string, keyof ShareCard>;
 
 const enc = new TextEncoder();
 const dec = new TextDecoder();
-
-export function b64urlEncode(bytes: Uint8Array): string {
-  let s = "";
-  for (const b of bytes) s += String.fromCharCode(b);
-  return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-}
-
-export function b64urlDecode(str: string): Uint8Array {
-  if (!/^[A-Za-z0-9_-]*$/.test(str)) throw new Error("not base64url");
-  const pad = "=".repeat((4 - (str.length % 4)) % 4);
-  const bin = atob(str.replace(/-/g, "+").replace(/_/g, "/") + pad);
-  const out = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
-  return out;
-}
 
 export async function generateOwnerKeys(extractable = true): Promise<OwnerKeys> {
   const pair = (await crypto.subtle.generateKey({ name: "Ed25519" }, extractable, ["sign", "verify"])) as CryptoKeyPair;
@@ -177,5 +168,11 @@ export function shareCardFrom(
   if (pick.vet) Object.assign(card, { vetName: pet.vet?.name, vetPhone: pet.vet?.phone });
   if (pick.notes && pet.notes) card.notes = pet.notes.slice(0, 280);
   if (owner) card.owner = owner.slice(0, 60);
+  // The vet seal goes along only when the code carries exactly the values the vet confirmed.
+  const vc = pet.vetConfirmation;
+  if (vc && card.microchip && card.rabiesValidUntil) {
+    const shown: Partial<VetFields> = { species: card.species, microchip: card.microchip, rabiesGivenOn: card.rabiesGivenOn, rabiesValidUntil: card.rabiesValidUntil, rabiesVaccine: card.rabiesVaccine };
+    if (sameVetFields(vc.fields, shown)) card.vetSeal = vc.seal;
+  }
   return card;
 }

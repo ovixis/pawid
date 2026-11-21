@@ -13,6 +13,7 @@ Open source digital companion for the EU pet passport. Built for people who trav
 ## What it does (goal)
 
 - Store your dog's passport data (microchip, vaccines, expiry dates), on your device first
+- Vet confirmation: a registered vet confirms the microchip and rabies vaccine with a passkey (fingerprint or face) on their own phone; venues then see "confirmed by a vet" with the vet's name and register number. Vets need no app or software: pawid.hospet.eu/vet
 - Put the rabies vaccine expiry in your phone's calendar, with alarms 30, 7 and 1 day before (made on the device, no email)
 - Back up your pets by email to yourself: one link puts everything back on any phone
 - Tell you what you need for each European country (rules are open data, with official sources)
@@ -76,6 +77,8 @@ Read-only, no key, about 120 requests a minute per IP. Base URL: `https://pawid-
 | `GET /v1/verify?token=` | Check a PawID code: genuine, unchanged, not expired. Declared by the owner, never verified by a vet. |
 | `GET /v1/rules?country=IT` | EU base rules plus a country's differences, each with status, official sources and last check date. |
 | `GET /v1/countries` | Countries with their own rules file. |
+| `GET /v1/keys` | PawID's public keys for vet confirmation seals. |
+| `GET /v1/vets/:id` | Public record of an approved vet (name, register, number, country). |
 | `GET /v1/openapi.json` | OpenAPI 3.1 spec. |
 | `POST /mcp` | MCP server (Streamable HTTP). Tools: `verify_pet_card`, `get_pet_travel_rules`, `list_rule_countries`. |
 
