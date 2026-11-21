@@ -8,6 +8,10 @@ import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
 const set = JSON.parse(readFileSync(require.resolve("@iconify-json/tabler/icons.json"), "utf8"));
+// Brand logos (Claude, Cursor, ChatGPT, VS Code, MCP) come from Simple Icons (CC0); the marks belong to their owners
+// and are used only to say which tools PawID works with.
+const brands = JSON.parse(readFileSync(require.resolve("@iconify-json/simple-icons/icons.json"), "utf8"));
+const BRANDS = { claude: "claude", cursor: "cursor", chatgpt: "openai", vscodeLogo: "visualstudiocode", mcp: "modelcontextprotocol" };
 
 // Our name -> Tabler name.
 const ICONS = {
@@ -37,6 +41,14 @@ for (const [name, tb] of Object.entries(ICONS)) {
   if (!line) throw new Error(`Tabler icon not found: ${tb}`);
   const fill = set.icons[`${tb}-filled`] ?? line;
   for (const [key, icon] of [[name, line], [`${name}Fill`, fill]]) {
+    lines.push(`export const I_${key} = ${JSON.stringify(icon.body)};`);
+    map.push(`  ${key}: I.I_${key},`);
+  }
+}
+for (const [name, si] of Object.entries(BRANDS)) {
+  const icon = brands.icons[si];
+  if (!icon) throw new Error(`Simple Icons logo not found: ${si}`);
+  for (const key of [name, `${name}Fill`]) {
     lines.push(`export const I_${key} = ${JSON.stringify(icon.body)};`);
     map.push(`  ${key}: I.I_${key},`);
   }

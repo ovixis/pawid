@@ -37,6 +37,14 @@ css.textContent = `${CODE_WINDOW_CSS}
 .tool-in ol { margin: 0; padding-left: 1.25rem; display: grid; gap: .25rem; color: var(--pw-ink-muted); }
 .tool-in .bar { margin-top: .25rem; }
 .tools { display: grid; gap: .625rem; }
+/* Each tool in its own brand colour, so it is recognised at a glance. */
+.tool .pw-tile[class*="brand-"] { background-image: linear-gradient(to bottom, rgb(255 255 255 / .16), rgb(255 255 255 / 0) 55%); }
+.brand-claude-code, .brand-claude { background-color: #d97757; color: #fff; }
+.brand-chatgpt, .brand-cursor { background-color: #111111; color: #fff; }
+.brand-vscode { background-color: #0a6ebd; color: #fff; }
+.brand-other { background-color: #1f2937; color: #fff; }
+.brand-skill { background-color: #14233f; color: var(--pw-gold-400); }
+.tool .pw-tile[class*="brand-"] .pw-icon { width: 1.5rem; height: 1.5rem; }
 .a-tools-list { margin: 0; padding-left: 1.1rem; display: grid; gap: .375rem; color: var(--pw-ink-muted); }
 .a-tools-list b { color: var(--pw-ink); }
 `;
@@ -57,7 +65,7 @@ async function copyText(text: string, status: HTMLElement): Promise<void> {
 
 const tool = (id: string, icon: IconName, title: string, sub: string, ...body: (Node | string)[]) =>
   el("details", { class: "tool", id },
-    el("summary", {}, el("span", { class: "pw-tile" }, svg(icon)), el("span", {}, el("b", {}, title), el("small", {}, sub))),
+    el("summary", {}, el("span", { class: `pw-tile brand-${id}` }, svg(icon)), el("span", {}, el("b", {}, title), el("small", {}, sub))),
     el("div", { class: "tool-in" }, ...body));
 const steps = (...items: (Node | string)[][]) => el("ol", {}, ...items.map((i) => el("li", {}, ...i)));
 const linkBtn = (href: string, label: string, icon: IconName) => el("a", { href, class: "pw-btn pw-btn-primary", rel: "noopener" }, svg(icon), label);
@@ -83,28 +91,28 @@ const main = el("main", { id: "main" },
     el("h2", {}, "Set up your tool"),
     el("p", {}, "PawID's MCP server is free and needs no key. It can verify a pet card and read the travel rules; it cannot change anything."),
     el("div", { class: "tools" },
-      tool("claude-code", "terminal", "Claude Code", "One command in the terminal",
+      tool("claude-code", "claude", "Claude Code", "One command in the terminal",
         codeWindow({ file: "terminal", code: `claude mcp add --transport http pawid ${MCP}`, lang: "sh", what: "the Claude Code command", result: { label: "Then", text: "/mcp shows pawid as connected" } }),
         el("p", { class: "pw-hint flush" }, "Want the instructions too? Add the skill:"),
         codeWindow({ file: "terminal", code: `mkdir -p ~/.claude/skills/pawid && curl -fsSL ${SKILL} -o ~/.claude/skills/pawid/SKILL.md`, lang: "sh", what: "the skill install command", result: { label: "Then", text: "Claude uses PawID when you ask about pet travel" } }),
       ),
-      tool("claude", "chatbot", "Claude (web, desktop, mobile)", "Add a custom connector",
+      tool("claude", "claude", "Claude (web, desktop, mobile)", "Add a custom connector",
         steps(["Open ", el("b", {}, "Settings"), ", then ", el("b", {}, "Connectors"), "."], ["Choose ", el("b", {}, "Add custom connector"), ", name it PawID and paste this address."], ["In a chat, turn PawID on from the tools menu."]),
         codeWindow({ file: "connector URL", code: MCP, lang: "sh", what: "the connector address", result: { label: "Name", text: "PawID" } }),
       ),
-      tool("chatgpt", "openai", "ChatGPT", "Add a connector, where your plan allows it",
+      tool("chatgpt", "chatgpt", "ChatGPT", "Add a connector, where your plan allows it",
         steps(["Open ", el("b", {}, "Settings"), ", then ", el("b", {}, "Apps & Connectors"), " (developer mode may need to be on)."], ["Create a connector with this address, no authentication."], ["Without connectors: use ", el("b", {}, "Paste in any AI chat"), " above."]),
         codeWindow({ file: "connector URL", code: MCP, lang: "sh", what: "the connector address", result: { label: "Auth", text: "None" } }),
       ),
-      tool("cursor", "code", "Cursor", "One click, or add it to mcp.json",
+      tool("cursor", "cursor", "Cursor", "One click, or add it to mcp.json",
         el("div", { class: "bar" }, linkBtn(cursorLink, "Add to Cursor", "download")),
         codeWindow({ file: ".cursor/mcp.json", code: JSON.stringify({ mcpServers: { pawid: { url: MCP } } }, null, 2), lang: "sh", what: "the Cursor configuration", result: { label: "Then", text: "PawID appears under MCP tools" } }),
       ),
-      tool("vscode", "vscode", "VS Code", "One click, or one command",
+      tool("vscode", "vscodeLogo", "VS Code", "One click, or one command",
         el("div", { class: "bar" }, linkBtn(vscodeLink, "Add to VS Code", "download")),
         codeWindow({ file: "terminal", code: `code --add-mcp '${JSON.stringify({ name: "pawid", type: "http", url: MCP })}'`, lang: "sh", what: "the VS Code command", result: { label: "Then", text: "use PawID in Copilot agent mode" } }),
       ),
-      tool("other", "robot", "Any other MCP client", "Streamable HTTP, no key",
+      tool("other", "mcp", "Any other MCP client", "Streamable HTTP, no key",
         codeWindow({ file: "mcp.json", code: JSON.stringify({ mcpServers: { pawid: { type: "http", url: MCP } } }, null, 2), lang: "sh", what: "the MCP configuration", result: { label: "Tools", text: "verify_pet_card, get_pet_travel_rules, list_rule_countries" } }),
       ),
       tool("skill", "fileText", "Skill file for agents", "SKILL.md, plain instructions",

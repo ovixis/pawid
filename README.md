@@ -186,6 +186,7 @@ The PawID mark is a paw inside a scan frame, with a check on the pad. The files 
 `packages/ui/src/brand.ts` with `npm run brand -w @pawid/ui`; the README cards and picture with `npx vite-node scripts/readme-assets.ts`.
 
 Icons: [Tabler Icons](https://tabler.io/icons) (MIT), built into `packages/ui/src/icons.ts` with `npm run icons -w @pawid/ui`.
+Tool logos on the AI page (Claude, ChatGPT, Cursor, VS Code, MCP): [Simple Icons](https://simpleicons.org) (CC0); the marks belong to their owners.
 Pet pictures: Microsoft Fluent Emoji (MIT), see `apps/web/public/3d/CREDITS.md`.
 
 The HosPet.eu name and logo belong to HosPet.eu. They are not covered by the Apache-2.0 licence

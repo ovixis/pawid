@@ -145,6 +145,16 @@ export const ICON_BODIES = {
   robotFill: I.I_robotFill,
   sparkles: I.I_sparkles,
   sparklesFill: I.I_sparklesFill,
+  claude: I.I_claude,
+  claudeFill: I.I_claudeFill,
+  cursor: I.I_cursor,
+  cursorFill: I.I_cursorFill,
+  chatgpt: I.I_chatgpt,
+  chatgptFill: I.I_chatgptFill,
+  vscodeLogo: I.I_vscodeLogo,
+  vscodeLogoFill: I.I_vscodeLogoFill,
+  mcp: I.I_mcp,
+  mcpFill: I.I_mcpFill,
 } as const;
 
 export type IconName = keyof typeof ICON_BODIES;
