@@ -2,12 +2,11 @@ name = "pawid-api"
 main = "src/index.ts"
 compatibility_date = "2024-11-01"
 
-# Create the database with:  npx wrangler d1 create pawid
-# then paste the database_id it prints.
+# Created with: npx wrangler d1 create pawid --jurisdiction eu
 [[d1_databases]]
 binding = "DB"
 database_name = "pawid"
-database_id = "REPLACE_WITH_YOUR_D1_ID"
+database_id = "c58620f1-8fb5-4898-a5be-d3794bd7d0fc"
 migrations_dir = "migrations"
 
 # Daily job for reminders (09:00 UTC).
