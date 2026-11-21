@@ -181,7 +181,7 @@ const main = el(
     el("ul", { class: "dev-points" },
       el("li", {}, svg("check"), el("span", {}, el("b", {}, "Free, no API key"), ": up to 120 requests a minute from one address.")),
       el("li", {}, svg("check"), el("span", {}, el("b", {}, "Verify a guest's code"), " with GET /v1/verify, or read it on the page the QR code opens.")),
-      el("li", {}, svg("check"), el("span", {}, el("b", {}, "MCP server at /mcp"), " with three read-only tools for AI assistants. ", el("a", { class: "pw-link", href: `${API}/v1/openapi.json` }, "OpenAPI description"), ".")),
+      el("li", {}, svg("check"), el("span", {}, el("b", {}, "MCP server at /mcp"), " with three read-only tools for AI assistants: ", el("a", { class: "pw-link", href: "/ai" }, "connect yours"), ". ", el("a", { class: "pw-link", href: `${API}/v1/openapi.json` }, "OpenAPI description"), ".")),
     ),
   ),
   githubInvite(),

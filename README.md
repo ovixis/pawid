@@ -13,7 +13,7 @@
   <a href="https://pawid.hospet.eu/venues"><img src="docs/readme/card-venues.svg" alt="Hotels and restaurants: add PawID to your site" width="300"></a>
   <br>
   <a href="https://pawid.hospet.eu/vet"><img src="docs/readme/card-vets.svg" alt="Vets: confirm a pet in 30 seconds" width="300"></a>
-  <a href="#for-developers-and-ai-assistants"><img src="docs/readme/card-developers.svg" alt="Developers and AI: API and MCP server" width="300"></a>
+  <a href="https://pawid.hospet.eu/ai"><img src="docs/readme/card-developers.svg" alt="Developers and AI: API and MCP server" width="300"></a>
 </p>
 
 > **PawID is not an official document.** It does not replace the paper EU pet passport, which is
@@ -93,6 +93,16 @@ PawID is young. These are the places where help makes the biggest difference.
 - **Rules:** YAML files in `rules/`, checked by tests: every source must be on an official host (EU institutions or a national authority).
 
 ## For developers and AI assistants
+
+**Use PawID in your AI assistant** (copy and paste steps for every tool: [pawid.hospet.eu/ai](https://pawid.hospet.eu/ai)):
+
+```
+claude mcp add --transport http pawid https://pawid-api.hospet.workers.dev/mcp
+```
+
+Claude, ChatGPT, Cursor, VS Code and any MCP client: add the server `https://pawid-api.hospet.workers.dev/mcp` (Streamable HTTP, no key).
+Agents that read skills: [`skills/pawid/SKILL.md`](skills/pawid/SKILL.md). For language models: [`llms.txt`](https://pawid.hospet.eu/llms.txt).
+
 
 Read-only, no key, about 120 requests a minute per IP. Base URL: `https://pawid-api.hospet.workers.dev`.
 

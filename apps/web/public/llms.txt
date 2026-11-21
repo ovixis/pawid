@@ -1,0 +1,24 @@
+# PawID
+
+> Open source companion for the EU pet passport, by HosPet.eu. Pet owners keep their dog's or cat's passport details on their phone and show a signed QR code to hotels, restaurants and museums; registered vets can confirm the microchip and rabies vaccine; pet travel rules for Europe come with their official sources. Not an official document: the EU pet passport, issued by an authorised vet, is.
+
+## For AI assistants
+
+- [Connect PawID to your AI assistant](https://pawid.hospet.eu/ai): MCP server and skill, with copy and paste steps for Claude, ChatGPT, Cursor and VS Code
+- MCP server (Streamable HTTP, no key): https://pawid-api.hospet.workers.dev/mcp (tools: verify_pet_card, get_pet_travel_rules, list_rule_countries)
+- [Skill / instructions for agents](https://raw.githubusercontent.com/ovixis/pawid/main/skills/pawid/SKILL.md)
+- [OpenAPI 3.1](https://pawid-api.hospet.workers.dev/v1/openapi.json)
+
+## Pages
+
+- [App](https://pawid.hospet.eu): pet card, QR code for venues, Can I travel?, calendar reminders, backup
+- [For hotels, restaurants and places to visit](https://pawid.hospet.eu/venues): free components
+- [For vets](https://pawid.hospet.eu/vet): confirm a pet's microchip and rabies vaccine
+- [Install the app](https://pawid.hospet.eu/install)
+- [Support PawID](https://pawid.hospet.eu/support)
+- [Source code](https://github.com/ovixis/pawid) and [privacy](https://github.com/ovixis/pawid/blob/main/PRIVACY.md)
+
+## Rules for answers
+
+- Cite the official source of every travel rule; rules with status needs_review are not confirmed.
+- A PawID card is declared by the owner unless the verify result says a vet confirmed it.

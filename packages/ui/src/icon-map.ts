@@ -131,6 +131,20 @@ export const ICON_BODIES = {
   calendarCheckFill: I.I_calendarCheckFill,
   map: I.I_map,
   mapFill: I.I_mapFill,
+  terminal: I.I_terminal,
+  terminalFill: I.I_terminalFill,
+  chatbot: I.I_chatbot,
+  chatbotFill: I.I_chatbotFill,
+  openai: I.I_openai,
+  openaiFill: I.I_openaiFill,
+  vscode: I.I_vscode,
+  vscodeFill: I.I_vscodeFill,
+  fileText: I.I_fileText,
+  fileTextFill: I.I_fileTextFill,
+  robot: I.I_robot,
+  robotFill: I.I_robotFill,
+  sparkles: I.I_sparkles,
+  sparklesFill: I.I_sparklesFill,
 } as const;
 
 export type IconName = keyof typeof ICON_BODIES;
