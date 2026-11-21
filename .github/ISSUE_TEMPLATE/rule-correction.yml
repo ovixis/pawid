@@ -1,0 +1,50 @@
+name: Rule correction
+description: A pet travel rule in rules/ is wrong, missing or out of date.
+title: "Rule correction: <country> <rule id>"
+labels: ["rules"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        PawID only publishes rules that come from an official source (European Commission, EUR-Lex, or a national ministry or authority). Please link the official page.
+  - type: input
+    id: country
+    attributes:
+      label: Country
+      description: ISO code and name, or "EU base".
+      placeholder: "IT, Italy"
+    validations:
+      required: true
+  - type: input
+    id: rule
+    attributes:
+      label: Rule id
+      description: The id in the YAML file, if it exists.
+      placeholder: rabies_vaccination
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What is wrong
+      description: Quote what PawID says now.
+    validations:
+      required: true
+  - type: textarea
+    id: correct
+    attributes:
+      label: What the official source says
+      description: Quote the relevant sentence from the source.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Official source URL
+    validations:
+      required: true
+  - type: input
+    id: checked
+    attributes:
+      label: Date you read the source
+      placeholder: YYYY-MM-DD
+    validations:
+      required: true
