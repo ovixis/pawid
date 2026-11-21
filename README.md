@@ -69,6 +69,9 @@ PawID is young. These are the places where help makes the biggest difference.
   <br>
   <a href="https://github.com/ovixis/pawid/issues?q=is%3Aopen+label%3A%22good+first+issue%22"><img src="docs/readme/need-code.svg" alt="Code: good first issues" width="300"></a>
   <a href="https://github.com/ovixis/pawid/issues/new/choose"><img src="docs/readme/need-bugs.svg" alt="Bugs and ideas: open an issue" width="300"></a>
+  <br>
+  <a href="https://pawid.hospet.eu/support"><img src="docs/readme/need-support.svg" alt="Support PawID: add your name" width="300"></a>
+  <a href="https://github.com/ovixis/pawid/security/advisories/new"><img src="docs/readme/need-security.svg" alt="Security reviews: report privately" width="300"></a>
 </p>
 
 | We need | Why it matters | How |
@@ -79,6 +82,7 @@ PawID is young. These are the places where help makes the biggest difference.
 | **Venues that try it** | Real feedback from reception desks and restaurants | Add a component, tell us what staff think |
 | **Code** | Security and features | See [good first issues](https://github.com/ovixis/pawid/issues?q=is%3Aopen+label%3A%22good+first+issue%22) and [help wanted](https://github.com/ovixis/pawid/issues?q=is%3Aopen+label%3A%22help+wanted%22) |
 | **Security reviews** | The app signs codes and handles vet confirmations | Report privately, see [SECURITY.md](SECURITY.md) |
+| **Your name** | Grants for open source and the EU's work on a digital pet passport ask who wants this | Add a statement of support at [pawid.hospet.eu/support](https://pawid.hospet.eu/support) |
 
 ## How it works
 

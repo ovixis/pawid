@@ -77,6 +77,16 @@ who confirmed a pet. The email is only used by HosPet.eu to contact the vet abou
 The vet's passkey stays on their phone; PawID keeps only its public key. HosPet.eu can revoke a vet:
 venues then see a warning on that vet's confirmations. To delete a vet account, write to info@hospet.eu.
 
+## Statements of support
+
+On pawid.hospet.eu/support you can add your name to say you support PawID: name, role, country,
+organisation and message (optional), email (optional). HosPet.eu checks each statement before it
+counts. Your name, role, country, organisation and message are shown on that page only if you ticked
+"Show my name"; otherwise you are only counted. HosPet.eu may share the numbers, and the public
+statements, in applications for open source funding and in answers to EU consultations. The email is
+never shown or shared; it is used only to write to you about PawID if you gave it. To remove your
+statement, write to info@hospet.eu.
+
 ## Reminders
 
 "Add to my calendar" makes a calendar file on your phone with the rabies vaccine date and three

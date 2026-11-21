@@ -42,6 +42,8 @@ cta("need-translations.svg", "translateFill", "Translations", "Bring PawID to yo
 cta("need-venues.svg", "museumFill", "Venues", "Try the components");
 cta("need-code.svg", "pullRequestFill", "Code", "Good first issues");
 cta("need-bugs.svg", "bugFill", "Bugs and ideas", "Open an issue");
+cta("need-support.svg", "checkCircleFill", "Support PawID", "Add your name");
+cta("need-security.svg", "warningFill", "Security reviews", "Report privately");
 
 // The pet card a venue sees, with an example vet confirmation (example data, not a real vet or pet).
 const card = petCardHtml(

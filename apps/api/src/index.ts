@@ -6,6 +6,7 @@ import { handleRpc } from "./mcp";
 import { openapi } from "./openapi";
 import { allowed, clientOf, count, countryOf, siteOf } from "./usage";
 import { checkVetSeal, vetRoutes, type VetCheck, type VetEnv } from "./vets";
+import { supportRoutes } from "./support";
 
 export interface Env extends VetEnv {
   DB: D1Database;
@@ -54,6 +55,7 @@ const nowSec = () => Math.floor(Date.now() / 1000);
 app.get("/health", (c) => c.json({ ok: true }));
 
 vetRoutes(app as never);
+supportRoutes(app as never);
 
 /** JSON verification, for hotel software and the HosPet integration. /api/verify is the first version's path. */
 /** A verified code plus, when it carries a vet seal, whether the seal holds and the vet is still approved. */
