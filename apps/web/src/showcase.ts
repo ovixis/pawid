@@ -8,11 +8,11 @@ const PART_NAME: Record<Part, string> = { scanner: "Scanner", policy: "Pet rules
 const PLACES: { icon: IconName; title: string; text: string; parts: Part[] }[] = [
   { icon: "hotel", title: "Hotels and B&Bs", text: "Get the pet card before arrival, check it at reception.", parts: ["button", "scanner", "policy"] },
   { icon: "fork", title: "Restaurants", text: "Say where dogs can sit, check a card at the table.", parts: ["policy", "scanner"] },
-  { icon: "beer", title: "Bars and cafés", text: "Pet rules by the door, on your site and your menu page.", parts: ["policy", "scanner"] },
+  { icon: "cup", title: "Bars and cafés", text: "Pet rules by the door, on your site and your menu page.", parts: ["policy", "scanner"] },
   { icon: "museum", title: "Museums and institutions", text: "Which halls are open to pets, and what to bring.", parts: ["policy", "scanner", "travel"] },
   { icon: "beach", title: "Beaches and parks", text: "Rules for dog areas, a quick check at the entrance.", parts: ["policy", "scanner"] },
   { icon: "tent", title: "Campsites", text: "Pet rules for pitches, the card before guests arrive.", parts: ["button", "policy", "scanner"] },
-  { icon: "pin", title: "Tourism offices", text: "What a dog needs to come to your country.", parts: ["travel"] },
+  { icon: "map", title: "Tourism offices", text: "What a dog needs to come to your country.", parts: ["travel"] },
   { icon: "ship", title: "Ferries and trains", text: "Travel rules with their official sources.", parts: ["travel", "policy"] },
 ];
 
@@ -104,7 +104,7 @@ export function githubInvite(): HTMLElement {
       el("h2", { id: "gh-title" }, "Help make PawID better"),
       el("p", {}, "PawID is free and open to everyone. Vets, pet owners, hotels and developers can all help."),
       el("ul", { class: "gh-ways" },
-        way("certificate", "Correct a travel rule", "with a link to the official source."),
+        way("scale", "Correct a travel rule", "with a link to the official source."),
         way("translate", "Translate:", "help bring PawID to your language."),
         way("bug", "Report a bug", "or suggest an idea."),
         way("pullRequest", "Send code", "for the app, the API or the components."),

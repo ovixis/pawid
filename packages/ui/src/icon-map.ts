@@ -115,6 +115,22 @@ export const ICON_BODIES = {
   bugFill: I.I_bugFill,
   star: I.I_star,
   starFill: I.I_starFill,
+  stethoscope: I.I_stethoscope,
+  stethoscopeFill: I.I_stethoscopeFill,
+  vaccine: I.I_vaccine,
+  vaccineFill: I.I_vaccineFill,
+  scale: I.I_scale,
+  scaleFill: I.I_scaleFill,
+  code: I.I_code,
+  codeFill: I.I_codeFill,
+  heartHandshake: I.I_heartHandshake,
+  heartHandshakeFill: I.I_heartHandshakeFill,
+  shieldCheck: I.I_shieldCheck,
+  shieldCheckFill: I.I_shieldCheckFill,
+  calendarCheck: I.I_calendarCheck,
+  calendarCheckFill: I.I_calendarCheckFill,
+  map: I.I_map,
+  mapFill: I.I_mapFill,
 } as const;
 
 export type IconName = keyof typeof ICON_BODIES;

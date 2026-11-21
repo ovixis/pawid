@@ -243,7 +243,7 @@ function pairView(code: string): Node[] {
   const alive = () => location.hash === here;
   const fail = (msg: string) => box.replaceChildren(el("p", { class: "pw-notice" }, msg), el("div", { class: "bar" }, el("a", { href: "#/", class: "pw-btn pw-btn-secondary" }, "Enter another code")));
 
-  const start = button(`Claim code ${spaced(code)} with my passkey`, { kind: "primary", icon: "certificate" });
+  const start = button(`Claim code ${spaced(code)} with my passkey`, { kind: "primary", icon: "stethoscope" });
   const err = el("p", { class: "pw-error", attrs: { role: "alert" } });
   box.replaceChildren(
     el("p", { class: "pw-hint flush" }, "Your phone checks it is you, then shows a number. The owner checks their phone shows the same number."),
@@ -324,7 +324,7 @@ function confirmForm(me: Me, d: { n: string; s: "dog" | "cat"; c?: string; rg?: 
   const list = el("datalist", { id: "v-vaccines" }, ...RABIES_VACCINES.filter((v) => v.for.includes(d.s)).map((v) => el("option", { value: v.name })));
   const checked = el("input", { type: "checkbox", name: "checked", required: true });
   const err = el("p", { class: "pw-error", attrs: { role: "alert" } });
-  const go = button("Confirm with my passkey", { kind: "primary", type: "submit", icon: "certificate" });
+  const go = button("Confirm with my passkey", { kind: "primary", type: "submit", icon: "stethoscope" });
   const form = el("form", { class: "stack" },
     el("div", { class: "vpet" }, el("img", { src: `/3d/${d.s}.webp`, alt: "", width: 48, height: 48 }), el("div", {}, el("b", {}, d.n || "Pet"), el("br"), el("span", { class: "pw-hint" }, d.s === "cat" ? "Cat" : "Dog"))),
     el("p", { class: "pw-hint flush" }, "As entered by the owner. Check each value in the passport or in your records, and correct it if needed."),

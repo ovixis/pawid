@@ -38,7 +38,7 @@ export function vetStatusCard(pet: Pet): HTMLElement {
     body.push(el("p", { class: "pw-hint lead" }, "Your vet checks the microchip and rabies vaccine against the passport and confirms them on their phone. Then hotels and venues see \"confirmed by a vet\", not just \"declared by the owner\"."));
   }
   if (!ready) body.push(el("p", { class: "pw-hint flush" }, "Add the microchip number and the rabies vaccine dates first."));
-  else if (state !== "confirmed") body.push(el("div", { class: "bar" }, link("Ask my vet to confirm", `#/pet/${id}/vet`, "primary", "certificate")));
+  else if (state !== "confirmed") body.push(el("div", { class: "bar" }, link("Ask my vet to confirm", `#/pet/${id}/vet`, "primary", "stethoscope")));
   else body.push(el("div", { class: "bar" }, link("Confirm again", `#/pet/${id}/vet`, "ghost")));
   return el("section", { class: "pw-card pw-card-pad no-print vet-card", attrs: { "aria-labelledby": "vet-title" } },
     el("div", { class: "pw-card-head" }, el("h2", { id: "vet-title" }, "Vet confirmation")), ...body);
@@ -98,7 +98,7 @@ export function vetAskView(pet: Pet, onConfirmed: (p: Pet) => void): Node[] {
     const decided = await new Promise<boolean>((resolve) => {
       box.replaceChildren(
         el("p", { class: "pw-label" }, "A vet wants to confirm " + pet.name),
-        el("p", { class: "pair-vet" }, svg("certificate"), el("span", {}, vetWho(vet))),
+        el("p", { class: "pair-vet" }, svg("stethoscope"), el("span", {}, vetWho(vet))),
         el("p", { class: "pw-hint flush" }, "Does your vet's screen show this number?"),
         el("p", { class: "pair-number", attrs: { "aria-label": number.split("").join(" ") } }, number),
         el("div", { class: "bar pair-actions" },

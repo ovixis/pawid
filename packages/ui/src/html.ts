@@ -11,7 +11,7 @@ export function svgOf(body: string, label?: string, cls = "pw-icon"): string {
   return `<svg class="${esc(cls)}" viewBox="0 0 24 24" ${a11y}>${body}</svg>`;
 }
 
-/** Inline SVG icon by name (MingCute). Pulls in every icon: prefer svgOf in code that ships to venues. */
+/** Inline SVG icon by name (Tabler Icons, MIT). Pulls in every icon: prefer svgOf in code that ships to venues. */
 export function icon(name: IconName, label?: string, cls = "pw-icon"): string {
   return svgOf(ICON_BODIES[name], label, cls);
 }

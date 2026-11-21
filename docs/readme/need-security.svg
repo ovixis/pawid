@@ -9,7 +9,7 @@
 <rect x="0.5" y="0.5" width="299" height="91" rx="18" fill="none" stroke="#ffffff" stroke-opacity=".1"/>
 <rect x="18" y="20" width="52" height="52" rx="15" fill="url(#gold)"/>
 <rect x="18.5" y="20.5" width="51" height="51" rx="14.5" fill="none" stroke="#ffffff" stroke-opacity=".45"/>
-<g transform="translate(29.6 31.6) scale(1.2)" color="#14233f"><path fill="currentColor" d="M12.746 2.027a10 10 0 0 1 4.699 1.584c5.563 3.618 6.124 11.579 1.116 15.936a10 10 0 0 1-2.998 1.8a10.1 10.1 0 0 1-4.309.626a10 10 0 0 1-4.699-1.584C.992 16.771.431 8.81 5.439 4.453a10 10 0 0 1 2.998-1.8a10.1 10.1 0 0 1 4.309-.626M12 15c-1.432.163-1.225 2.001.002 2c1.049-.001 1.382-1.438.44-1.898c-.111-.055-.317-.116-.442-.102m-.229-8.974c-.466.109-.745.514-.771.974v6c.031.544.431 1 1 1s.969-.456 1-1V7c-.036-.63-.584-1.124-1.229-.974"/></g>
+<g transform="translate(29.6 31.6) scale(1.2)" color="#14233f"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.46 20.846A12 12 0 0 1 3.5 6A12 12 0 0 0 12 3a12 12 0 0 0 8.5 3a12 12 0 0 1-.09 7.06M15 19l2 2l4-4"/></g>
 <text x="86" y="42" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" font-size="17" font-weight="700" fill="#ffffff">Security reviews</text>
 <text x="86" y="63" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="500" fill="#c7d3e8">Report privately</text>
 </svg>

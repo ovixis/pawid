@@ -9,7 +9,7 @@
 <rect x="0.5" y="0.5" width="299" height="91" rx="18" fill="none" stroke="#ffffff" stroke-opacity=".1"/>
 <rect x="18" y="20" width="52" height="52" rx="15" fill="url(#gold)"/>
 <rect x="18.5" y="20.5" width="51" height="51" rx="14.5" fill="none" stroke="#ffffff" stroke-opacity=".45"/>
-<g transform="translate(29.6 31.6) scale(1.2)" color="#14233f"><path fill="currentColor" d="M15.313 4.001H18c1.146.046 1.954.853 2 2v2.686l1.899 1.9c.778.851.778 1.977 0 2.828L20 15.314v2.687c-.046 1.146-.854 1.954-2 2h-2.687L13.414 21.9c-.851.778-1.977.778-2.828 0l-1.9-1.899H6c-1.147-.046-1.954-.854-2-2v-2.687l-1.9-1.899c-.778-.851-.778-1.977 0-2.828l1.9-1.9V6.001c.046-1.147.853-1.954 2-2h2.686l1.9-1.9c.851-.778 1.977-.778 2.828 0Zm-4.478 9.227L9.066 11.46c-.337-.295-.795-.394-1.201-.163a1 1 0 0 0-.473.616c-.094.359.024.691.26.962l2.476 2.474c.337.295.795.395 1.201.163l.213-.163l4.951-4.952c.295-.337.394-.795.163-1.201c-.339-.593-1.092-.637-1.577-.213Z"/></g>
+<g transform="translate(29.6 31.6) scale(1.2)" color="#14233f"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 4H5a2 2 0 0 0-2 2v3.5a5.5 5.5 0 0 0 11 0V6a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 1 0 12 0v-3m-9-9v2M6 3v2"/><path d="M18 10a2 2 0 1 0 4 0a2 2 0 1 0-4 0"/></g></g>
 <text x="86" y="42" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" font-size="17" font-weight="700" fill="#ffffff">Vets for the pilot</text>
 <text x="86" y="63" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="500" fill="#c7d3e8">Register in 2 minutes</text>
 </svg>

@@ -175,5 +175,8 @@ Your pets' details stay on your phone. See [PRIVACY.md](PRIVACY.md) for what the
 The PawID mark is a paw inside a scan frame, with a check on the pad. The files are made from
 `packages/ui/src/brand.ts` with `npm run brand -w @pawid/ui`; the README cards and picture with `npx vite-node scripts/readme-assets.ts`.
 
+Icons: [Tabler Icons](https://tabler.io/icons) (MIT), built into `packages/ui/src/icons.ts` with `npm run icons -w @pawid/ui`.
+Pet pictures: Microsoft Fluent Emoji (MIT), see `apps/web/public/3d/CREDITS.md`.
+
 The HosPet.eu name and logo belong to HosPet.eu. They are not covered by the Apache-2.0 licence
 of this code. If you run your own copy of PawID, remove the HosPet mark and the "by HosPet.eu" line.

@@ -31,19 +31,19 @@ function cta(file: string, icon: keyof typeof ICON_BODIES, title: string, line: 
   writeFileSync(out + file, svg);
 }
 
-cta("card-owners.svg", "pawFill", "Pet owners", "Open the app");
-cta("card-venues.svg", "hotelFill", "Hotels and restaurants", "Add PawID to your site");
-cta("card-vets.svg", "certificateFill", "Vets", "Confirm a pet in 30 seconds");
-cta("card-developers.svg", "worldFill", "Developers and AI", "API and MCP server");
+cta("card-owners.svg", "paw", "Pet owners", "Open the app");
+cta("card-venues.svg", "hotel", "Hotels and restaurants", "Add PawID to your site");
+cta("card-vets.svg", "stethoscope", "Vets", "Confirm a pet in 30 seconds");
+cta("card-developers.svg", "code", "Developers and AI", "API and MCP server");
 
-cta("need-vets.svg", "certificateFill", "Vets for the pilot", "Register in 2 minutes");
-cta("need-rules.svg", "worldFill", "Country rules", "Add a country");
-cta("need-translations.svg", "translateFill", "Translations", "Bring PawID to your language");
-cta("need-venues.svg", "museumFill", "Venues", "Try the components");
-cta("need-code.svg", "pullRequestFill", "Code", "Good first issues");
-cta("need-bugs.svg", "bugFill", "Bugs and ideas", "Open an issue");
-cta("need-support.svg", "checkCircleFill", "Support PawID", "Add your name");
-cta("need-security.svg", "warningFill", "Security reviews", "Report privately");
+cta("need-vets.svg", "stethoscope", "Vets for the pilot", "Register in 2 minutes");
+cta("need-rules.svg", "scale", "Country rules", "Add a country");
+cta("need-translations.svg", "translate", "Translations", "Bring PawID to your language");
+cta("need-venues.svg", "store", "Venues", "Try the components");
+cta("need-code.svg", "pullRequest", "Code", "Good first issues");
+cta("need-bugs.svg", "bug", "Bugs and ideas", "Open an issue");
+cta("need-support.svg", "heartHandshake", "Support PawID", "Add your name");
+cta("need-security.svg", "shieldCheck", "Security reviews", "Report privately");
 
 // The pet card a venue sees, with an example vet confirmation (example data, not a real vet or pet).
 const card = petCardHtml(
