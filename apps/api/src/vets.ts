@@ -2,7 +2,7 @@
 // rabies vaccination, and the encrypted hand-over of the confirmation to the owner's phone.
 import type { Context, Hono } from "hono";
 import {
-  PASSKEY_ALGS, VET_CONFIRM_KEYS, b64urlDecode, b64urlEncode, confirmChallenge, verifyPasskeyAssertion, verifyVetSeal,
+  PASSKEY_ALGS, VET_CONFIRM_KEYS, b64urlDecode, b64urlEncode, confirmChallenge, pairClaimMessage, verifyPasskeyAssertion, verifyVetSeal,
   vetConfirmMessage, vetFieldsSchema, vetSealSchema, type VetFields, type VetSeal,
 } from "@pawid/core";
 import { z } from "zod";
@@ -135,23 +135,108 @@ export function vetRoutes(app: Hono<{ Bindings: VetEnv }>): void {
     return c.json({ seal, fields, vet: { name: vet.name, registerBody: vet.register_body, registerNumber: vet.register_number, country: vet.country } });
   });
 
-  // Hand-over: encrypted on the vet's phone, read once by the owner's phone.
-  const relayId = z.string().regex(/^[A-Za-z0-9_-]{22,43}$/);
-  app.put("/v1/relay/:id", async (c) => {
-    const id = relayId.safeParse(c.req.param("id"));
-    const body = z.object({ data: z.string().max(8000) }).safeParse(await c.req.json().catch(() => null));
-    if (!id.success || !body.success) return c.json({ error: "Bad request." }, 400);
-    await c.env.DB.prepare("INSERT OR REPLACE INTO vet_relay (id, data, expires) VALUES (?1, ?2, ?3)").bind(id.data, body.data.data, nowSec() + 3600).run();
-    return c.body(null, 204);
+  // ── Pairing a vet with a pet owner (6 digit code + number matching) ──────────────
+  // Owner: POST /v1/pair -> code. Vet (passkey): POST /v1/pair/claim. Both phones show the same
+  // 2 digit number; the owner accepts and sends their values (encrypted). The vet confirms and sends
+  // the result (encrypted). Each side authenticates with its own token; the API only sees ciphertext.
+  const PAIR_TTL = 15 * 60;
+  const tokenHash = async (t: string) => b64urlEncode(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t))));
+  const pubKey = z.string().regex(/^[A-Za-z0-9_-]{87}$/);
+  const cipher = z.string().regex(/^[A-Za-z0-9_-]{20,12000}$/);
+  interface PairRow { id: string; code: string; owner_pub: string; owner_token: string; vet_id: string | null; vet_pub: string | null; vet_token: string | null; status: string; to_vet: string | null; to_owner: string | null; expires: number }
+  const getPair = async (c: C, side: "owner" | "vet") => {
+    const row = await c.env.DB.prepare("SELECT * FROM pairs WHERE id = ?1").bind(c.req.param("id")).first<PairRow>();
+    const t = c.req.header("x-pair-token") ?? "";
+    if (!row || row.expires < nowSec() || !t) return null;
+    const want = side === "owner" ? row.owner_token : row.vet_token;
+    return want && (await sameSecret(await tokenHash(t), want)) ? row : null;
+  };
+  // A wrong code costs a vet a try: at most 10 wrong codes per vet per 15 minutes (per Worker instance).
+  const misses = new Map<string, { n: number; until: number }>();
+
+  app.post("/v1/pair", async (c) => {
+    const body = z.object({ ownerPub: pubKey }).safeParse(await c.req.json().catch(() => null));
+    if (!body.success) return c.json({ error: "Bad request." }, 400);
+    let code = "";
+    for (let i = 0; i < 8 && !code; i++) {
+      const n = crypto.getRandomValues(new Uint32Array(1))[0]! % 1_000_000;
+      const candidate = String(n).padStart(6, "0");
+      const taken = await c.env.DB.prepare("SELECT 1 FROM pairs WHERE code = ?1 AND expires > ?2").bind(candidate, nowSec()).first();
+      if (!taken) code = candidate;
+    }
+    if (!code) return c.json({ error: "Busy, try again." }, 503);
+    const id = newId(16);
+    const ownerToken = newId(24);
+    const expires = nowSec() + PAIR_TTL;
+    await c.env.DB.prepare("INSERT INTO pairs (id, code, owner_pub, owner_token, expires) VALUES (?1, ?2, ?3, ?4, ?5)")
+      .bind(id, code, body.data.ownerPub, await tokenHash(ownerToken), expires).run();
+    return c.json({ id, code, ownerToken, expires }, 201);
   });
-  app.get("/v1/relay/:id", async (c) => {
-    const id = relayId.safeParse(c.req.param("id"));
-    if (!id.success) return c.json({ error: "Bad request." }, 400);
-    const row = await c.env.DB.prepare("SELECT data, expires FROM vet_relay WHERE id = ?1").bind(id.data).first<{ data: string; expires: number }>();
-    if (!row || row.expires < nowSec()) return c.json({ waiting: true }, 404);
-    await c.env.DB.prepare("DELETE FROM vet_relay WHERE id = ?1").bind(id.data).run();
+
+  app.post("/v1/pair/claim", async (c) => {
+    const body = z.object({ code: z.string().regex(/^\d{6}$/), vetId: z.string().max(24), vetPub: pubKey, at: z.number().int(), assertion: assertionSchema }).safeParse(await c.req.json().catch(() => null));
+    if (!body.success) return c.json({ error: "Type the 6 digit code the owner sees." }, 400);
+    const { code, vetId, vetPub, at, assertion } = body.data;
+    if (Math.abs(at - nowSec()) > 300) return c.json({ error: "Too slow. Try again." }, 400);
+    const m = misses.get(vetId);
+    if (m && m.until > Date.now() && m.n >= 10) return c.json({ error: "Too many wrong codes. Wait 15 minutes." }, 429);
+    const vet = await c.env.DB.prepare("SELECT * FROM vets WHERE id = ?1").bind(vetId).first<VetRow>();
+    if (!vet || vet.status !== "approved") return c.json({ error: vet?.status === "pending" ? "Your registration is not approved yet." : "This vet account cannot confirm." }, 403);
+    const challenge = await confirmChallenge(pairClaimMessage(code, vetPub, at));
+    if (!(await verifyPasskeyAssertion({ publicKey: vet.public_key, alg: vet.alg, assertion, challenge, ...rp(c.env) }))) return c.json({ error: "The passkey check failed." }, 401);
+    const row = await c.env.DB.prepare("SELECT * FROM pairs WHERE code = ?1 AND expires > ?2 AND status = 'waiting'").bind(code, nowSec()).first<PairRow>();
+    if (!row) {
+      const cur = m && m.until > Date.now() ? m : { n: 0, until: Date.now() + 15 * 60_000 };
+      misses.set(vetId, { n: cur.n + 1, until: cur.until });
+      return c.json({ error: "No owner is waiting with this code. Check the digits, or ask for a new code." }, 404);
+    }
+    const vetToken = newId(24);
+    await c.env.DB.prepare("UPDATE pairs SET vet_id = ?1, vet_pub = ?2, vet_token = ?3, status = 'claimed' WHERE id = ?4 AND status = 'waiting'")
+      .bind(vetId, vetPub, await tokenHash(vetToken), row.id).run();
+    return c.json({ id: row.id, vetToken, ownerPub: row.owner_pub });
+  });
+
+  /** Owner polls: has a vet claimed the code? has the vet confirmed? */
+  app.get("/v1/pair/:id", async (c) => {
+    const row = await getPair(c, "owner");
+    if (!row) return c.json({ error: "Expired. Make a new code." }, 404);
     c.header("Cache-Control", "no-store");
-    return c.json({ data: row.data });
+    if (row.status === "waiting" || row.status === "declined") return c.json({ status: row.status });
+    const vet = await c.env.DB.prepare("SELECT * FROM vets WHERE id = ?1").bind(row.vet_id).first<VetRow>();
+    const out = { status: row.status, vetPub: row.vet_pub, vet: vet ? { name: vet.name, registerBody: vet.register_body, registerNumber: vet.register_number, country: vet.country, clinic: vet.clinic ?? undefined } : undefined };
+    if (row.status === "done") {
+      await c.env.DB.prepare("DELETE FROM pairs WHERE id = ?1").bind(row.id).run();
+      return c.json({ ...out, result: row.to_owner });
+    }
+    return c.json(out);
+  });
+
+  /** Owner: "yes, that's my vet" (with the owner's values, encrypted for the vet) or "no". */
+  app.post("/v1/pair/:id/decision", async (c) => {
+    const row = await getPair(c, "owner");
+    const body = z.object({ accept: z.boolean(), data: cipher.optional() }).safeParse(await c.req.json().catch(() => null));
+    if (!row || !body.success || row.status !== "claimed") return c.json({ error: "Expired. Make a new code." }, 404);
+    if (body.data.accept && !body.data.data) return c.json({ error: "Bad request." }, 400);
+    await c.env.DB.prepare("UPDATE pairs SET status = ?1, to_vet = ?2, expires = ?3 WHERE id = ?4")
+      .bind(body.data.accept ? "accepted" : "declined", body.data.data ?? null, nowSec() + 30 * 60, row.id).run();
+    return c.json({ status: body.data.accept ? "accepted" : "declined" });
+  });
+
+  /** Vet polls: did the owner accept? */
+  app.get("/v1/pair/:id/vet", async (c) => {
+    const row = await getPair(c, "vet");
+    if (!row) return c.json({ error: "Expired. Ask the owner for a new code." }, 404);
+    c.header("Cache-Control", "no-store");
+    return c.json({ status: row.status, ...(row.status === "accepted" ? { data: row.to_vet } : {}) });
+  });
+
+  /** Vet: the confirmation, encrypted for the owner. */
+  app.put("/v1/pair/:id/result", async (c) => {
+    const row = await getPair(c, "vet");
+    const body = z.object({ data: cipher }).safeParse(await c.req.json().catch(() => null));
+    if (!row || !body.success || row.status !== "accepted") return c.json({ error: "Expired. Ask the owner for a new code." }, 404);
+    await c.env.DB.prepare("UPDATE pairs SET status = 'done', to_owner = ?1, to_vet = NULL WHERE id = ?2").bind(body.data.data, row.id).run();
+    return c.body(null, 204);
   });
 
   // Admin (HosPet.eu): list, approve, revoke, reject. Bearer STATS_KEY.

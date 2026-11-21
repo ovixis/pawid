@@ -24,7 +24,7 @@ const waiter = (c: C): { waitUntil(p: Promise<unknown>): void } | undefined => {
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Accept, MCP-Protocol-Version, Mcp-Session-Id",
+  "Access-Control-Allow-Headers": "Content-Type, Accept, MCP-Protocol-Version, Mcp-Session-Id, X-Pair-Token",
   "Access-Control-Max-Age": "86400",
 };
 
@@ -192,8 +192,8 @@ export default {
     // Usage counters are kept for about 13 months.
     const cutoff = new Date(Date.now() - 400 * 86_400_000).toISOString().slice(0, 10);
     await env.DB.prepare("DELETE FROM usage_daily WHERE day < ?1").bind(cutoff).run();
-    // Vet hand-overs nobody picked up.
-    await env.DB.prepare("DELETE FROM vet_relay WHERE expires < ?1").bind(nowSec()).run();
+    // Vet pairings that ran out.
+    await env.DB.prepare("DELETE FROM pairs WHERE expires < ?1").bind(nowSec()).run();
   },
 };
 

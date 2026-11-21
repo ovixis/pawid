@@ -1,10 +1,14 @@
 // "PawID for vets": register once with a passkey, then confirm a pet's microchip and rabies vaccine
-// by scanning the owner's code and touching the fingerprint sensor. No app, no password, no software.
-import { b64urlDecode, b64urlEncode, confirmChallenge, vetConfirmMessage, vetFieldsSchema, type VetFields } from "@pawid/core";
+// by typing the owner's 6 digit code (or scanning it), checking the same number shows on both phones,
+// and touching the fingerprint sensor. No app, no password, no software.
+import {
+  b64urlDecode, b64urlEncode, confirmChallenge, exportPairKeys, importPairKeys, isPairCode, newPairKeys, pairClaimMessage, pairDecrypt,
+  pairEncrypt, pairNumber, vetConfirmMessage, vetFieldsSchema, type PairKeys, type VetFields,
+} from "@pawid/core";
 import { BY_HOSPET } from "@pawid/ui";
 import { COUNTRY_GROUPS } from "./countries";
 import { button, el, siteFooter, svg, topBar } from "./dom";
-import { API, handOver, readRequest, type VetRequest } from "./relay";
+import { API, PairGone, claimPair, sendResult, spaced, vetPoll } from "./pair";
 import { injectStyles } from "./style";
 import { moveToNewAddress } from "./move";
 import { RABIES_VACCINES } from "./vaccines";
@@ -26,6 +30,13 @@ css.textContent = `
 .vpet b { font-size: var(--pw-text-lg); }
 .vok { display: grid; justify-items: center; text-align: center; gap: .5rem; padding: 2rem 1.25rem; }
 .vok .pw-icon { width: 3rem; height: 3rem; color: var(--pw-ok); }
+.vcode { display: flex; gap: .5rem; flex-wrap: wrap; align-items: end; }
+.vcode input { font: 700 1.75rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .25em; max-width: 12rem; text-align: center; }
+.vnum { margin: .25rem 0; font: 800 4.5rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; color: var(--pw-navy-800); text-align: center; }
+.vwait { display: flex; align-items: center; justify-content: center; gap: .5rem; margin: 0; font-weight: 700; }
+.vdot { width: .625rem; height: .625rem; border-radius: 50%; background: var(--pw-gold-400); animation: vpulse 1.2s ease-in-out infinite; }
+@keyframes vpulse { 50% { opacity: .25; } }
+@media (prefers-reduced-motion: reduce) { .vdot { animation: none; } }
 .vstatus { margin: 0; padding: .75rem .875rem; border-radius: var(--pw-radius-control); background: var(--pw-surface-muted); }
 `;
 document.head.append(css);
@@ -176,19 +187,41 @@ function home(): Node[] {
     ),
   ];
   if (!passkeysOk) parts.push(el("p", { class: "pw-notice" }, "This browser does not support passkeys. Use an up to date Safari, Chrome or Edge on your phone."));
+  else if (me?.status === "approved") parts.push(statusLine(me), codeEntry(), err);
   else if (me) parts.push(statusLine(me), el("div", { class: "bar" }, button("Check my status", { kind: "ghost", onClick: async () => { try { await signIn(); route(); } catch (x) { err.textContent = (x as Error).message; } } })), err);
   else parts.push(el("div", { class: "bar" }, el("a", { href: "#/register", class: "pw-btn pw-btn-primary" }, "Register as a vet"), signin), err);
   return parts;
 }
 
-function confirmView(req: VetRequest): Node[] {
+/** The 6 digit code field on the home page. */
+function codeEntry(): HTMLElement {
+  const input = el("input", { name: "code", inputMode: "numeric", autocomplete: "one-time-code", maxLength: 7, placeholder: "000 000", class: "pw-input", id: "v-code", attrs: { "aria-describedby": "v-code-hint" } });
+  const form = el("form", { class: "pw-card pw-card-pad stack" },
+    el("label", { class: "pw-label", htmlFor: "v-code" }, "The owner's code"),
+    el("div", { class: "vcode" }, input, button("Continue", { kind: "primary", type: "submit" })),
+    el("p", { class: "pw-hint flush", id: "v-code-hint" }, "The owner sees a 6 digit code in PawID. They can read it to you on the phone, send it, or show you its QR."),
+  );
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const c = input.value.replace(/\D/g, "");
+    if (isPairCode(c)) location.hash = `#/pair?c=${c}`;
+    else input.setCustomValidity("Type the 6 digits."), input.reportValidity(), input.setCustomValidity("");
+  });
+  return form;
+}
+
+interface VetPair { id: string; vetToken: string; ownerPub: string; code: string; jwk: JsonWebKey }
+const PAIR_KEY = "pawid.vet.pair.v1";
+
+/** #/pair?c=<code>: claim the code, show the matching number, wait for the owner, then confirm. */
+function pairView(code: string): Node[] {
   const me = loadMe();
   if (!me) {
     try { sessionStorage.setItem(REQ_KEY, location.hash); } catch { /* private mode */ }
     const err = el("p", { class: "pw-error", attrs: { role: "alert" } });
     return [
-      el("h1", { class: "page-title" }, `Confirm ${req.d.n || "this pet"}`),
-      el("p", { class: "pw-hint" }, "To confirm, sign in with your PawID vet passkey, or register once."),
+      el("h1", { class: "page-title" }, "Sign in to confirm"),
+      el("p", { class: "pw-hint" }, "Sign in with your PawID vet passkey, or register once."),
       el("div", { class: "bar" },
         button("Sign in with my passkey", { kind: "primary", onClick: async () => { try { await signIn(); route(); } catch (x) { err.textContent = (x as Error).message; } } }),
         el("a", { href: "#/register", class: "pw-btn pw-btn-secondary" }, "Register as a vet"),
@@ -198,18 +231,96 @@ function confirmView(req: VetRequest): Node[] {
   }
   if (me.status !== "approved") return [el("h1", { class: "page-title" }, "Not approved yet"), statusLine(me)];
 
-  const chip = el("input", { name: "microchip", value: req.d.c ?? "", inputMode: "numeric", maxLength: 19, required: true, autocomplete: "off" });
-  const given = el("input", { name: "given", type: "date", value: req.d.rg ?? "", required: true });
-  const until = el("input", { name: "until", type: "date", value: req.d.ru ?? "", required: true });
-  const vaccine = el("input", { name: "vaccine", value: req.d.rv ?? "", maxLength: 80, autocomplete: "off" });
+  const box = el("section", { class: "pw-card pw-card-pad stack", attrs: { "aria-live": "polite" } });
+  const here = location.hash;
+  const alive = () => location.hash === here;
+  const fail = (msg: string) => box.replaceChildren(el("p", { class: "pw-notice" }, msg), el("div", { class: "bar" }, el("a", { href: "#/", class: "pw-btn pw-btn-secondary" }, "Enter another code")));
+
+  const start = button(`Claim code ${spaced(code)} with my passkey`, { kind: "primary", icon: "certificate" });
+  const err = el("p", { class: "pw-error", attrs: { role: "alert" } });
+  box.replaceChildren(
+    el("p", { class: "pw-hint flush" }, "Your phone checks it is you, then shows a number. The owner checks their phone shows the same number."),
+    el("div", { class: "bar" }, start),
+    err,
+  );
+
+  const run = async (saved: VetPair | null) => {
+    let pair: VetPair, keys: PairKeys;
+    if (saved) {
+      pair = saved;
+      keys = await importPairKeys(saved.jwk);
+    } else {
+      keys = await newPairKeys();
+      const at = Math.floor(Date.now() / 1000);
+      const cred = await passkeySign(await confirmChallenge(pairClaimMessage(code, keys.publicRaw, at)), me.credentialId);
+      const r = await claimPair({ code, vetId: me.id, vetPub: keys.publicRaw, at, assertion: asAssertion(cred) });
+      pair = { ...r, code, jwk: await exportPairKeys(keys) };
+      try { sessionStorage.setItem(PAIR_KEY, JSON.stringify(pair)); } catch { /* private mode */ }
+    }
+    const number = await pairNumber(code, pair.ownerPub, keys.publicRaw);
+    box.replaceChildren(
+      el("p", { class: "pw-label" }, "Ask the owner: does your phone show"),
+      el("p", { class: "vnum", attrs: { "aria-label": number.split("").join(" ") } }, number),
+      el("p", { class: "vwait", attrs: { role: "status" } }, el("span", { class: "vdot" }), "Waiting for the owner to say yes…"),
+    );
+    // Wait for the owner.
+    let res: { status: string; data?: string } | null = null;
+    const end = Date.now() + 15 * 60_000;
+    while (alive() && Date.now() < end) {
+      try {
+        res = await vetPoll(pair.id, pair.vetToken);
+        if (res.status === "accepted" || res.status === "declined") break;
+      } catch (x) {
+        if (x instanceof PairGone) { sessionStorage.removeItem(PAIR_KEY); return fail("This code expired. Ask the owner for a new one."); }
+      }
+      await new Promise((r) => setTimeout(r, 2500));
+    }
+    if (!alive()) return;
+    if (res?.status === "declined") { sessionStorage.removeItem(PAIR_KEY); return fail("The owner said this is not their vet. Nothing was shared."); }
+    if (res?.status !== "accepted" || !res.data) return fail("The owner did not answer in time. Ask them for a new code.");
+    let d: Record<string, unknown>;
+    try { d = (await pairDecrypt(keys, pair.ownerPub, code, res.data)) as Record<string, unknown>; } catch { return fail("The owner's details could not be read. Ask for a new code."); }
+    const str = (v: unknown, max: number) => (typeof v === "string" ? v.slice(0, max) : undefined);
+    const req = { n: str(d.n, 100) ?? "", s: (d.s === "cat" ? "cat" : "dog") as "dog" | "cat", c: str(d.c, 15), rg: str(d.rg, 10), ru: str(d.ru, 10), rv: str(d.rv, 80) };
+    box.replaceChildren(...confirmForm(me, req, async (result) => {
+      await sendResult(pair.id, pair.vetToken, await pairEncrypt(keys, pair.ownerPub, code, result));
+      sessionStorage.removeItem(PAIR_KEY);
+      main.replaceChildren(el("section", { class: "pw-card vok", attrs: { role: "status" } }, svg("checkCircleFill"),
+        el("h1", { class: "page-title" }, "Confirmed"),
+        el("p", {}, `${req.n || "The pet"}'s owner sees it on their phone now. Thank you.`),
+        el("a", { href: "#/", class: "pw-btn pw-btn-secondary" }, "Enter another code")));
+    }));
+  };
+
+  // A reload keeps the same pairing.
+  let saved: VetPair | null = null;
+  try { saved = JSON.parse(sessionStorage.getItem(PAIR_KEY) ?? "null") as VetPair | null; } catch { /* none */ }
+  if (saved && saved.code === code) void run(saved).catch((x) => fail((x as Error).message));
+  start.addEventListener("click", () => {
+    err.textContent = "";
+    start.disabled = true;
+    void run(null).catch((x) => {
+      start.disabled = false;
+      err.textContent = (x as Error).name === "NotAllowedError" ? "Not done. Try again and use your fingerprint, face or PIN." : (x as Error).message;
+    });
+  });
+  return [el("h1", { class: "page-title" }, `Code ${spaced(code)}`), box];
+}
+
+/** The check-and-confirm form, filled with what the owner entered. */
+function confirmForm(me: Me, d: { n: string; s: "dog" | "cat"; c?: string; rg?: string; ru?: string; rv?: string }, done: (result: unknown) => Promise<void>): Node[] {
+  const chip = el("input", { name: "microchip", value: d.c ?? "", inputMode: "numeric", maxLength: 19, required: true, autocomplete: "off" });
+  const given = el("input", { name: "given", type: "date", value: d.rg ?? "", required: true });
+  const until = el("input", { name: "until", type: "date", value: d.ru ?? "", required: true });
+  const vaccine = el("input", { name: "vaccine", value: d.rv ?? "", maxLength: 80, autocomplete: "off" });
   vaccine.setAttribute("list", "v-vaccines");
-  const list = el("datalist", { id: "v-vaccines" }, ...RABIES_VACCINES.filter((v) => v.for.includes(req.d.s)).map((v) => el("option", { value: v.name })));
+  const list = el("datalist", { id: "v-vaccines" }, ...RABIES_VACCINES.filter((v) => v.for.includes(d.s)).map((v) => el("option", { value: v.name })));
   const checked = el("input", { type: "checkbox", name: "checked", required: true });
   const err = el("p", { class: "pw-error", attrs: { role: "alert" } });
   const go = button("Confirm with my passkey", { kind: "primary", type: "submit", icon: "certificate" });
-  const form = el("form", { class: "pw-card pw-card-pad stack" },
-    el("div", { class: "vpet" }, el("img", { src: `/3d/${req.d.s}.webp`, alt: "", width: 48, height: 48 }), el("div", {}, el("b", {}, req.d.n || "Pet"), el("br"), el("span", { class: "pw-hint" }, req.d.s === "cat" ? "Cat" : "Dog"))),
-    el("p", { class: "pw-hint flush" }, "As entered by the owner. Check each value in the passport and correct it if needed."),
+  const form = el("form", { class: "stack" },
+    el("div", { class: "vpet" }, el("img", { src: `/3d/${d.s}.webp`, alt: "", width: 48, height: 48 }), el("div", {}, el("b", {}, d.n || "Pet"), el("br"), el("span", { class: "pw-hint" }, d.s === "cat" ? "Cat" : "Dog"))),
+    el("p", { class: "pw-hint flush" }, "As entered by the owner. Check each value in the passport or in your records, and correct it if needed."),
     el("div", { class: "fields fields-2" },
       field("Microchip (15 digits)", chip),
       field("Rabies vaccine given on", given),
@@ -217,7 +328,7 @@ function confirmView(req: VetRequest): Node[] {
       field("Vaccine (as on the sticker)", vaccine),
     ),
     list,
-    el("label", { class: "check" }, checked, el("span", {}, el("b", {}, "I checked these in the passport"), el("span", {}, "and read the microchip, or checked it in the passport I have in front of me."))),
+    el("label", { class: "check" }, checked, el("span", {}, el("b", {}, "I checked these myself"), el("span", {}, "in the pet passport or in my clinical records for this animal."))),
     err,
     el("div", { class: "bar" }, go),
   );
@@ -225,7 +336,7 @@ function confirmView(req: VetRequest): Node[] {
     e.preventDefault();
     err.textContent = "";
     if (!form.reportValidity()) return;
-    const f = vetFieldsSchema.safeParse({ species: req.d.s, microchip: chip.value.replace(/[\s-]/g, ""), rabiesGivenOn: given.value, rabiesValidUntil: until.value, rabiesVaccine: vaccine.value.trim() || undefined });
+    const f = vetFieldsSchema.safeParse({ species: d.s, microchip: chip.value.replace(/[\s-]/g, ""), rabiesGivenOn: given.value, rabiesValidUntil: until.value, rabiesVaccine: vaccine.value.trim() || undefined });
     if (!f.success) { err.textContent = "The microchip has 15 digits, and both dates are needed."; return; }
     if (f.data.rabiesValidUntil < f.data.rabiesGivenOn) { err.textContent = "The vaccine can't expire before it was given."; return; }
     go.disabled = true;
@@ -234,26 +345,22 @@ function confirmView(req: VetRequest): Node[] {
       const at = Math.floor(Date.now() / 1000);
       const cred = await passkeySign(await confirmChallenge(vetConfirmMessage(me.id, at, fields)), me.credentialId);
       const res = await api<unknown>("/v1/vets/confirm", { vetId: me.id, at, fields, assertion: asAssertion(cred) });
-      await handOver(req, res);
-      try { sessionStorage.removeItem(REQ_KEY); } catch { /* none */ }
-      main.replaceChildren(el("section", { class: "pw-card vok", attrs: { role: "status" } }, svg("checkCircleFill"),
-        el("h1", { class: "page-title" }, "Confirmed"),
-        el("p", {}, `${req.d.n || "The pet"}'s owner sees it on their phone now. Thank you.`)));
+      await done(res);
     } catch (x) {
       err.textContent = (x as Error).name === "NotAllowedError" ? "Not confirmed. Try again and use your fingerprint, face or PIN." : (x as Error).message;
     } finally {
       go.disabled = false;
     }
   });
-  return [el("h1", { class: "page-title" }, "Confirm microchip and rabies vaccine"), form];
+  return [form];
 }
 
 function route(): void {
   const [path = "", query = ""] = location.hash.replace(/^#\/?/, "").split("?");
   let view: Node[];
-  if (path === "confirm") {
-    const req = readRequest(new URLSearchParams(query));
-    view = req ? confirmView(req) : [el("p", { class: "pw-notice" }, "This code is not complete. Ask the owner to show it again.")];
+  if (path === "pair") {
+    const c = (new URLSearchParams(query).get("c") ?? "").replace(/\D/g, "");
+    view = isPairCode(c) ? pairView(c) : [el("p", { class: "pw-notice" }, "This code is not complete. Ask the owner for the 6 digits again."), codeEntry()];
   } else if (path === "register") {
     view = loadMe() ? home() : registerView(() => {
       // Back to the pet the vet was confirming, if any.

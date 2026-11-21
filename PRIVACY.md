@@ -52,15 +52,18 @@ not save the code or the details in it, and keeps no logs of them.
 
 ## Vet confirmation
 
-You can ask your vet to confirm your pet's microchip and rabies vaccine. Your phone shows a code with
-those details, a random id and a random key (after the "#", never sent to a server). Your vet scans
-it, checks the details in the passport and confirms with a passkey on their phone.
+You can ask your vet to confirm your pet's microchip and rabies vaccine. Your phone gets a 6 digit
+code from the PawID API (valid 15 minutes); you read it to your vet, send it, or show it as a QR.
+Your vet types it on their phone after signing in with their passkey. Both phones then show the same
+2 digit number: you check it matches and tap "Yes, that's my vet", or "No" to cancel.
 
-To confirm, the vet's phone sends those details (microchip, species, rabies dates, vaccine name) to the
-PawID API once. The API checks the vet's passkey, seals the details and sends them back. It does not
-keep the details. The vet's phone then encrypts the confirmation with the key from your code and
-leaves it at the API for up to one hour; your phone collects it and it is deleted. The API never has
-the key, so it cannot read it.
+The two phones agree on a key that only they know (each makes a one-time key pair; the API passes the
+public halves along). Only after you say yes, your phone sends the microchip and rabies details to
+the vet, encrypted with that key. When the vet confirms, their phone sends those details once to the
+PawID API, which checks the vet's passkey, seals the details and sends them back without keeping
+them. The vet's phone encrypts the result for your phone. The API holds only public keys, the code,
+and ciphertext it cannot read, and deletes everything when your phone collects the answer, or after
+at most 45 minutes.
 
 The confirmation is kept on your phone with your pet. When you share a code, it goes along only if
 the microchip and rabies details are still the ones the vet confirmed.

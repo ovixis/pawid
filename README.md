@@ -13,7 +13,7 @@ Open source digital companion for the EU pet passport. Built for people who trav
 ## What it does (goal)
 
 - Store your dog's passport data (microchip, vaccines, expiry dates), on your device first
-- Vet confirmation: a registered vet confirms the microchip and rabies vaccine with a passkey (fingerprint or face) on their own phone; venues then see "confirmed by a vet" with the vet's name and register number. Vets need no app or software: pawid.hospet.eu/vet
+- Vet confirmation: the owner gives the vet a 6 digit code (in person or by phone), both phones show the same number to check (like GitHub's number matching), and a registered vet confirms the microchip and rabies vaccine with a passkey (fingerprint or face) on their own phone; venues then see "confirmed by a vet" with the vet's name and register number. Vets need no app or software: pawid.hospet.eu/vet
 - Put the rabies vaccine expiry in your phone's calendar, with alarms 30, 7 and 1 day before (made on the device, no email)
 - Back up your pets by email to yourself: one link puts everything back on any phone
 - Tell you what you need for each European country (rules are open data, with official sources)

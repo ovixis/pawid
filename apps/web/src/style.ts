@@ -121,6 +121,13 @@ details.more[open] summary { margin-bottom: 1rem; }
 .vet-dot { width: .625rem; height: .625rem; border-radius: 50%; background: var(--pw-gold-400); animation: vet-pulse 1.2s ease-in-out infinite; }
 @keyframes vet-pulse { 50% { opacity: .25; } }
 @media (prefers-reduced-motion: reduce) { .vet-dot { animation: none; } }
+.pair-box { display: grid; justify-items: center; text-align: center; gap: .625rem; }
+.pair-box canvas { width: 11rem !important; height: 11rem !important; }
+.pair-code { margin: 0; font: 800 2.75rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .12em; color: var(--pw-navy-800); }
+.pair-number { margin: 0; font: 800 4.5rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; color: var(--pw-navy-800); }
+.pair-vet { margin: 0; display: flex; gap: .5rem; align-items: flex-start; text-align: left; font-weight: 700; }
+.pair-vet .pw-icon { flex: none; color: var(--pw-ok); width: 1.375rem; height: 1.375rem; }
+.pair-actions { justify-content: center; }
 .restore-cta { margin: 0; text-align: center; color: var(--pw-ink-muted); }
 .restore-list { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: .5rem; }
 .restore-list li { display: grid; grid-template-columns: 2rem auto minmax(0, 1fr); gap: .625rem; align-items: center; }
