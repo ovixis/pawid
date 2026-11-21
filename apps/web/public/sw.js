@@ -1,5 +1,5 @@
 // Minimal offline cache: network first, fall back to cache.
-const CACHE = "pawid-v1";
+const CACHE = "pawid-v2";
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(["/"])));

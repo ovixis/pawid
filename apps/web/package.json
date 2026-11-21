@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@pawid/core": "*",
-    "qrcode": "^1.5.4"
+    "qrcode": "^1.5.4",
+    "@pawid/ui": "*"
   },
   "devDependencies": {
     "@types/qrcode": "^1.5.5",

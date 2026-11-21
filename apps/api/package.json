@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "@pawid/core": "*",
-    "hono": "^4.6.0"
+    "hono": "^4.6.0",
+    "@pawid/ui": "*"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241022.0",

@@ -22,6 +22,7 @@ describe("api", () => {
     const html = await res.text();
     expect(html).toContain("Rex");
     expect(html).toContain("Not verified by a vet");
+    expect(html).toContain("PawID by HosPet.eu");
     expect(res.headers.get("content-security-policy")).toContain("default-src 'none'");
   });
 

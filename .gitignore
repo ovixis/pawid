@@ -4,3 +4,7 @@ dist
 .dev.vars
 *.log
 .DS_Store
+
+# Switzer (Fontshare ITF Free Font License) may not be redistributed in a repository.
+# Deploys copy it into apps/web/public/fonts; without it the app falls back to system fonts.
+apps/web/public/fonts/
