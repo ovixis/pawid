@@ -1,13 +1,13 @@
 // "Install PawID": an install button where the browser allows it, steps for each phone, and a short guide.
 import { BY_HOSPET, type IconName } from "@pawid/ui";
 import { el, svg, topBar, siteFooter } from "./dom";
-import { SHOWCASE_CSS, phoneRow } from "./showcase";
+import { GITHUB_CSS, SHOWCASE_CSS, githubInvite, phoneRow } from "./showcase";
 import { injectStyles } from "./style";
 
 injectStyles();
 
 const css = document.createElement("style");
-css.textContent = `${SHOWCASE_CSS}
+css.textContent = `${SHOWCASE_CSS}${GITHUB_CSS}
 .i-hero { background: var(--pw-navy-800); color: #fff; border-radius: var(--pw-radius-card); padding: 1.75rem 1.5rem; display: grid; gap: .75rem; }
 .i-hero h1 { margin: 0; font-size: clamp(1.875rem, 1.4rem + 1.6vw, 2.5rem); line-height: 1.08; font-weight: 800; letter-spacing: -.03em; }
 .i-hero h1 em { font-style: normal; color: var(--pw-gold-400); }
@@ -162,6 +162,6 @@ const hero = el("section", { class: "i-hero" },
   status,
 );
 
-const main = el("main", { id: "main" }, hero, devices, guide, notes);
+const main = el("main", { id: "main" }, hero, devices, guide, notes, githubInvite());
 const footer = siteFooter();
 document.getElementById("app")!.replaceChildren(topBar("/", BY_HOSPET.href), main, footer);

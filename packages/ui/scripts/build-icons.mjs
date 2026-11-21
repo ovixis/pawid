@@ -15,7 +15,7 @@ const ICONS = {
   dog: "dog", cat: "cat", paw: "paw", loading: "loading", time: "time", pin: "map-pin", world: "world-2",
   hotel: "hotel", fork: "fork-knife", cup: "teacup", museum: "bank", ticket: "ticket", building: "building-2",
   beer: "beer", beach: "beachball", tent: "tent", train: "train", ship: "ship", park: "park", store: "store",
-  cellphone: "cellphone", download: "download", safari: "safari", chrome: "chrome", addSquare: "add-square", moreV: "more-2", shareIos: "upload-2", idcard: "idcard", apple: "apple", android: "android-2", laptop: "laptop-2",
+  cellphone: "cellphone", download: "download", safari: "safari", chrome: "chrome", addSquare: "add-square", moreV: "more-2", shareIos: "upload-2", idcard: "idcard", apple: "apple", android: "android-2", laptop: "laptop-2", github: "github", pullRequest: "git-pull-request", translate: "translate", bug: "bug", star: "star",
 };
 
 // One named export per icon (I_<name>) so bundles keep only the icons they use,

@@ -3,7 +3,7 @@
 import "@pawid/widgets";
 import { BY_HOSPET } from "@pawid/ui";
 import { CODE_WINDOW_CSS, codeWindow } from "./codewin";
-import { SHOWCASE_CSS, phoneRow, placeCards } from "./showcase";
+import { GITHUB_CSS, SHOWCASE_CSS, githubInvite, phoneRow, placeCards } from "./showcase";
 import { el, svg, topBar, siteFooter } from "./dom";
 import { injectStyles } from "./style";
 
@@ -37,7 +37,7 @@ css.textContent = `
 .v-steps li::before { content: counter(s); display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 9999px; background: var(--pw-gold-100); color: var(--pw-navy-800); font-weight: 800; }
 .v-steps b { display: block; }
 .v-steps span { color: var(--pw-ink-muted); }
-${CODE_WINDOW_CSS}${SHOWCASE_CSS}
+${CODE_WINDOW_CSS}${SHOWCASE_CSS}${GITHUB_CSS}
 .v-links { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; }`;
 document.head.append(css);
 
@@ -182,6 +182,7 @@ const main = el(
       el("li", {}, svg("check"), el("span", {}, el("b", {}, "MCP server at /mcp"), " with three read-only tools for AI assistants. ", el("a", { class: "pw-link", href: `${API}/v1/openapi.json` }, "OpenAPI description"), ".")),
     ),
   ),
+  githubInvite(),
   el("section", { class: "pw-card v-sec" },
     el("h2", {}, "Good to know"),
     el("ul", { class: "v-notes" },

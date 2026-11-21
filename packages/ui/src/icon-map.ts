@@ -105,6 +105,16 @@ export const ICON_BODIES = {
   androidFill: I.I_androidFill,
   laptop: I.I_laptop,
   laptopFill: I.I_laptopFill,
+  github: I.I_github,
+  githubFill: I.I_githubFill,
+  pullRequest: I.I_pullRequest,
+  pullRequestFill: I.I_pullRequestFill,
+  translate: I.I_translate,
+  translateFill: I.I_translateFill,
+  bug: I.I_bug,
+  bugFill: I.I_bugFill,
+  star: I.I_star,
+  starFill: I.I_starFill,
 } as const;
 
 export type IconName = keyof typeof ICON_BODIES;

@@ -87,3 +87,60 @@ export const SHOWCASE_CSS = /* css */ `
 .phone figcaption { text-align: center; font-size: var(--pw-text-xs); color: var(--pw-ink-muted); max-width: 14rem; }
 .phone figcaption b { color: var(--pw-ink); }
 `;
+
+export const REPO = "https://github.com/ovixis/pawid";
+
+/** Invitation to contribute on GitHub, with the big GitHub mark. */
+export function githubInvite(): HTMLElement {
+  const big = svg("githubFill");
+  big.classList.add("gh-mark");
+  const way = (icon: IconName, title: string, text: string) => el("li", {}, svg(icon), el("span", {}, el("b", {}, title), " ", text));
+  return el(
+    "section",
+    { class: "gh", id: "contribute", attrs: { "aria-labelledby": "gh-title" } },
+    el("a", { class: "gh-logo", href: REPO, rel: "noopener", attrs: { "aria-label": "PawID on GitHub" } }, big),
+    el("div", { class: "gh-body" },
+      el("p", { class: "gh-kicker" }, "Open source on GitHub"),
+      el("h2", { id: "gh-title" }, "Help make PawID better"),
+      el("p", {}, "PawID is free and open to everyone. Vets, pet owners, hotels and developers can all help."),
+      el("ul", { class: "gh-ways" },
+        way("certificate", "Correct a travel rule", "with a link to the official source."),
+        way("translate", "Translate:", "help bring PawID to your language."),
+        way("bug", "Report a bug", "or suggest an idea."),
+        way("pullRequest", "Send code", "for the app, the API or the components."),
+      ),
+      el("div", { class: "gh-actions" },
+        el("a", { class: "pw-btn gh-btn", href: REPO, rel: "noopener" }, svg("githubFill"), "Contribute on GitHub"),
+        el("a", { class: "pw-btn gh-btn-2", href: `${REPO}/issues/new/choose`, rel: "noopener" }, "Open an issue"),
+        el("a", { class: "pw-btn gh-btn-2", href: `${REPO}/stargazers`, rel: "noopener" }, svg("star"), "Star"),
+      ),
+    ),
+  );
+}
+
+export const GITHUB_CSS = /* css */ `
+.gh { display: grid; gap: 1.25rem; padding: 1.5rem 1.25rem; border-radius: var(--pw-radius-card); background: #0d1117; color: #e6edf3; overflow: hidden; position: relative; }
+.gh::after { content: ""; position: absolute; inset: auto -4rem -6rem auto; width: 16rem; height: 16rem; border-radius: 50%; background: radial-gradient(closest-side, rgb(245 184 0 / .18), transparent); pointer-events: none; }
+.gh-logo { display: grid; place-items: center; width: 5.5rem; height: 5.5rem; border-radius: 1.5rem; background: #fff; color: #0d1117; box-shadow: 0 10px 30px -10px rgb(0 0 0 / .6); }
+.gh-logo:focus-visible, .gh a:focus-visible { outline: 2px solid var(--pw-gold-400); outline-offset: 3px; }
+.gh-mark { width: 4rem; height: 4rem; }
+.gh-body { display: grid; gap: .75rem; position: relative; z-index: 1; min-width: 0; }
+.gh-kicker { margin: 0; color: var(--pw-gold-400); font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.gh h2 { margin: 0; color: #fff; font-size: var(--pw-text-2xl); font-weight: 800; letter-spacing: -.02em; line-height: 1.15; }
+.gh p { margin: 0; color: #c9d1d9; }
+.gh-ways { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+.gh-ways li { display: grid; grid-template-columns: 1.25rem 1fr; gap: .625rem; align-items: start; color: #c9d1d9; }
+.gh-ways .pw-icon { color: var(--pw-gold-400); margin-top: .15rem; }
+.gh-ways b { color: #fff; }
+.gh-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .25rem; }
+.gh-btn { background: var(--pw-gold-400); color: #16181d; }
+.gh-btn:hover { background: #ffd23f; }
+.gh-btn-2 { background: rgb(255 255 255 / .08); color: #fff; box-shadow: inset 0 0 0 1px rgb(255 255 255 / .18); }
+.gh-btn-2:hover { background: rgb(255 255 255 / .14); }
+@media (min-width: 40rem) {
+  .gh { grid-template-columns: auto minmax(0, 1fr); gap: 1.75rem; padding: 2rem; align-items: start; }
+  .gh-logo { width: 7rem; height: 7rem; }
+  .gh-mark { width: 5rem; height: 5rem; }
+  .gh-ways { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .625rem 1.25rem; }
+}
+`;
