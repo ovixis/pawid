@@ -56,7 +56,7 @@ const slides: string[] = [
   ${lines(78, 170, [["Three changes,", 68, "#fff", 800], ["all decided in 2026.", 68, "#fff", 800]], 1.12)}
   ${[["22 Apr 2026", "New rules for travelling with pets. A new paper passport model, mandatory for passports issued from 2028."],
      ["17 Jun 2026", "First EU law on the welfare of dogs and cats: every dog and cat microchipped and registered, databases linked across the EU."],
-     ["Until 2028", "The Commission studies a digital pet passport, including with the European Digital Identity Wallet."]]
+     ["Next 2 years", "The Commission will assess a digital pet passport, including with the European Digital Identity Wallet."]]
     .map(([d, t], i) => { const y = 400 + i * 255; return `<rect x="80" y="${y}" width="920" height="225" rx="28" fill="#fff" fill-opacity=".07"/>
       <text x="120" y="${y + 62}" font-family="${F}" font-size="30" font-weight="800" fill="${GOLD}">${d}</text>${lines(120, y + 78, wrap(t!, 46).map((l) => [l, 32, "#fff", 500] as [string, number, string, number]), 1.32)}`; }).join("")}
   ${footer(W, H)}`,
