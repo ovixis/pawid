@@ -21,12 +21,17 @@ const APP = /* css */ `
 .nav-list a:hover { background: var(--pw-surface-muted); }
 .nav-list a[aria-current="page"] { font-weight: 800; box-shadow: inset 3px 0 0 var(--pw-gold-500); background: var(--pw-gold-50); }
 /* Wide: the same list inline in the header. */
-.top.is-wide .site-nav { order: 0; }
+.top.is-wide .top-in { display: grid; grid-template-columns: 1fr auto 1fr; }
+.top.is-wide .logo { justify-self: start; }
+.top.is-wide .site-nav { order: 0; justify-self: center; }
+.top.is-wide .by { justify-self: end; margin-left: 0; }
 .top.is-wide .nav-btn { display: none; }
 .top.is-wide .nav-list { position: static; display: flex; gap: .125rem; padding: 0; margin: 0; inline-size: auto; max-block-size: none; overflow: visible; background: transparent; box-shadow: none; }
 .top.is-wide .nav-list a { min-height: 2.25rem; padding: 0 .75rem; border-radius: 9999px; font-size: var(--pw-text-xs); }
 .top.is-wide .nav-list a[aria-current="page"] { box-shadow: inset 0 -2px 0 var(--pw-gold-500); background: var(--pw-gold-50); border-radius: .625rem .625rem .25rem .25rem; }
 .top.is-measuring * { transition: none !important; }
+/* Small phones: logo, HosPet mark and Menu button only (the footer names HosPet.eu too). */
+@media (max-width: 26rem) { .top:not(.is-wide) .by-txt, .top:not(.is-wide) .by b { display: none; } }
 @media (forced-colors: active) { .nav-list a[aria-current="page"] { outline: 2px solid CanvasText; } }
 .logo { display: flex; align-items: center; gap: .5rem; font-weight: 800; font-size: var(--pw-text-lg); letter-spacing: -.02em; color: var(--pw-ink); text-decoration: none; }
 .mark-wrap { display: contents; }

@@ -26,7 +26,10 @@ h2, h3, p { margin: 0; }
 img, svg, video, canvas { display: block; }
 .pw-icon { display: inline-block; }
 ${COMPONENTS}
-.box { padding: 1.25rem; display: grid; gap: .875rem; }
+.box { padding: 1.25rem; display: grid; grid-template-columns: minmax(0, 1fr); gap: .875rem; }
+/* Narrow sidebars and phones: long labels wrap instead of pushing out of the box. */
+.pw-btn { white-space: normal; text-align: center; max-width: 100%; }
+.pw-status { white-space: normal; height: auto; min-height: 1.75rem; padding-block: .2rem; max-width: 100%; }
 @container (min-width: 36rem) { .box { padding: 1.5rem; } }
 .title { font-size: var(--pw-text-lg); font-weight: 800; letter-spacing: -.015em; line-height: 1.3; }
 .muted { color: var(--pw-ink-muted); font-size: var(--pw-text-xs); }

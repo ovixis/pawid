@@ -79,7 +79,7 @@ export function topBar(home: string, byHref: string): HTMLElement {
     el("div", { class: "top-in" },
       el("a", { href: home, class: "logo", attrs: { "aria-label": "PawID home" } }, brandMark("pawid", "pw-mark logo-mark"), el("span", {}, "Paw", el("span", { class: "logo-id" }, "ID"))),
       el("nav", { class: "site-nav", attrs: { "aria-label": "PawID" } }, btn, list),
-      el("a", { href: byHref, class: "by", rel: "noopener" }, "by", brandMark("hospet", "pw-mark by-mark"), el("b", {}, "HosPet.eu")),
+      el("a", { href: byHref, class: "by", rel: "noopener", attrs: { "aria-label": "by HosPet.eu" } }, el("span", { class: "by-txt" }, "by"), brandMark("hospet", "pw-mark by-mark"), el("b", {}, "HosPet.eu")),
     ),
   );
   // Browsers without popover (before 2024): the button shows and hides the list itself.
