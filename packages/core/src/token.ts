@@ -61,7 +61,7 @@ export interface OwnerKeys {
 
 export type VerifyResult =
   | { ok: true; payload: SharePayload; keyId: string; selfDeclared: true }
-  | { ok: false; reason: "malformed" | "bad_signature" | "expired" | "unsupported_version" };
+  | { ok: false; reason: "malformed" | "bad_signature" | "expired" | "unsupported_version" | "revoked" };
 
 /** Readable key -> key inside the token. Never reuse a short key for another field. */
 const SHORT: Record<keyof ShareCard, string> = {
@@ -175,4 +175,32 @@ export function shareCardFrom(
     if (sameVetFields(vc.fields, shown)) card.vetSeal = vc.seal;
   }
   return card;
+}
+
+/**
+ * Stopping a code before it expires. The id is a hash of the code's signature, so the server never
+ * needs the code's content. The owner proves the code is theirs by signing the id with the same key.
+ */
+export async function shareId(token: string): Promise<string> {
+  const sig = token.split(".")[2] ?? "";
+  const h = new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(sig) as BufferSource));
+  return b64urlEncode(h.slice(0, 16));
+}
+export const revokeMessage = (id: string) => new TextEncoder().encode(`pawid-revoke:v1:${id}`);
+
+export async function signRevocation(token: string, keys: OwnerKeys): Promise<{ token: string; sig: string }> {
+  const sig = new Uint8Array(await crypto.subtle.sign({ name: "Ed25519" }, keys.privateKey, revokeMessage(await shareId(token)) as BufferSource));
+  return { token, sig: b64urlEncode(sig) };
+}
+
+/** True when `sig` is the owner's signature (the key inside the token) over the token's id. */
+export async function checkRevocation(token: string, sig: string): Promise<boolean> {
+  try {
+    const k = token.split(".")[1];
+    if (!k) return false;
+    const pub = await crypto.subtle.importKey("raw", b64urlDecode(k) as BufferSource, { name: "Ed25519" }, false, ["verify"]);
+    return await crypto.subtle.verify({ name: "Ed25519" }, pub, b64urlDecode(sig) as BufferSource, revokeMessage(await shareId(token)) as BufferSource);
+  } catch {
+    return false;
+  }
 }

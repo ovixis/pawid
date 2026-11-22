@@ -30,6 +30,11 @@ const APP = /* css */ `
 .top.is-wide .nav-list a { min-height: 2.25rem; padding: 0 .75rem; border-radius: 9999px; font-size: var(--pw-text-xs); }
 .top.is-wide .nav-list a[aria-current="page"] { box-shadow: inset 0 -2px 0 var(--pw-gold-500); background: var(--pw-gold-50); border-radius: .625rem .625rem .25rem .25rem; }
 .top.is-measuring * { transition: none !important; }
+.codes { list-style: none; margin: 0 0 .75rem; padding: 0; display: grid; gap: 0; }
+.codes li { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .625rem 0; border-top: 1px solid var(--pw-line); }
+.codes li:first-child { border-top: 0; }
+.codes [role="status"] { color: var(--pw-no); }
+.qr-stopped { opacity: .2; filter: grayscale(1); }
 /* Small phones: logo, HosPet mark and Menu button only (the footer names HosPet.eu too). */
 @media (max-width: 26rem) { .top:not(.is-wide) .by-txt, .top:not(.is-wide) .by b { display: none; } }
 @media (forced-colors: active) { .nav-list a[aria-current="page"] { outline: 2px solid CanvasText; } }

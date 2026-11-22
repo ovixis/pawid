@@ -20,13 +20,14 @@ export function tokenFrom(text: string): string | null {
 
 type Verify =
   | { ok: true; payload: CardData & { exp: number }; vet?: VetCheckView }
-  | { ok: false; reason: "malformed" | "bad_signature" | "expired" | "unsupported_version" };
+  | { ok: false; reason: "malformed" | "bad_signature" | "expired" | "unsupported_version" | "revoked" };
 
 const REASONS: Record<string, string> = {
   malformed: "This is not a valid PawID code.",
   bad_signature: "This code was changed or is not genuine.",
   expired: "This code has expired. Ask the guest to make a new one in the PawID app.",
   unsupported_version: "This code was made by a newer version of PawID.",
+  revoked: "The guest stopped this code. Ask them to make a new one in the PawID app.",
 };
 
 interface Detector { detect(source: CanvasImageSource): Promise<{ rawValue: string }[]> }

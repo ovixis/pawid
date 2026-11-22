@@ -6,7 +6,7 @@ import {
 } from "@pawid/core";
 import { longDate } from "@pawid/ui";
 import { button, el, link, svg } from "../dom";
-import { PairGone, createPair, ownerDecide, ownerPoll, spaced, type VetPublic } from "../pair";
+import { API, PairGone, createPair, ownerDecide, ownerPoll, spaced, type VetPublic } from "../pair";
 
 /** The values a vet would confirm, as the owner entered them now. */
 export function currentVetFields(pet: Pet): Partial<VetFields> {
@@ -39,7 +39,22 @@ export function vetStatusCard(pet: Pet): HTMLElement {
   }
   if (!ready) body.push(el("p", { class: "pw-hint flush" }, "Add the microchip number and the rabies vaccine dates first."));
   else if (state !== "confirmed") body.push(el("div", { class: "bar" }, link("Ask my vet to confirm", `#/pet/${id}/vet`, "primary", "stethoscope")));
-  else body.push(el("div", { class: "bar" }, link("Confirm again", `#/pet/${id}/vet`, "ghost")));
+  else {
+    const msg = el("p", { class: "pw-hint flush", attrs: { role: "status" } });
+    const vc = button("Download as a digital credential", { kind: "secondary", icon: "download", onClick: async () => {
+      vc.disabled = true;
+      try {
+        const r = await fetch(`${API}/v1/credential`, { method: "POST", headers: { "Content-Type": "application/json" }, credentials: "omit", body: JSON.stringify({ confirmation: pet.vetConfirmation }) });
+        const d = (await r.json()) as { error?: string };
+        if (!r.ok) throw new Error(d.error ?? "Could not make the credential.");
+        const url = URL.createObjectURL(new Blob([JSON.stringify(d, null, 2)], { type: "application/vc+ld+json" }));
+        el("a", { href: url, download: `${pet.name.replace(/[^\p{L}\p{N}-]+/gu, "-")}-vet-credential.json` }).click();
+        setTimeout(() => URL.revokeObjectURL(url), 60_000);
+        msg.textContent = "Saved. It is a W3C Verifiable Credential signed by PawID: digital wallets and other apps can check it.";
+      } catch (x) { msg.textContent = (x as Error).message; } finally { vc.disabled = false; }
+    } });
+    body.push(el("div", { class: "bar" }, vc, link("Confirm again", `#/pet/${id}/vet`, "ghost")), msg);
+  }
   return el("section", { class: "pw-card pw-card-pad no-print vet-card", attrs: { "aria-labelledby": "vet-title" } },
     el("div", { class: "pw-card-head" }, el("h2", { id: "vet-title" }, "Vet confirmation")), ...body);
 }

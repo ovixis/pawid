@@ -2,8 +2,8 @@
 // rabies vaccination, and the encrypted hand-over of the confirmation to the owner's phone.
 import type { Context, Hono } from "hono";
 import {
-  PASSKEY_ALGS, VET_CONFIRM_KEYS, b64urlDecode, b64urlEncode, confirmChallenge, pairClaimMessage, verifyPasskeyAssertion, verifyVetSeal,
-  vetConfirmMessage, vetFieldsSchema, vetSealSchema, type VetFields, type VetSeal,
+  CONFIRM_ISSUERS, PASSKEY_ALGS, VET_CONFIRM_KEYS, b64urlDecode, b64urlEncode, confirmChallenge, pairClaimMessage, verifyPasskeyAssertion, verifyVetSeal,
+  petCredential, signCredential, vetConfirmMessage, vetConfirmationSchema, vetFieldsSchema, vetSealSchema, type VetFields, type VetSeal,
 } from "@pawid/core";
 import { z } from "zod";
 import { humanCheck, type TurnstileEnv } from "./turnstile";
@@ -13,6 +13,10 @@ export interface VetEnv extends TurnstileEnv {
   STATS_KEY?: string;
   /** PKCS#8 Ed25519 private key (base64url) for the "s1" confirmation key. wrangler secret put VET_SIGNING_KEY */
   VET_SIGNING_KEY?: string;
+  /** Key id of VET_SIGNING_KEY in CONFIRM_ISSUERS (default s1). */
+  VET_SIGNING_KID?: string;
+  /** Issuer of the W3C credentials (default: this key's did in CONFIRM_ISSUERS). */
+  CREDENTIAL_ISSUER?: string;
   /** Passkey relying party, e.g. pawid.hospet.eu */
   VET_RP_ID?: string;
   /** Allowed page origins, comma separated, e.g. https://pawid.hospet.eu */
@@ -20,7 +24,9 @@ export interface VetEnv extends TurnstileEnv {
 }
 type C = Context<{ Bindings: VetEnv }>;
 
-const SIGNING_KID = "s1";
+const DEFAULT_KID = "s1";
+/** This copy's confirmation key id (VET_SIGNING_KID, default s1). */
+const kidOf = (env: VetEnv) => env.VET_SIGNING_KID ?? DEFAULT_KID;
 const nowSec = () => Math.floor(Date.now() / 1000);
 const rp = (env: VetEnv) => ({ rpId: env.VET_RP_ID ?? "pawid.hospet.eu", origins: (env.VET_ORIGINS ?? "https://pawid.hospet.eu").split(",").map((s) => s.trim()) });
 const newId = (bytes = 9) => b64urlEncode(crypto.getRandomValues(new Uint8Array(bytes)));
@@ -63,7 +69,7 @@ async function signSeal(env: VetEnv, vetId: string, at: number, f: VetFields): P
   if (!env.VET_SIGNING_KEY) throw new Error("VET_SIGNING_KEY missing");
   const key = await crypto.subtle.importKey("pkcs8", b64urlDecode(env.VET_SIGNING_KEY) as BufferSource, { name: "Ed25519" }, false, ["sign"]);
   const sig = new Uint8Array(await crypto.subtle.sign({ name: "Ed25519" }, key, vetConfirmMessage(vetId, at, f) as BufferSource));
-  return { v: vetId, t: at, k: SIGNING_KID, s: b64urlEncode(sig) };
+  return { v: vetId, t: at, k: kidOf(env), s: b64urlEncode(sig) };
 }
 
 export interface VetCheck {
@@ -73,21 +79,54 @@ export interface VetCheck {
   on?: string;
 }
 
+/** A vet approved by another recognised PawID copy: ask that copy (cached for an hour). */
+async function remoteVet(kid: string, vetId: string, ownKid: string): Promise<VetRow | null> {
+  const issuer = CONFIRM_ISSUERS[kid];
+  if (!issuer || kid === ownKid || !/^[A-Za-z0-9_-]{6,24}$/.test(vetId)) return null;
+  try {
+    const r = await fetch(`${issuer.api}/v1/vets/${vetId}`, { signal: AbortSignal.timeout(4000), cf: { cacheTtl: 3600, cacheEverything: true } } as RequestInit);
+    if (!r.ok) return null;
+    const v = (await r.json()) as { name?: string; country?: string; registerBody?: string; registerNumber?: string; status?: string };
+    if (!v.name || (v.status !== "approved" && v.status !== "revoked")) return null;
+    return { id: vetId, name: v.name, country: v.country ?? "", register_body: v.registerBody ?? "", register_number: v.registerNumber ?? "", status: v.status } as VetRow;
+  } catch {
+    return null;
+  }
+}
+
 /** For the verify page and API: does the vet seal in a code hold, and is the vet still approved? */
-export async function checkVetSeal(db: D1Database | undefined, seal: unknown, fields: Partial<VetFields>): Promise<VetCheck | undefined> {
+export async function checkVetSeal(db: D1Database | undefined, seal: unknown, fields: Partial<VetFields>, ownKid = DEFAULT_KID): Promise<VetCheck | undefined> {
   if (!seal) return undefined;
   const s = vetSealSchema.safeParse(seal);
   const f = vetFieldsSchema.safeParse({ ...fields, species: fields.species ?? "dog" });
   if (!s.success || !f.success || !(await verifyVetSeal(s.data, f.data))) return { status: "invalid" };
-  const vet = db ? await db.prepare("SELECT * FROM vets WHERE id = ?1").bind(s.data.v).first<VetRow>() : null;
+  const local = s.data.k === ownKid && db ? await db.prepare("SELECT * FROM vets WHERE id = ?1").bind(s.data.v).first<VetRow>() : null;
+  const vet = local ?? (await remoteVet(s.data.k, s.data.v, ownKid));
   if (!vet) return { status: "invalid" };
   const base = { name: vet.name, registerBody: vet.register_body, registerNumber: vet.register_number, country: vet.country, on: new Date(s.data.t * 1000).toISOString().slice(0, 10) };
   return vet.status === "approved" ? { status: "confirmed", ...base } : { status: "revoked", ...base };
 }
 
 export function vetRoutes(app: Hono<{ Bindings: VetEnv }>): void {
+  /**
+   * The owner's vet confirmation as a W3C Verifiable Credential, signed by PawID (did:web:pawid.hospet.eu).
+   * Checks the seal and that the vet is still approved; the vet's details come from PawID's register.
+   * Nothing is stored.
+   */
+  app.post("/v1/credential", async (c) => {
+    const b = vetConfirmationSchema.safeParse(((await c.req.json().catch(() => null)) as { confirmation?: unknown } | null)?.confirmation);
+    if (!b.success || !(await verifyVetSeal(b.data.seal, b.data.fields))) return c.json({ error: "This vet confirmation is not valid." }, 400);
+    if (b.data.seal.k !== kidOf(c.env)) return c.json({ error: "Ask the PawID copy that sealed this confirmation." }, 409);
+    const vet = await c.env.DB.prepare("SELECT * FROM vets WHERE id = ?1").bind(b.data.seal.v).first<VetRow>();
+    if (!vet || vet.status !== "approved") return c.json({ error: "The vet who confirmed this is no longer approved by PawID." }, 409);
+    if (!c.env.VET_SIGNING_KEY) return c.json({ error: "Not available right now." }, 503);
+    const key = await crypto.subtle.importKey("pkcs8", b64urlDecode(c.env.VET_SIGNING_KEY) as BufferSource, { name: "Ed25519" }, false, ["sign"]);
+    const doc = petCredential({ issuer: c.env.CREDENTIAL_ISSUER ?? CONFIRM_ISSUERS[kidOf(c.env)]?.did, confirmation: b.data, vet: { name: vet.name, registerBody: vet.register_body, registerNumber: vet.register_number, country: vet.country } });
+    return c.json(await signCredential(doc, key, kidOf(c.env)));
+  });
+
   /** PawID's public confirmation keys, for anyone who wants to check a seal. */
-  app.get("/v1/keys", (c) => c.json({ vetConfirm: Object.entries(VET_CONFIRM_KEYS).map(([kid, x]) => ({ kid, alg: "Ed25519", x })) }));
+  app.get("/v1/keys", (c) => c.json({ vetConfirm: Object.entries(CONFIRM_ISSUERS).map(([kid, i]) => ({ kid, alg: "Ed25519", x: i.x, api: i.api, did: i.did, name: i.name })), own: kidOf(c.env) }));
 
   /** A vet registers: their details and the passkey's public key. Starts as pending. */
   app.post("/v1/vets", async (c) => {

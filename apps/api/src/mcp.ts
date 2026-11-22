@@ -4,7 +4,7 @@
  * Read-only. No account. Tools take their input from the call; PawID stores nothing about pets here.
  * Transport: https://modelcontextprotocol.io/specification/2025-06-18/basic/transports
  */
-import { verifyShareToken } from "@pawid/core";
+import { shareId, verifyShareToken } from "@pawid/core";
 import { coveredCountries, rulesFor } from "@pawid/rules";
 import { checkVetSeal } from "./vets";
 
@@ -58,8 +58,10 @@ function tokenFrom(code: string): string {
 export async function callTool(name: ToolName, args: Record<string, unknown>, nowSec: number, db?: D1Database): Promise<Record<string, unknown>> {
   switch (name) {
     case "verify_pet_card": {
-      const res = await verifyShareToken(tokenFrom(String(args.code ?? "")), nowSec);
+      const code = tokenFrom(String(args.code ?? ""));
+      const res = await verifyShareToken(code, nowSec);
       if (!res.ok) return { valid: false, reason: res.reason };
+      if (db && (await db.prepare("SELECT 1 FROM revoked_shares WHERE id = ?1").bind(await shareId(code)).first())) return { valid: false, reason: "revoked" };
       const { v: _v, iat: _i, exp, vetSeal, ...card } = res.payload;
       const vet = await checkVetSeal(db, vetSeal, card);
       const byVet = vet?.status === "confirmed";

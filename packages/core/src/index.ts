@@ -4,3 +4,4 @@ export * from "./token";
 export * from "./vetconfirm";
 export * from "./webauthn";
 export * from "./pairing";
+export * from "./credential";

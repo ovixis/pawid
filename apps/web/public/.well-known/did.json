@@ -1,0 +1,18 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/multikey/v1"
+  ],
+  "id": "did:web:pawid.hospet.eu",
+  "verificationMethod": [
+    {
+      "id": "did:web:pawid.hospet.eu#s1",
+      "type": "Multikey",
+      "controller": "did:web:pawid.hospet.eu",
+      "publicKeyMultibase": "z6MknspwwoRfeoZLTJ6wtWM4Chic2FfjUg2sM5ZCh8VWKd4M"
+    }
+  ],
+  "assertionMethod": [
+    "did:web:pawid.hospet.eu#s1"
+  ]
+}

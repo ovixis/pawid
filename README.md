@@ -53,6 +53,8 @@ wait starts again.
 **For everyone**
 - Pet travel rules as open data: the EU base rules plus Italy, France, Spain, Germany and Ireland, each rule with its official source and the date it was checked. Unclear points are marked "being checked", never guessed.
 - Fact checks in the open: on [pawid.hospet.eu/rules](https://pawid.hospet.eu/rules) anyone can confirm a rule or suggest a correction with a source. HosPet.eu reviews each check; accepted corrections are made in the rule files here.
+- Run your own copy: a city, a registry or a vet association can run PawID with its own key and vets, and copies recognise each other's vet confirmations ([how](docs/self-host.md)).
+- Vet confirmations download as W3C Verifiable Credentials, the format of the European Digital Identity Wallet; codes can be stopped before they expire.
 
 <p align="center">
   <img src="docs/readme/venue-card.webp" alt="What a hotel sees: the pet card with microchip and rabies vaccine confirmed by a vet (example data)" width="560"><br>
@@ -116,6 +118,9 @@ Read-only, no key, about 120 requests a minute per IP. Base URL: `https://pawid-
 | `GET /v1/countries` | Countries with their own rules file. |
 | `GET /v1/factchecks?scope=FR` | Accepted fact checks per rule (source, quote, date) and how many wait for review. |
 | `POST /v1/factchecks` | Send a fact check: rule, verdict (`confirm`, `correct`, `outdated`), https source. Reviewed before it shows. |
+| `POST /v1/revoke` | Stop a code before it expires (signed by the owner's key). |
+| `POST /v1/credential` | A vet confirmation as a W3C Verifiable Credential (eddsa-jcs-2022, issuer `did:web:pawid.hospet.eu`). |
+| `GET /v1/keys` | Recognised confirmation issuers and their public keys. |
 | `GET /v1/keys` | PawID's public keys for vet confirmation seals. |
 | `GET /v1/vets/:id` | Public record of an approved vet (name, register, number, country). |
 | `GET /v1/openapi.json` | OpenAPI 3.1 spec. |

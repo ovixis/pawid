@@ -4,6 +4,7 @@ import { loadSticker } from "../sticker";
 import { vetState, vetStatusCard } from "./vetask";
 import { googleCalendarUrl, nextRabiesExpiry, openIcs, rabiesReminderIcs } from "../calendar";
 import { button, el, link, svg, today } from "../dom";
+import { activeCodes, stopCode } from "../shares";
 
 export function cardView(pet: Pet, owner: string): Node[] {
   const holder = el("div");
@@ -33,11 +34,32 @@ export function cardView(pet: Pet, owner: string): Node[] {
         el("img", { src: stickerSrc, alt: `Photo of ${pet.name}'s rabies vaccine sticker in the passport` }),
       )
     : null;
+  // Codes still working, made on this phone: the owner can stop any of them.
+  const codes = activeCodes(pet.id);
+  const codesCard = codes.length
+    ? el("section", { class: "pw-card pw-card-pad no-print", attrs: { "aria-labelledby": "codes-title" } },
+        el("div", { class: "pw-card-head" }, el("h2", { id: "codes-title" }, codes.length === 1 ? "1 code still working" : `${codes.length} codes still working`)),
+        el("ul", { class: "codes" }, ...codes.map((c) => {
+          const msg = el("span", { attrs: { role: "status" } });
+          const until = new Date(c.exp * 1000);
+          const row = el("li", {},
+            el("span", {}, el("b", {}, c.exp - c.made <= 3600 ? "15 minute code" : "7 day link"), ` until ${until.toLocaleString([], { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}`, msg),
+            button("Stop", { kind: "ghost", sm: true, icon: "closeCircle", onClick: async () => {
+              try { await stopCode(c.token); row.replaceChildren(el("span", {}, el("b", {}, "Stopped. "), "It no longer works for anyone.")); }
+              catch (x) { msg.textContent = ` ${(x as Error).message}`; }
+            } }),
+          );
+          return row;
+        })),
+        el("p", { class: "pw-hint flush" }, "Sent a link to the wrong place, or changed your mind? Stop it: it stops working at once."),
+      )
+    : null;
   return [
     el("div", { class: "bar no-print" }, el("a", { href: "#/", class: "back" }, svg("back"), "Your pets")),
     holder,
     ...(stickerFig ? [stickerFig] : []),
     vetStatusCard(pet),
+    ...(codesCard ? [codesCard] : []),
     ...(reminder ? [reminder] : []),
     el(
       "div",

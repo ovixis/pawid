@@ -1,5 +1,5 @@
 import { Hono, type Context } from "hono";
-import { verifyShareToken, type VerifyResult } from "@pawid/core";
+import { checkRevocation, shareId, verifyShareToken, type VerifyResult } from "@pawid/core";
 import { BY_HOSPET, COMPONENTS, PAGE, TOKENS, esc, hospetMark, icon, longDate, pawidMark, petCardHtml } from "@pawid/ui";
 import { coveredCountries, rulesFor } from "@pawid/rules";
 import { handleRpc } from "./mcp";
@@ -47,6 +47,7 @@ const REASONS: Record<string, string> = {
   bad_signature: "This QR code was changed or is not genuine.",
   expired: "This QR code has expired. Ask the owner to generate a new one.",
   unsupported_version: "This QR code was made by a newer version of PawID.",
+  revoked: "The owner stopped this code. Ask them to make a new one.",
 };
 
 export { esc };
@@ -61,11 +62,18 @@ factCheckRoutes(app as never);
 
 /** JSON verification, for hotel software and the HosPet integration. /api/verify is the first version's path. */
 /** A verified code plus, when it carries a vet seal, whether the seal holds and the vet is still approved. */
+/** A code the owner stopped before it expired. */
+export async function isRevoked(db: D1Database | undefined, token: string): Promise<boolean> {
+  if (!db) return false;
+  return Boolean(await db.prepare("SELECT 1 FROM revoked_shares WHERE id = ?1").bind(await shareId(token)).first());
+}
+
 async function verifyWithVet(env: Env | undefined, token: string): Promise<VerifyResult & { vet?: VetCheck }> {
   const res = await verifyShareToken(token, nowSec());
+  if (res.ok && (await isRevoked(env?.DB, token))) return { ok: false, reason: "revoked" };
   if (!res.ok || !res.payload.vetSeal) return res;
   const p = res.payload;
-  const vet = await checkVetSeal(env?.DB, p.vetSeal, { species: p.species, microchip: p.microchip, rabiesGivenOn: p.rabiesGivenOn, rabiesValidUntil: p.rabiesValidUntil, rabiesVaccine: p.rabiesVaccine });
+  const vet = await checkVetSeal(env?.DB, p.vetSeal, { species: p.species, microchip: p.microchip, rabiesGivenOn: p.rabiesGivenOn, rabiesValidUntil: p.rabiesValidUntil, rabiesVaccine: p.rabiesVaccine }, (env as { VET_SIGNING_KID?: string } | undefined)?.VET_SIGNING_KID);
   return { ...res, vet };
 }
 
@@ -75,6 +83,20 @@ const verifyJson = async (c: C) => {
   return c.json(res, res.ok ? 200 : 400);
 };
 app.get("/v1/verify", verifyJson);
+
+/** The owner stops a code before it expires: the code and the owner's signature over its id. */
+app.post("/v1/revoke", async (c) => {
+  const b = (await c.req.json().catch(() => null)) as { token?: unknown; sig?: unknown } | null;
+  const token = typeof b?.token === "string" && b.token.length < 4000 ? b.token : "";
+  const sig = typeof b?.sig === "string" && b.sig.length < 200 ? b.sig : "";
+  const res = await verifyShareToken(token, nowSec());
+  if (!res.ok && res.reason === "expired") return c.json({ ok: true, already: "expired" });
+  if (!res.ok) return c.json({ error: "This is not a valid PawID code." }, 400);
+  if (!(await checkRevocation(token, sig))) return c.json({ error: "Only the phone that made this code can stop it." }, 403);
+  await c.env.DB.prepare("INSERT OR IGNORE INTO revoked_shares (id, expires) VALUES (?1, ?2)").bind(await shareId(token), res.payload.exp).run();
+  count(c.env, waiter(c), "api.revoke", "ok");
+  return c.json({ ok: true });
+});
 app.get("/api/verify", verifyJson);
 
 app.get("/v1/rules", (c) => {
@@ -198,6 +220,8 @@ export default {
     await env.DB.prepare("DELETE FROM usage_daily WHERE day < ?1").bind(cutoff).run();
     // Vet pairings that ran out.
     await env.DB.prepare("DELETE FROM pairs WHERE expires < ?1").bind(nowSec()).run();
+    // Stopped codes that would have expired by now anyway.
+    await env.DB.prepare("DELETE FROM revoked_shares WHERE expires < ?1").bind(nowSec()).run();
   },
 };
 

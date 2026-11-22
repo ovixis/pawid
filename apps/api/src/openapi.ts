@@ -37,6 +37,15 @@ export function openapi(base: string) {
       "/v1/countries": {
         get: { operationId: "listCountries", summary: "Countries with their own rules file", responses: { "200": { description: "List" }, "429": err } },
       },
+      "/v1/revoke": {
+        post: { operationId: "stopCode", summary: "Stop a code before it expires", description: "Body: { token, sig }. sig is the owner's Ed25519 signature (the key inside the token) over 'pawid-revoke:v1:' + the code's id (base64url of the first 16 bytes of SHA-256 of the signature part). Only a hash and the expiry are kept.", responses: { "200": { description: "Stopped" }, "400": err, "403": err, "429": err } },
+      },
+      "/v1/credential": {
+        post: { operationId: "vetCredential", summary: "A vet confirmation as a W3C Verifiable Credential", description: "Body: { confirmation }. Returns a VC Data Model 2.0 credential with a Data Integrity proof (eddsa-jcs-2022), issuer did:web:pawid.hospet.eu. Nothing is stored.", responses: { "200": { description: "Credential" }, "400": err, "409": err, "429": err } },
+      },
+      "/v1/keys": {
+        get: { operationId: "keys", summary: "Recognised confirmation issuers and their public keys", responses: { "200": { description: "Keys" } } },
+      },
       "/mcp": {
         post: { operationId: "mcp", summary: "MCP server (Streamable HTTP, stateless JSON-RPC)", description: "Tools: verify_pet_card, get_pet_travel_rules, list_rule_countries.", responses: { "200": { description: "JSON-RPC response" } } },
       },

@@ -8,10 +8,18 @@
 import { z } from "zod";
 import { b64urlDecode } from "./b64";
 
-/** PawID confirmation keys (Ed25519, raw, base64url). The private key is a secret of the API Worker. */
-export const VET_CONFIRM_KEYS: Record<string, string> = {
-  s1: "fSijUx8PN_n-AwqOHHUbg9JLqJ2laxTX_QMrr12gc7I",
+/**
+ * Recognised confirmation issuers: every PawID copy that approves vets and seals their confirmations.
+ * key id -> public key (Ed25519, raw, base64url), the copy's API (where a vet's status is checked) and
+ * its did:web. A copy is added by pull request; see docs/self-host.md, "Being recognised".
+ */
+export interface ConfirmIssuer { x: string; api: string; did: string; name: string; contact: string }
+export const CONFIRM_ISSUERS: Record<string, ConfirmIssuer> = {
+  s1: { x: "fSijUx8PN_n-AwqOHHUbg9JLqJ2laxTX_QMrr12gc7I", api: "https://pawid-api.hospet.workers.dev", did: "did:web:pawid.hospet.eu", name: "PawID by HosPet.eu", contact: "info@hospet.eu" },
 };
+
+/** Confirmation keys (key id -> raw public key), from the issuers above. */
+export const VET_CONFIRM_KEYS: Record<string, string> = Object.fromEntries(Object.entries(CONFIRM_ISSUERS).map(([k, v]) => [k, v.x]));
 
 const iso = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 

@@ -10,6 +10,7 @@ function fakeDb(rows: unknown[] = []) {
       bind: (...args: unknown[]) => ({
         run: async () => { writes.push([sql, ...args]); return {}; },
         all: async () => ({ results: rows }),
+        first: async () => null,
       }),
     }),
   };
@@ -108,5 +109,32 @@ describe("widget counter", () => {
     expect(env.writes).toHaveLength(1);
     expect(JSON.stringify(env.writes)).toContain("widget.policy");
     expect(JSON.stringify(env.writes)).toContain("www.trattoria-example.it");
+  });
+});
+
+describe("stopping a code", () => {
+  it("only the owner can stop it, and a stopped code no longer verifies", async () => {
+    const { createShareToken, generateOwnerKeys, signRevocation } = await import("@pawid/core");
+    const { app } = await import("../src/index");
+    const stopped = new Set<string>();
+    const DB = {
+      prepare: (sql: string) => ({
+        bind: (...a: unknown[]) => ({
+          run: async () => { if (sql.includes("revoked_shares")) stopped.add(String(a[0])); return {}; },
+          all: async () => ({ results: [] }),
+          first: async () => (sql.includes("revoked_shares") && stopped.has(String(a[0])) ? { 1: 1 } : null),
+        }),
+      }),
+    } as unknown as D1Database;
+    const owner = await generateOwnerKeys();
+    const other = await generateOwnerKeys();
+    const token = await createShareToken({ name: "Bruno", species: "dog" }, owner, { nowSec: Math.floor(Date.now() / 1000), ttlSec: 900 });
+    const post = (body: unknown) => app.request("/v1/revoke", { method: "POST", headers: { "content-type": "application/json", "cf-connecting-ip": "203.0.113.9" }, body: JSON.stringify(body) }, { DB });
+    expect((await app.request(`/v1/verify?token=${token}`, {}, { DB })).status).toBe(200);
+    expect((await post(await signRevocation(token, other))).status).toBe(403);
+    expect((await post(await signRevocation(token, owner))).status).toBe(200);
+    const after = await app.request(`/v1/verify?token=${token}`, {}, { DB });
+    expect(after.status).toBe(400);
+    expect(((await after.json()) as { reason: string }).reason).toBe("revoked");
   });
 });

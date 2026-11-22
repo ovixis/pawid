@@ -2,6 +2,7 @@ import QRCode from "qrcode";
 import { createShareToken, generateOwnerKeys, shareCardFrom, type Pet } from "@pawid/core";
 import { button, el, svg } from "../dom";
 import { loadOrCreateKeys, saveOwnerName } from "../storage";
+import { rememberCode, stopCode } from "../shares";
 
 type Part = "identity" | "passport" | "rabies" | "vet" | "notes";
 
@@ -48,6 +49,8 @@ export function shareView(pet: Pet, owner: string, verifyBase: string, ctx: { ve
       const ttl = Number((form.querySelector<HTMLInputElement>('input[name="ttl"]:checked')?.value) ?? 900);
       const keys = await loadOrCreateKeys(() => generateOwnerKeys());
       const token = await createShareToken(shareCardFrom(pet, pick, name || undefined), keys, { nowSec: Math.floor(Date.now() / 1000), ttlSec: ttl });
+      const made = Math.floor(Date.now() / 1000);
+      rememberCode({ petId: pet.id, token, made, exp: made + ttl });
       const url = `${verifyBase}/v/${token}`;
       const canvas = el("canvas", { attrs: { role: "img", "aria-label": `QR code with ${pet.name}'s card` } });
       await QRCode.toCanvas(canvas, url, { width: 320, margin: 1, errorCorrectionLevel: "L" });
@@ -57,12 +60,25 @@ export function shareView(pet: Pet, owner: string, verifyBase: string, ctx: { ve
       const actions = el("div", { class: "bar" }, copy);
       if ("share" in navigator) actions.prepend(button("Send", { kind: "dark", icon: "share", onClick: () => navigator.share({ title: `${pet.name}, PawID pet card`, url }).catch(() => {}) }));
       actions.append(el("a", { href: url, target: "_blank", rel: "noopener", class: "pw-btn pw-btn-ghost" }, "See what they see", svg("external")));
+      const stopMsg = el("p", { class: "pw-hint flush", attrs: { role: "status" } });
+      const stop = button("Stop this code now", { kind: "ghost", icon: "closeCircle", onClick: async () => {
+        stop.disabled = true;
+        try {
+          await stopCode(token);
+          canvas.classList.add("qr-stopped");
+          actions.remove();
+          stop.remove();
+          stopMsg.textContent = "Stopped. Anyone who opens or scans it now sees that you stopped it.";
+        } catch (x) { stopMsg.textContent = (x as Error).message; stop.disabled = false; }
+      } });
       result.replaceChildren(
         el("section", { class: "pw-card pw-card-pad qr-wrap" },
           el("h2", { class: "page-title small" }, "Show this to the venue"),
           canvas,
           el("p", { class: "pw-hint flush" }, ttl <= 3600 ? "The code works for 15 minutes. Staff scan it with any phone camera, no app or account." : "The link works for 7 days. Anyone who has it can see these details until then."),
           actions,
+          el("div", { class: "bar" }, stop),
+          stopMsg,
         ),
       );
       result.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });

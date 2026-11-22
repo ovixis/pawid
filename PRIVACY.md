@@ -1,6 +1,6 @@
 # PawID privacy
 
-Last updated: 21 November 2026
+Last updated: 22 November 2026
 
 PawID is an open source app by [HosPet.eu](https://hospet.eu). This page says what happens to your
 data in the PawID app (pawid.hospet.eu; the first address, pawid.pages.dev, now sends you there), the PawID API (pawid-api.hospet.workers.dev) and the
@@ -11,10 +11,30 @@ PawID is not an official document. The EU pet passport, issued by an authorised 
 ## In short
 
 - Your pets' details stay on your phone. PawID has no accounts and no copy of your pets.
-- A code you show or send holds only the details you chose, and stops working when it expires.
+- A code you show or send holds only the details you chose, and stops working when it expires, or earlier if you stop it.
 - Reminders and backups are made on your phone. PawID sends no email and keeps no copy.
 - PawID counts how it is used, by day, without IP addresses, cookies or pet data.
 - Vets who confirm pets register with their name and professional register number, which are public once approved.
+
+## All the data, at a glance
+
+| What | Where it is kept | For how long | How to delete or correct it |
+|---|---|---|---|
+| Your pets' details, the sticker photo, your first name | Your phone only (browser storage) | Until you delete them | Edit or delete the pet in the app, or clear the site's data |
+| Your signing key and the codes you made | Your phone only | Codes are forgotten when they expire | Clear the site's data |
+| A code you show or send | Inside the QR code or link, with whoever has it | 15 minutes or 7 days | Stop it in the app: it stops working at once |
+| A code you stopped | PawID server: a hash of the code's signature and its expiry, never its content | Until the code would have expired | Deleted automatically |
+| Vet confirmation | Your phone, and inside the codes you choose to share | As long as you keep it | Delete or edit the pet; editing the microchip or rabies dates removes it |
+| Pairing with your vet | PawID server, encrypted end to end (PawID cannot read it) | Up to 15 minutes, 30 while the vet checks | Deleted automatically every day |
+| Digital credential (W3C) | Made on request and sent back to you; not stored | Not kept | Nothing to delete on the server |
+| Vets: name, country, register and number, clinic, email, passkey public key | PawID server | While registered | Write to info@hospet.eu; the email is never public |
+| Statements of support | PawID server | Until you ask | Write to info@hospet.eu |
+| Fact checks on the travel rules | PawID server | Until you ask | Write to info@hospet.eu |
+| Usage counters (no IP, no cookies, no pet data) | PawID server | About 13 months | Deleted automatically |
+| Your network address, to limit abuse | In memory on the server for a few minutes | Minutes | Never written to disk |
+
+No artificial intelligence reads your pets' data. An AI assistant connected to PawID (MCP) can only
+check a code that you, or someone you gave it to, pastes in.
 
 ## Your pets' details
 
@@ -96,6 +116,23 @@ On [pawid.hospet.eu/rules](https://pawid.hospet.eu/rules) anyone can confirm a r
 - Your network address is used for a few minutes to limit how many checks one address can send, and is not stored. The Cloudflare check that you are a person works as on the support form.
 - The rules themselves change only in the files on GitHub, where every change is public.
 - To have a check removed, write to info@hospet.eu.
+
+## Stopping a code
+
+In the app, a code you made can be stopped before it expires (on the pet's page, or right after you make
+it). Your phone sends the code and a signature made with your key to the PawID API, which checks that the
+code is yours and then keeps only a hash of the code's signature and its expiry date. Anyone who opens
+or scans the code after that sees that you stopped it. The hash is deleted when the code would have
+expired anyway.
+
+## Digital credential
+
+If a vet confirmed your pet, you can download the confirmation as a W3C Verifiable Credential, a file that
+digital wallets and other apps can check. Your phone sends the confirmation (microchip, rabies vaccine
+dates and vaccine, the vet's seal) to the PawID API, which checks the seal and that the vet is still
+approved, signs the credential with PawID's key (published at pawid.hospet.eu/.well-known/did.json) and
+sends it back. Nothing is stored. The credential does not contain your pet's name or anything you typed
+yourself.
 
 ## Reminders
 
