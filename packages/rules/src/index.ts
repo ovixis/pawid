@@ -73,3 +73,4 @@ export function rulesFor(country?: string | null): RulesFor {
 }
 
 export const coveredCountries = () => COUNTRIES.map((c) => ({ country: c.country, name: c.name, lastChecked: c.last_checked }));
+export * from "./vaccines";

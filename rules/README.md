@@ -4,6 +4,7 @@ Pet travel requirements as open data.
 
 - `eu-base.yaml`: rules that apply across the EU.
 - `countries/<iso2>.yaml`: only the differences for one country. Start from `_template.yaml`.
+- `vaccines.yaml`: typical vaccination schedules for dogs and cats, and the vaccines required by law in each country (and Spanish region). European sources only. Every age has a source and a quote; if a source is unclear, the item has `status: needs_review` and PawID shows no date.
 
 ## How to contribute
 

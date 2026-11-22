@@ -9,6 +9,7 @@ import { cardView } from "./views/card";
 import { backupCard, restoreView } from "./views/backup";
 import { formView } from "./views/form";
 import { tripView } from "./views/trip";
+import { vaccinesView } from "./views/vaccines";
 import { vetAskView } from "./views/vetask";
 import { homeView } from "./views/home";
 import { shareView } from "./views/share";
@@ -79,6 +80,7 @@ function route(): void {
   let title = "PawID";
   if (parts[0] === "pet" && parts[1] === "new") { view = formView(undefined, save); title = "Add your pet, PawID"; }
   else if (pet && parts[2] === "edit") { view = formView(pet, save, () => remove(pet)); title = `Edit ${pet.name}, PawID`; }
+  else if (pet && parts[2] === "vaccines") { view = vaccinesView(pet); title = `${pet.name}'s vaccine plan, PawID`; }
   else if (pet && parts[2] === "vet") { view = vetAskView(pet, save); title = `Ask your vet, PawID`; }
   else if (pet && parts[2] === "share") { view = shareView(pet, loadOwnerName(), VERIFY_BASE, ctx.venue || ctx.days ? ctx : savedVenue()); title = `Show ${pet.name}, PawID`; }
   else if (pet) { view = cardView(pet, loadOwnerName()); title = `${pet.name}, PawID`; }

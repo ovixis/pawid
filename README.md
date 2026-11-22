@@ -41,6 +41,7 @@ wait starts again.
 - Show a QR code or send a link to a hotel. You choose what it shows; it expires after 15 minutes or 7 days; it is signed, so changes show.
 - Ask your vet to confirm the microchip and rabies vaccine: the venue then sees "confirmed by a vet" with the vet's name and register number.
 - "Can I travel?": checks your pet against a country's rules on your travel date (21 day wait, tapeworm window with the dates, breed rules).
+- Vaccine plan: from the birth date, the typical dates of the core vaccines and boosters, the rabies rules of the country (and of each Spanish region), and the optional vaccines. European sources only (ABCD for cats, StIKo Vet for dogs), each with its link and the date it was checked. The vet decides; this is the typical schedule, not advice.
 - Rabies expiry in your phone's calendar, with alarms 30, 7 and 1 day before. Backup by email to yourself.
 - Your pets' details stay on your phone. No account, no cookies.
 
@@ -144,7 +145,7 @@ Usage is counted per day without personal data: a metric, a coarse label (countr
 
 | Part | Status |
 | --- | --- |
-| App (pets, card, QR, Can I travel?, calendar, backup) | live |
+| App (pets, card, QR, Can I travel?, vaccine plan, calendar, backup) | live |
 | Vet confirmation (passkey, code pairing, number matching) | live, pilot with the first vets |
 | Venue components | live |
 | Rules: EU base + IT, FR, ES, DE, IE | live; 5 rules still being checked |

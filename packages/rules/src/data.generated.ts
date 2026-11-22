@@ -415,5 +415,844 @@ export const RAW = {
       "citizensinformation.ie",
       "irishstatutebook.ie"
     ]
+  },
+  "vaccines": {
+    "last_checked": "2026-11-22",
+    "sources": {
+      "abcd": {
+        "name": "ABCD (European Advisory Board on Cat Diseases), Vaccine recommendations, June 2025",
+        "url": "https://www.abcdcatsvets.org/wp-content/uploads/2025/07/Vaccine-recommendations_2025_EN.pdf",
+        "page": "https://www.abcdcatsvets.org/portfolio-item/factsheets-tools-for-vaccination-recommendations/",
+        "scope": "Europe"
+      },
+      "stiko_dog": {
+        "name": "StIKo Vet (Germany's veterinary vaccine commission, Friedrich-Loeffler-Institut), vaccination table for dogs, guideline 2025",
+        "url": "https://stiko-vet.fli.de/de/impftabelle/a-kleine-haustiere/a-1-hunde/",
+        "page": "https://stiko-vet.fli.de/de/empfehlungen/",
+        "scope": "Germany",
+        "todo": "Page numbers of the 2025 guideline PDF not added yet (the PDF blocks automated downloads)."
+      },
+      "stiko_cat": {
+        "name": "StIKo Vet (Germany's veterinary vaccine commission, Friedrich-Loeffler-Institut), vaccination table for cats, guideline 2025",
+        "url": "https://stiko-vet.fli.de/de/impftabelle/a-kleine-haustiere/a-2-katze/",
+        "page": "https://stiko-vet.fli.de/de/empfehlungen/",
+        "scope": "Germany",
+        "todo": "Page numbers of the 2025 guideline PDF not added yet (the PDF blocks automated downloads)."
+      },
+      "eu_travel": {
+        "name": "European Commission, travelling with a pet within the EU",
+        "url": "https://food.ec.europa.eu/animals/live-animal-movements/dogs-cats-and-ferrets/travelling-pet-within-eu_en",
+        "scope": "EU"
+      },
+      "mapa_2026": {
+        "name": "Spanish Ministry of Agriculture and Medicines Agency (MAPA/AEMPS), note on rabies revaccination, June 2026",
+        "url": "https://www.mapa.gob.es/es/dam/jcr:2ee5a018-22bd-4f40-b4c8-9bcbc2ea4d8c/Nota%20diferencia%20vacunaci%C3%B3n%20FT%20y%20normativa%20MAPA-AEMPS.pdf",
+        "scope": "Spain"
+      },
+      "mapa_2023": {
+        "name": "Spanish Ministry of Agriculture, rabies contingency plan 2023, Annex IV (rules by region)",
+        "url": "https://www.riojasalud.es/files/content/salud-publica-consumo/epidemiologia/edo/inf-adicional/Plan%20contingencia%20Rabia_2023_12122023.pdf",
+        "scope": "Spain"
+      },
+      "fr_dangerous_dogs": {
+        "name": "service-public.fr, dangerous dogs (categories 1 and 2)",
+        "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F1838",
+        "scope": "France"
+      },
+      "fr_ministry_2015": {
+        "name": "French Ministry of Agriculture, pet owner leaflet (2015)",
+        "url": "https://agriculture.gouv.fr/sites/minagri/files/2015-7volets_verso.pdf",
+        "scope": "France"
+      },
+      "it_ministry_2026": {
+        "name": "Italian Ministry of Health, note on the rabies case in Treviso, June 2026",
+        "url": "https://fnovi.it/sites/default/files/caso%20rabbia%20treviso%20def_signed.pdf",
+        "scope": "Italy"
+      },
+      "it_izsve_2026": {
+        "name": "Istituto Zooprofilattico Sperimentale delle Venezie, press release 29 May 2026",
+        "url": "https://www.izsvenezie.it/documenti/comunicazione/area-stampa/comunicati-stampa/2026/CS-2026-07-rabbia-canina.pdf",
+        "scope": "Italy"
+      },
+      "ie_control_of_dogs": {
+        "name": "Control of Dogs Act 1986 (Irish Statute Book)",
+        "url": "https://www.irishstatutebook.ie/eli/1986/act/32/enacted/en/print",
+        "scope": "Ireland"
+      },
+      "ie_dafm_2026": {
+        "name": "Irish Department of Agriculture, notice to vets on pet passports, 5 August 2026",
+        "url": "https://assets.gov.ie/static/documents/09fe3ad4/Notice_to_PVPs_RE_Pet_Passports_05_08_2026_1.pdf",
+        "scope": "Ireland"
+      }
+    },
+    "schedules": [
+      {
+        "id": "dog_stiko",
+        "species": "dog",
+        "source": "stiko_dog",
+        "status": "verified",
+        "doses": [
+          {
+            "id": "puppy_8w",
+            "label": "First puppy vaccination",
+            "at": {
+              "w": 8
+            },
+            "core": [
+              "distemper",
+              "parvovirus",
+              "leptospirosis"
+            ],
+            "quote": "8 Lebenswochen: Parvovirose, Staupe, Leptospirose"
+          },
+          {
+            "id": "puppy_12w",
+            "label": "Second puppy vaccination",
+            "at": {
+              "w": 12
+            },
+            "core": [
+              "distemper",
+              "parvovirus",
+              "leptospirosis"
+            ],
+            "quote": "12 Lebenswochen: Parvovirose, Staupe, Leptospirose"
+          },
+          {
+            "id": "puppy_16w",
+            "label": "Third puppy vaccination",
+            "at": {
+              "w": 16
+            },
+            "core": [
+              "distemper",
+              "parvovirus"
+            ],
+            "quote": "16 Lebenswochen: Parvovirose, Staupe"
+          },
+          {
+            "id": "puppy_15m",
+            "label": "Last dose of the puppy course",
+            "at": {
+              "m": 15
+            },
+            "core": [
+              "distemper",
+              "parvovirus",
+              "leptospirosis"
+            ],
+            "quote": "15 Lebensmonate: Parvovirose, Staupe, Leptospirose"
+          }
+        ],
+        "boosters": [
+          {
+            "id": "lepto_yearly",
+            "after": "puppy_15m",
+            "core": [
+              "leptospirosis"
+            ],
+            "every": {
+              "m": 12
+            },
+            "quote": "Gegen Leptospirose ist eine jährliche Wiederholungsimpfung erforderlich."
+          },
+          {
+            "id": "dp_product",
+            "after": "puppy_15m",
+            "core": [
+              "distemper",
+              "parvovirus"
+            ],
+            "every": {
+              "m": 12,
+              "to": {
+                "m": 36
+              }
+            },
+            "text": "Every 1 to 3 years, as the vaccine's leaflet says. An antibody test can show whether it is needed.",
+            "quote": "sehen die Gebrauchsinformationen der Impfstoffe gegen Staupe und Parvovirose je nach Hersteller Wiederholungsintervalle von einem Jahr bis zu 3 Jahren vor."
+          }
+        ],
+        "optional": [
+          {
+            "id": "rabies",
+            "vaccine": "rabies",
+            "from": {
+              "w": 12
+            },
+            "when": "Needed to travel to another country. Germany counts it as optional at home because Germany is free of rabies on land.",
+            "quote": "Eine Impfung gegen Tollwut gilt nur noch als Non-Core-Vakzinierung, da die terrestrische Tollwut in Deutschland getilgt ist."
+          },
+          {
+            "id": "hepatitis",
+            "vaccine": "hepatitis (canine adenovirus)",
+            "when": "Optional since the 2025 guideline, because the disease is now very rare in Western Europe. It is often part of combined vaccines.",
+            "quote": "Eine Impfung gegen canine Adenoviren gilt als Non-Core-Vakzinierung"
+          },
+          {
+            "id": "kennel_cough",
+            "vaccine": "kennel cough (parainfluenza, Bordetella)",
+            "when": "For dogs that meet many other dogs, such as puppy classes, boarding kennels or shelters. Protection from Bordetella lasts at most 1 year.",
+            "quote": "gilt als Non-Core-Vakzinierung, da Hunde nur bei besonderer Infektionsgefahr geimpft werden müssen."
+          },
+          {
+            "id": "leishmaniasis",
+            "vaccine": "leishmaniasis",
+            "from": {
+              "m": 6
+            },
+            "when": "For dogs living in or travelling to areas with sand flies, such as the Mediterranean. Then every year, as the maker says.",
+            "quote": "Die Tiere können ab einem Alter von 6 Monaten grundimmunisiert werden. Vom Hersteller wird eine jährliche Wiederholungsimpfung empfohlen."
+          },
+          {
+            "id": "lyme",
+            "vaccine": "Lyme disease",
+            "when": "For dogs often in woods and bushes. Every year, if possible before March or April.",
+            "quote": "Wiederholungsimpfungen erfolgen jährlich, wenn möglich vor dem Höhepunkt der Zeckenaktivität im März/April."
+          }
+        ]
+      },
+      {
+        "id": "cat_abcd",
+        "species": "cat",
+        "source": "abcd",
+        "status": "verified",
+        "doses": [
+          {
+            "id": "kitten_8w",
+            "label": "First kitten vaccination",
+            "at": {
+              "w": 8,
+              "to": {
+                "w": 9
+              }
+            },
+            "core": [
+              "panleukopenia",
+              "herpesvirus",
+              "calicivirus"
+            ],
+            "quote": "8-9 weeks (Protocol 1, Kitten: standard vaccinations): FPV, FHV, FCV"
+          },
+          {
+            "id": "kitten_12w",
+            "label": "Second kitten vaccination",
+            "at": {
+              "w": 12
+            },
+            "core": [
+              "panleukopenia",
+              "herpesvirus",
+              "calicivirus"
+            ],
+            "quote": "12 weeks: FPV, FHV, FCV"
+          },
+          {
+            "id": "kitten_16w",
+            "label": "Third kitten vaccination",
+            "at": {
+              "w": 16
+            },
+            "core": [
+              "panleukopenia",
+              "calicivirus"
+            ],
+            "text": "Herpesvirus is not needed at 16 weeks, but only combined vaccines exist.",
+            "quote": "The 16-week vaccination is particularly important for kittens born to queens with high antibody titres"
+          },
+          {
+            "id": "kitten_10m",
+            "label": "Last dose of the kitten course",
+            "at": {
+              "m": 10,
+              "to": {
+                "m": 16
+              }
+            },
+            "core": [
+              "panleukopenia",
+              "herpesvirus",
+              "calicivirus"
+            ],
+            "quote": "After the kitten primary vaccination course, all cats should receive an additional vaccine dose at 10 to 16 months of age"
+          }
+        ],
+        "boosters": [
+          {
+            "id": "fpv_3y",
+            "after": "kitten_10m",
+            "core": [
+              "panleukopenia"
+            ],
+            "every": {
+              "m": 36
+            },
+            "text": "Every 3 years, or when an antibody test shows it is needed.",
+            "quote": "FPV: boost every 3 years or as indicated by FPV antibodies"
+          },
+          {
+            "id": "flu_low",
+            "after": "kitten_10m",
+            "core": [
+              "herpesvirus",
+              "calicivirus"
+            ],
+            "every": {
+              "m": 36
+            },
+            "risk": "low",
+            "text": "Every 3 years for a cat at low risk (mostly indoors, few other cats).",
+            "quote": "FHV FCV: boost every 3 years (low risk)"
+          },
+          {
+            "id": "flu_high",
+            "after": "kitten_10m",
+            "core": [
+              "herpesvirus",
+              "calicivirus"
+            ],
+            "every": {
+              "m": 12
+            },
+            "risk": "high",
+            "text": "Every year for a cat at high risk (shelter, many cats at home, breeding cattery, boarding cattery).",
+            "quote": "FHV FCV: boost annually (high risk). Examples of high risk situation: shelter, multi-cat household, breeding cattery"
+          }
+        ],
+        "optional": [
+          {
+            "id": "felv",
+            "vaccine": "feline leukaemia (FeLV)",
+            "from": {
+              "w": 8,
+              "to": {
+                "w": 9
+              }
+            },
+            "risk": "outdoor",
+            "when": "For cats that go outside or live with cats whose FeLV status is unknown. Doses at 8 to 9 and 12 weeks, one more at 10 to 16 months. Test first if the status is unknown.",
+            "quote": "recommended for cats at risk of exposure, such as those with outdoor access or living in multi-cat households with cats of uncertain FeLV status"
+          },
+          {
+            "id": "rabies",
+            "vaccine": "rabies",
+            "from": {
+              "w": 12
+            },
+            "when": "Needed to travel. Some regions require it by law (see below).",
+            "quote": "Rabies: refer to national or regional legislation for booster frequency."
+          },
+          {
+            "id": "chlamydia",
+            "vaccine": "Chlamydia felis",
+            "when": "Only for cats in groups with a history of the disease, such as breeding catteries or shelters. Every year while the risk lasts.",
+            "quote": "may be recommended for those in multi-cat households (e.g. breeding catteries, shelters) at high risk of infection"
+          },
+          {
+            "id": "bordetella",
+            "vaccine": "Bordetella",
+            "when": "Only for cats living in or moving into crowded groups with a history of Bordetella.",
+            "quote": "Vaccination should be limited to cats living in or moving into high-density populations with a history of Bb infections"
+          }
+        ]
+      },
+      {
+        "id": "cat_stiko",
+        "species": "cat",
+        "source": "stiko_cat",
+        "status": "verified",
+        "doses": [
+          {
+            "id": "kitten_8w",
+            "label": "First kitten vaccination",
+            "at": {
+              "w": 8
+            },
+            "core": [
+              "panleukopenia",
+              "herpesvirus",
+              "calicivirus"
+            ],
+            "quote": "8 Lebenswochen: FHV (R), FCV (C), Panleukopenie (P)"
+          },
+          {
+            "id": "kitten_12w",
+            "label": "Second kitten vaccination",
+            "at": {
+              "w": 12
+            },
+            "core": [
+              "panleukopenia",
+              "herpesvirus",
+              "calicivirus"
+            ],
+            "quote": "12 Lebenswochen: FHV (R), FCV (C), Panleukopenie (P)"
+          },
+          {
+            "id": "kitten_16w",
+            "label": "Third kitten vaccination",
+            "at": {
+              "w": 16
+            },
+            "core": [
+              "panleukopenia",
+              "herpesvirus",
+              "calicivirus"
+            ],
+            "quote": "16 Lebenswochen: FHV (R), FCV (C), Panleukopenie (P)"
+          },
+          {
+            "id": "kitten_15m",
+            "label": "Last dose of the kitten course",
+            "at": {
+              "m": 15
+            },
+            "core": [
+              "panleukopenia",
+              "herpesvirus",
+              "calicivirus"
+            ],
+            "quote": "15 Lebensmonaten: FHV (R), FCV (C), Panleukopenie (P)"
+          }
+        ],
+        "boosters": [
+          {
+            "id": "core_3y",
+            "after": "kitten_15m",
+            "core": [
+              "panleukopenia",
+              "herpesvirus",
+              "calicivirus"
+            ],
+            "every": {
+              "m": 36
+            },
+            "text": "Up to every 3 years.",
+            "quote": "Danach werden Wiederholungsimpfungen gegen Infektionen mit Felinen Herpesviren, Infektionen mit Felinen Caliciviren wie auch gegen Panleukopenie im Abstand von bis zu 3 Jahren empfohlen."
+          }
+        ],
+        "optional": [
+          {
+            "id": "felv",
+            "vaccine": "feline leukaemia (FeLV)",
+            "from": {
+              "w": 8
+            },
+            "risk": "outdoor",
+            "when": "For cats that go outside or meet cats whose FeLV status is unknown. Two doses 3 to 4 weeks apart, one more a year later. Test first if the status is unknown.",
+            "quote": "Die Impfung ist bei hohem Expositionsrisiko (Freiläufer, Kontakt zu Katzen mit unbekanntem FeLV-Status etc.) zu empfehlen."
+          },
+          {
+            "id": "rabies",
+            "vaccine": "rabies",
+            "from": {
+              "w": 12
+            },
+            "when": "Needed to travel. Cats that never cross a border can do without it in Germany.",
+            "quote": "Bei Katzen, die nicht grenzüberschreitend reisen, kann daher auf die Tollwutimpfung verzichtet werden."
+          },
+          {
+            "id": "chlamydia",
+            "vaccine": "Chlamydia felis",
+            "from": {
+              "w": 8,
+              "to": {
+                "w": 9
+              }
+            },
+            "when": "For cats at particular risk. Protection lasts at most 1 year.",
+            "quote": "Die erste Impfung kann ab einem Alter von 8 oder 9 Wochen (s. Gebrauchsinformationen) erfolgen"
+          },
+          {
+            "id": "bordetella",
+            "vaccine": "Bordetella",
+            "from": {
+              "w": 4
+            },
+            "when": "For cats at particular risk, at least 1 week before. Protection lasts at most 1 year.",
+            "quote": "Das Mindestimpfalter liegt bei 4 Wochen."
+          }
+        ]
+      }
+    ],
+    "travel": {
+      "source": "eu_travel",
+      "status": "verified",
+      "first_dose_from": {
+        "w": 12
+      },
+      "wait_days": 21,
+      "text": "To travel to another EU country, the first rabies vaccination can be given from 12 weeks of age. It counts from 21 days after. Later boosters must be given before the previous one expires (the date the vet writes in the passport).",
+      "quote": "The animal was at least 12 weeks old at the date the vaccine was administered."
+    },
+    "countries": [
+      {
+        "country": "DE",
+        "name": "Germany",
+        "schedule": {
+          "dog": "dog_stiko",
+          "cat": "cat_stiko"
+        },
+        "notes": [
+          {
+            "text": "No vaccine is required by law for a dog or cat that stays in Germany. Rabies is optional at home and needed to travel.",
+            "source": "stiko_dog",
+            "status": "verified",
+            "quote": "Sie ist ohnehin für Hunde, Katzen und Frettchen vorgeschrieben, die auf grenzüberschreitende Reisen mitgeführt werden sollen."
+          }
+        ]
+      },
+      {
+        "country": "FR",
+        "name": "France",
+        "schedule": {
+          "dog": "dog_stiko",
+          "cat": "cat_abcd"
+        },
+        "no_national_schedule": "France publishes no official schedule with ages. The Ministry of Agriculture only says the first injection is usually given from 7 to 8 weeks, with regular boosters.",
+        "no_national_schedule_source": "fr_ministry_2015",
+        "laws": [
+          {
+            "id": "fr_dangerous_dogs",
+            "species": [
+              "dog"
+            ],
+            "condition": "If your dog is in category 1 or 2 (French dangerous dog law)",
+            "text": "Rabies vaccination is required, even where there is no rabies. The first dose from 3 months, valid after 21 days. Boosters as written in the passport. Not keeping it up to date can bring a fine of 450 euros.",
+            "from": {
+              "m": 3
+            },
+            "booster": "passport",
+            "source": "fr_dangerous_dogs",
+            "status": "verified",
+            "quote": "Un chien de 1re catégorie doit être vacciné contre la rage même si vous résidez dans un département indemne de rage."
+          }
+        ]
+      },
+      {
+        "country": "IE",
+        "name": "Ireland",
+        "schedule": {
+          "dog": "dog_stiko",
+          "cat": "cat_abcd"
+        },
+        "no_national_schedule": "No Irish public body publishes a vaccination schedule (we looked at the Department of Agriculture, Veterinary Ireland, the Veterinary Council and UCD).",
+        "notes": [
+          {
+            "text": "No vaccine is required by law for a dog or cat that stays in Ireland. Rabies is needed only to travel.",
+            "source": "ie_control_of_dogs",
+            "status": "verified",
+            "evidence": "The full text of the Act has no rule on vaccination (searched for \"vaccin\" and \"rabies\")."
+          },
+          {
+            "text": "Rabies boosters are valid for one or three years, depending on the vaccine. The vet writes the date in the passport.",
+            "source": "ie_dafm_2026",
+            "status": "verified",
+            "quote": "Date vaccine is valid until as per manufacturers' instructions, either one or three years from date of vaccination"
+          }
+        ]
+      },
+      {
+        "country": "IT",
+        "name": "Italy",
+        "schedule": {
+          "dog": "dog_stiko",
+          "cat": "cat_abcd"
+        },
+        "no_national_schedule": "No Italian public body (Ministry of Health, FNOVI, ANMVI, the zooprophylactic institutes) publishes its own schedule.",
+        "notes": [
+          {
+            "text": "No vaccine is required by law for a dog or cat that stays in Italy. Rabies is needed only to travel.",
+            "source": "it_ministry_2026",
+            "status": "verified",
+            "evidence": "Italy regained rabies-free status in February 2013 (Ministry of Health notes 3306 and 3827). The note on the 2026 Treviso case orders vaccination only in that town."
+          },
+          {
+            "text": "After a rabies case in 2026, all dogs and cats in the town of Vittorio Veneto (Treviso) had to be vaccinated against rabies. Ask the town or your vet whether the order still applies.",
+            "source": "it_izsve_2026",
+            "status": "needs_review",
+            "todo": "Find the mayor's order (number, minimum age, end date). Press reports say six months from late May 2026.",
+            "quote": "Per massima precauzione tutti i cani e i gatti del Comune di Vittorio Veneto dovranno essere sottoposti a vaccinazione presso un ambulatorio veterinario."
+          }
+        ]
+      },
+      {
+        "country": "ES",
+        "name": "Spain",
+        "schedule": {
+          "dog": "dog_stiko",
+          "cat": "cat_abcd"
+        },
+        "no_national_schedule": "No Spanish public body publishes a schedule for the core vaccines. Rabies is set by law in each region.",
+        "notes": [
+          {
+            "text": "Rabies vaccination of dogs is required in 15 regions and in Ceuta and Melilla. In Cataluña and Galicia it is voluntary (required only for assistance dogs). Choose your region to see its rule.",
+            "source": "mapa_2026",
+            "status": "verified",
+            "quote": "Actualmente la vacunación en perros es obligatoria en 15 Comunidades Autónomas (CCAA), en Ceuta y Melilla"
+          }
+        ],
+        "regions": [
+          {
+            "id": "AN",
+            "name": "Andalucía",
+            "dog": "required",
+            "cat": "required",
+            "from": {
+              "m": 3
+            },
+            "second_dose_days": 30,
+            "booster": "annual",
+            "status": "verified",
+            "source_url": "https://www.riojasalud.es/files/content/salud-publica-consumo/epidemiologia/edo/inf-adicional/Plan%20contingencia%20Rabia_2023_12122023.pdf",
+            "law_url": "https://www.juntadeandalucia.es/boja/2010/81/18",
+            "quote": "Será obligatoria la vacunación antirrábica de los perros, gatos y hurones debiéndose efectuar la primera vacunación a partir de los tres meses de edad de los animales. Igualmente deberán ser revacunados a los treinta días posteriores a la primera. Anualmente deberá realizarse una revacunación."
+          },
+          {
+            "id": "AR",
+            "name": "Aragón",
+            "dog": "required",
+            "cat": "voluntary",
+            "from": {
+              "w": 12
+            },
+            "before": {
+              "w": 24
+            },
+            "booster": "product",
+            "status": "verified",
+            "source_url": "https://www.boa.aragon.es/cgi-bin/EBOA/BRSCGI?CMD=VEROBJ&MLKOB=978352624646&type=pdf",
+            "quote": "La primovacunación se realizará en el animal de compañía cuando tenga, al menos 12 semanas de edad y antes de que cumpla las veinticuatro."
+          },
+          {
+            "id": "AS",
+            "name": "Asturias",
+            "dog": "required",
+            "cat": "voluntary",
+            "from": {
+              "m": 3
+            },
+            "before": {
+              "m": 6
+            },
+            "booster": "product",
+            "status": "verified",
+            "source_url": "https://www.asturias.es/bopa/2023/03/27/2023-02372.pdf",
+            "quote": "La primera vacunación se realizará cuando el perro tenga al menos tres meses de edad y antes de que cumpla los seis meses, siendo obligatorio revacunar antes de que finalice el período de validez de la vacuna"
+          },
+          {
+            "id": "IB",
+            "name": "Illes Balears",
+            "dog": "required",
+            "cat": "recommended",
+            "from": {
+              "m": 3
+            },
+            "booster": "annual",
+            "status": "verified",
+            "source_url": "https://www.caib.es/eboibfront/eli/es-ib/d/2015/04/17/21/dof/spa/pdf",
+            "quote": "Se declara obligatoria la vacunación contra la rabia, a partir de los tres meses de edad, para la totalidad de los animales de la especie canina... La revacunación se realizará con periodicidad anual."
+          },
+          {
+            "id": "CN",
+            "name": "Canarias",
+            "dog": "required",
+            "cat": "travel",
+            "from": {
+              "m": 3
+            },
+            "booster": "annual",
+            "status": "verified",
+            "source_url": "https://www.gobiernodecanarias.org/boc/1998/041/001.html",
+            "quote": "La totalidad del censo canino del Archipiélago, a partir de los tres meses de edad. b) Los gatos, a efectos de procedencia y/o traslado fuera de la Comunidad Autónoma... será obligatoria la revacunación anual."
+          },
+          {
+            "id": "CB",
+            "name": "Cantabria",
+            "dog": "required",
+            "cat": "voluntary",
+            "from": {
+              "m": 3
+            },
+            "booster": "annual_or_product",
+            "status": "verified",
+            "source_url": "https://boc.cantabria.es/boces/verAnuncioAction.do?idAnuBlob=59656",
+            "quote": "La vacunación de los perros deberá efectuarse por primera vez a partir de los 3 meses de edad, siendo obligatorio revacunar con carácter anual o antes del final del periodo de validez de la inmunidad conferida por la vacuna"
+          },
+          {
+            "id": "CM",
+            "name": "Castilla-La Mancha",
+            "dog": "required",
+            "cat": "required",
+            "from": {
+              "m": 3
+            },
+            "second_dose_within_days": 31,
+            "booster": "annual",
+            "status": "verified",
+            "source_url": "https://agricultura.castillalamancha.es/sites/default/files/documentos/pdf/20150323/orden_02-06-14_programa_zoosanitario_basico.pdf",
+            "quote": "Se establece la obligatoriedad de vacunar anualmente contra la rabia a todos los cánidos, félidos y hurones mayores de tres meses de edad... La primovacunación (vacuna y revacuna separadas, como máximo, un mes)"
+          },
+          {
+            "id": "CL",
+            "name": "Castilla y León",
+            "dog": "required",
+            "cat": "recommended",
+            "from": {
+              "m": 3
+            },
+            "booster": "annual",
+            "status": "verified",
+            "source_url": "https://bocyl.jcyl.es/boletines/2016/07/07/pdf/BOCYL-D-07072016-1.pdf",
+            "quote": "Serán objeto de vacunación antirrábica todos los perros de más de tres meses de edad. 2. Se establece la revacunación obligatoria de los perros con periodicidad anual."
+          },
+          {
+            "id": "CT",
+            "name": "Cataluña",
+            "dog": "voluntary",
+            "cat": "voluntary",
+            "status": "verified",
+            "source_url": "https://www.riojasalud.es/files/content/salud-publica-consumo/epidemiologia/edo/inf-adicional/Plan%20contingencia%20Rabia_2023_12122023.pdf",
+            "quote": "Actualmente se está elaborando el texto del Decreto ... para hacer obligatoria la vacunación de la rabia en perros",
+            "todo": "A decree making it required was drafted (2024). Check the DOGC for its adoption."
+          },
+          {
+            "id": "VC",
+            "name": "Comunitat Valenciana",
+            "dog": "required",
+            "cat": "required",
+            "from": {
+              "w": 12
+            },
+            "before": {
+              "w": 16
+            },
+            "first_booster_months": 12,
+            "booster": "product",
+            "status": "verified",
+            "source_url": "https://dogv.gva.es/datos/2016/03/11/pdf/2016_1690.pdf",
+            "quote": "La administración de la vacuna se realizará antes de las dieciséis semanas en animales con edad superior a las doce semanas. a.2. Se efectuará una revacunación posterior con una dosis de recuerdo trascurrido un año desde la primovacunación."
+          },
+          {
+            "id": "EX",
+            "name": "Extremadura",
+            "dog": "required",
+            "cat": "recommended",
+            "from": {
+              "w": 12
+            },
+            "before": {
+              "w": 16
+            },
+            "booster": "product",
+            "status": "verified",
+            "source_url": "https://doe.juntaex.es/pdfs/doe/2025/1730o/25040189.pdf",
+            "quote": "La vacunación se realizará ... en el período comprendido entre las 12 y 16 semanas de edad del animal."
+          },
+          {
+            "id": "GA",
+            "name": "Galicia",
+            "dog": "voluntary",
+            "cat": "voluntary",
+            "status": "verified",
+            "source_url": "https://www.riojasalud.es/files/content/salud-publica-consumo/epidemiologia/edo/inf-adicional/Plan%20contingencia%20Rabia_2023_12122023.pdf",
+            "quote": "Voluntaria. Unicamente obligatoria para perros de asistencia"
+          },
+          {
+            "id": "MD",
+            "name": "Comunidad de Madrid",
+            "dog": "required",
+            "cat": "recommended",
+            "from": {
+              "m": 3
+            },
+            "booster": "annual",
+            "status": "verified",
+            "source_url": "https://www.colvema.org/assets/uploads/descargas/1763115400_a69ab9d3e82c448b4bf0.pdf",
+            "quote": "La vacunación antirrábica será obligatoria y con carácter anual, en todos los perros con más de tres meses de edad con domicilio en la Comunidad de Madrid"
+          },
+          {
+            "id": "MC",
+            "name": "Región de Murcia",
+            "dog": "required",
+            "cat": "required",
+            "booster": "annual",
+            "status": "needs_review",
+            "source_url": "https://www.borm.es/services/anuncio/ano/2017/numero/5005/pdf?id=759035",
+            "quote": "a partir de las siguientes edades: - 3, 5 meses: en perros y hurones - 5 meses: en gatos ... Revacunación anual como adultos.",
+            "todo": "The minimum age is written '3, 5 meses' and is ambiguous, so PawID shows no date. The temporary order was last extended in April 2026 for 9 months: check again in January 2027."
+          },
+          {
+            "id": "NC",
+            "name": "Navarra",
+            "dog": "required",
+            "cat": "required",
+            "from": {
+              "w": 12
+            },
+            "before": {
+              "w": 28
+            },
+            "second_dose_within_days": 31,
+            "booster": "annual",
+            "status": "verified",
+            "source_url": "https://bon.navarra.es/es/anuncio/-/texto/2022/238/0",
+            "quote": "La primovacunación, que comprende la administración de una primera dosis de la vacuna seguida de una segunda dosis en un plazo de como máximo un mes, se realizará cuando el animal tenga al menos 12 semanas de edad y antes de que cumpla las 28 semanas. 6. Las revacunaciones serán anuales."
+          },
+          {
+            "id": "PV",
+            "name": "País Vasco",
+            "dog": "required",
+            "cat": "voluntary",
+            "from": {
+              "w": 12
+            },
+            "before": {
+              "w": 24
+            },
+            "booster": "product",
+            "status": "verified",
+            "source_url": "https://www.euskadi.eus/bopv2/datos/2022/10/2204338a.shtml",
+            "quote": "La primovacunación se realizará en el animal de compañía cuando tenga, al menos 12 semanas de edad y antes de que cumpla las veinticuatro."
+          },
+          {
+            "id": "RI",
+            "name": "La Rioja",
+            "dog": "required",
+            "cat": "voluntary",
+            "from": {
+              "m": 3
+            },
+            "booster": "biennial",
+            "status": "needs_review",
+            "source_url": "https://laadministracionaldia.inap.es/noticia.asp?id=1128662",
+            "quote": "Se establece con carácter obligatorio la vacunación antirrábica de todos los perros, a partir de los tres meses de edad, con una periodicidad bienal.",
+            "todo": "Quoted from a verbatim copy (INAP). Check the original in the Boletín Oficial de La Rioja (Decreto 26/2014)."
+          },
+          {
+            "id": "CE",
+            "name": "Ceuta",
+            "dog": "required",
+            "cat": "required",
+            "booster": "annual",
+            "status": "needs_review",
+            "source_url": "https://www.riojasalud.es/files/content/salud-publica-consumo/epidemiologia/edo/inf-adicional/Plan%20contingencia%20Rabia_2023_12122023.pdf",
+            "evidence": "Annex IV lists dogs, cats and ferrets, one dose, annual booster.",
+            "todo": "Read Reglamento 2/2015 art. 21. Temporary stricter rules after 2025 outbreaks."
+          },
+          {
+            "id": "ML",
+            "name": "Melilla",
+            "dog": "required",
+            "cat": "required",
+            "booster": "annual",
+            "status": "needs_review",
+            "source_url": "https://www.riojasalud.es/files/content/salud-publica-consumo/epidemiologia/edo/inf-adicional/Plan%20contingencia%20Rabia_2023_12122023.pdf",
+            "evidence": "Annex IV lists dogs, cats and ferrets, two doses, annual booster.",
+            "todo": "Find the Ordenanza de Sanidad Animal text."
+          }
+        ]
+      }
+    ]
   }
 } as const;
